@@ -113,7 +113,6 @@ function publicState(room, socketId, role) {
     masterPlayerId: room.masterPlayerId ?? null,
     masterChoiceMade: !!room.masterChoiceMade,
     event,
-    eventPending: !!(room.event && !room.event.accessGranted),
     lastEvent,
     eventResultPlayerId: room.lastEvent?.playerId ?? null
   };
@@ -251,22 +250,10 @@ io.on("connection", socket => {
     const room = rooms.get(socket.data.room);
     if (!room || !room.started || !room.released) return;
 
-    // Master darf würfeln, wenn er als Spieler ausgewählt wurde.
-    // Die Berechtigung wird direkt über die aktuelle Master-Spielerposition
-    // und die Socket-ID geprüft, damit Layout-/Clientänderungen die
-    // Würfelberechtigung nicht versehentlich blockieren.
     const isMasterPlayer = socket.data.role === "master" && room.masterParticipates;
     const p = isMasterPlayer
       ? room.players.find(x => x.isMasterPlayer && x.socketId === socket.id)
       : (socket.data.role === "player" ? room.players[socket.data.playerId] : null);
-
-    if (isMasterPlayer && room.currentPlayer === room.masterPlayerId) {
-      const masterPlayer = room.players[room.masterPlayerId];
-      if (masterPlayer && masterPlayer.socketId === socket.id) {
-        // Use the canonical master player object.
-        // This also protects against a stale playerId on the socket.
-      }
-    }
 
     if (!p) return socket.emit("errorMsg", "Du bist nicht als Spieler dieser Runde registriert.");
     if (p.id !== room.currentPlayer) return socket.emit("errorMsg", "Du bist noch nicht an der Reihe.");
@@ -286,32 +273,9 @@ io.on("connection", socket => {
   // Master only decides whether the current player gets access to the 20 card backs.
   socket.on("releaseEvent", () => {
     const room = rooms.get(socket.data.room);
-
-    // WICHTIG: Die Karten dürfen ausschließlich durch einen echten Master-Klick
-    // freigegeben werden. Der Würfelwurf setzt accessGranted niemals auf true.
-    if (!room || socket.data.role !== "master" || room.master !== socket.id) {
-      return socket.emit("releaseEventResult", { ok: false, message: "Nur der Master darf die Ereigniskarten freigeben." });
-    }
-    if (!room.started) {
-      return socket.emit("releaseEventResult", { ok: false, message: "Das Spiel wurde noch nicht gestartet." });
-    }
-    if (!room.event) {
-      return socket.emit("releaseEventResult", { ok: false, message: "Noch kein Würfelwurf – zuerst würfeln." });
-    }
-    if (room.event.playerId !== room.currentPlayer) {
-      return socket.emit("releaseEventResult", { ok: false, message: "Keine gültige Ereigniskarte für den aktuellen Spieler." });
-    }
-    if (room.event.revealedSlot !== null || room.event.revealedCard) {
-      return socket.emit("releaseEventResult", { ok: false, message: "Die Ereigniskarte wurde bereits ausgewählt." });
-    }
-    if (room.event.accessGranted === true) {
-      return socket.emit("releaseEventResult", { ok: false, message: "Die Ereigniskarten sind bereits freigegeben." });
-    }
-
-    // NUR dieser Master-Klick setzt die Freigabe.
+    if (!room || socket.data.role !== "master" || !room.started || !room.event || room.event.accessGranted) return;
     room.event.accessGranted = true;
     broadcast(room);
-    socket.emit("releaseEventResult", { ok: true, message: "✅ Der Master hat die 20 Ereigniskarten freigegeben." });
   });
 
   // The player only reveals a card. No card effect is ever executed.
