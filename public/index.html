@@ -256,6 +256,7 @@ button.gold{
   #game > .game { grid-template-columns: 1fr !important; grid-template-areas: "left" "center" "right" !important; }
   #game > .game > aside:first-child, #game > .game > main.center, #game > .game > aside:last-child { grid-column: 1 !important; grid-row: auto !important; }
 }
+</style>
 <style id="master-layout-final-fix">
 /* MASTER: immer drei Spalten – Nächster Spieler rechts oben */
 #game.master-mode > .game {
@@ -272,6 +273,40 @@ button.gold{
 @media(max-width:1050px){
   #game.master-mode > .game {
     grid-template-columns:minmax(0,0.8fr) minmax(0,1.4fr) minmax(0,0.8fr) !important;
+    grid-template-areas:"left center right" !important;
+  }
+}
+</style>
+
+
+<style id="master-layout-hard-fix">
+/* MASTER HARD FIX: always keep the three main panels in one row. */
+#game.master-mode > .game {
+  display:grid !important;
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  grid-template-columns:minmax(0,0.85fr) minmax(0,1.5fr) minmax(0,0.85fr) !important;
+  grid-template-rows:auto !important;
+  grid-template-areas:"left center right" !important;
+  gap:14px !important;
+  align-items:stretch !important;
+}
+#game.master-mode > .game > aside:first-child {
+  grid-area:left !important; grid-column:1 !important; grid-row:1 !important;
+}
+#game.master-mode > .game > main.center {
+  grid-area:center !important; grid-column:2 !important; grid-row:1 !important;
+}
+#game.master-mode > .game > aside:last-child {
+  grid-area:right !important; grid-column:3 !important; grid-row:1 !important;
+  display:flex !important;
+  visibility:visible !important;
+}
+/* Do not let responsive rules collapse the MASTER layout. */
+@media (max-width:1200px) {
+  #game.master-mode > .game {
+    grid-template-columns:minmax(0,0.85fr) minmax(0,1.5fr) minmax(0,0.85fr) !important;
     grid-template-areas:"left center right" !important;
   }
 }
