@@ -576,6 +576,51 @@ s.on("state",st=>{
   renderCards(st,isMine);
   renderPlayerOverview(st);
   document.getElementById("game").classList.toggle("master-mode", role === "master");
+  const gameShell=document.querySelector("#game > .game");
+  const rightPanel=gameShell?.querySelector("aside:last-child");
+  if(gameShell){
+    if(role==="master"){
+      gameShell.style.display="grid";
+      gameShell.style.gridTemplateColumns="minmax(0,1fr) minmax(0,1.5fr) minmax(0,1fr)";
+      gameShell.style.gridTemplateRows="auto";
+      gameShell.style.gridTemplateAreas='"left center right"';
+      gameShell.style.gap="18px";
+      gameShell.style.paddingRight="0";
+      gameShell.style.position="relative";
+      gameShell.style.width="100%";
+      gameShell.style.maxWidth="none";
+      if(rightPanel){
+        rightPanel.style.position="static";
+        rightPanel.style.gridColumn="3";
+        rightPanel.style.gridRow="1";
+        rightPanel.style.width="auto";
+        rightPanel.style.height="auto";
+        rightPanel.style.minHeight="430px";
+        rightPanel.style.display="flex";
+        rightPanel.style.visibility="visible";
+      }
+    }else{
+      gameShell.style.display="";
+      gameShell.style.gridTemplateColumns="";
+      gameShell.style.gridTemplateRows="";
+      gameShell.style.gridTemplateAreas="";
+      gameShell.style.gap="";
+      gameShell.style.paddingRight="";
+      gameShell.style.position="";
+      gameShell.style.width="";
+      gameShell.style.maxWidth="";
+      if(rightPanel){
+        rightPanel.style.position="";
+        rightPanel.style.gridColumn="";
+        rightPanel.style.gridRow="";
+        rightPanel.style.width="";
+        rightPanel.style.height="";
+        rightPanel.style.minHeight="";
+        rightPanel.style.display="";
+        rightPanel.style.visibility="";
+      }
+    }
+  }
   if(role==="master"){
     document.getElementById("master").classList.remove("hide");
     document.getElementById("masterInfo").textContent=st.started?(current?`${current.name} ist aktuell an der Reihe.`:"Kein Spieler an der Reihe."):"Spiel nicht gestartet.";
