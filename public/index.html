@@ -215,13 +215,10 @@ button.gold{
 /* ===== V2 MASTER-LAYOUT: 3 SPALTEN + STEUERUNG DIREKT DARUNTER ===== */
 .game{
   grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr) minmax(0,.85fr) !important;
-  grid-template-areas:"left center right" !important;
   gap:14px !important;
   align-items:stretch !important;
 }
-.game > .side:first-child{grid-area:left !important; min-width:0 !important;}
-.game > .center{grid-area:center !important; min-width:0 !important;}
-.game > .side:last-child{grid-area:right !important; min-width:0 !important;}
+.game > .side{min-width:0 !important;}
 .master{margin-top:14px !important;}
 .mastergrid{
   display:grid !important;
@@ -230,11 +227,8 @@ button.gold{
   margin-top:0 !important;
 }
 .mastergrid button{font-size:14px !important;}
-@media(max-width:1050px){
-  .game{grid-template-columns:1fr !important; grid-template-areas:"left" "center" "right" !important;}
-}
 @media(max-width:700px){
-  .game{grid-template-columns:1fr !important; grid-template-areas:"left" "center" "right" !important;}
+  .game{grid-template-columns:1fr 1.6fr 1fr !important;}
   .mastergrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
 }
 @media(max-width:500px){
@@ -243,6 +237,27 @@ button.gold{
 }
 
 </style>
+
+<style id="master-three-column-fix">
+/* MASTER: links / mitte / rechts in EINER Reihe */
+#game > .game {
+  display: grid !important;
+  width: 100% !important;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.5fr) minmax(0, 0.85fr) !important;
+  grid-template-rows: auto !important;
+  grid-template-areas: "left center right" !important;
+  align-items: stretch !important;
+  gap: 14px !important;
+}
+#game > .game > aside:first-child { grid-area: left !important; grid-column: 1 !important; grid-row: 1 !important; }
+#game > .game > main.center { grid-area: center !important; grid-column: 2 !important; grid-row: 1 !important; }
+#game > .game > aside:last-child { grid-area: right !important; grid-column: 3 !important; grid-row: 1 !important; }
+@media (max-width: 1050px) {
+  #game > .game { grid-template-columns: 1fr !important; grid-template-areas: "left" "center" "right" !important; }
+  #game > .game > aside:first-child, #game > .game > main.center, #game > .game > aside:last-child { grid-column: 1 !important; grid-row: auto !important; }
+}
+</style>
+
 </head>
 <body><div class="wrap">
 <header class="heroBanner">
