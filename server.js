@@ -278,20 +278,6 @@ io.on("connection", socket => {
     broadcast(room);
   });
 
-  // The master may skip the entire event-card phase.
-  // No card is revealed and the game moves directly to the next player.
-  socket.on("skipEvent", () => {
-    const room = rooms.get(socket.data.room);
-    if (!room || socket.data.role !== "master" || !room.started || !room.event) return;
-
-    room.lastEvent = null;
-    room.event = null;
-    room.eventDeck = makeCards();
-    room.released = false;
-    advance(room);
-    broadcast(room);
-  });
-
   // The player only reveals a card. No card effect is ever executed.
   socket.on("claimEvent", ({ slot }) => {
     const room = rooms.get(socket.data.room);
@@ -307,6 +293,18 @@ io.on("connection", socket => {
     if (!card) return;
     room.event.revealedSlot = index;
     room.event.revealedCard = card;
+    broadcast(room);
+  });
+
+  // The master can skip the event-card phase completely.
+  socket.on("skipEvent", () => {
+    const room = rooms.get(socket.data.room);
+    if (!room || socket.data.role !== "master" || !room.started || !room.event) return;
+    room.lastEvent = null;
+    room.event = null;
+    room.eventDeck = makeCards();
+    room.released = false;
+    advance(room);
     broadcast(room);
   });
 

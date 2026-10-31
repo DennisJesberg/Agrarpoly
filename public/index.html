@@ -184,6 +184,15 @@ button.gold{
 .masterCards{background:linear-gradient(145deg,#12070a,#050505)}
 .masterCardGrid{grid-template-columns:repeat(5,1fr)}
 
+
+.masterControls{margin-top:14px}
+.masterControls .mastergrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.masterControls .mastergrid button{font-size:14px}
+.nextOnly{justify-content:space-between}
+.nextPlaceholder{visibility:hidden}
+@media(max-width:1050px){.masterControls .mastergrid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.masterControls .mastergrid{grid-template-columns:1fr}}
+
 @media(max-width:1050px){
   .heroBanner{height:clamp(220px,34vw,380px)}
   .heroPlayer{top:66%;height:12%}
@@ -252,10 +261,28 @@ button.gold{
       <button id="rollBtn" class="roll red" onclick="roll()" disabled>WÜRFELN</button><div id="eventCard" class="eventCard"><div class="eventLabel">EREIGNISKARTEN</div><div id="eventTitle" class="eventTitle">–</div><div id="eventText" class="eventText">Der Master entscheidet, ob du die Karten sehen darfst.</div><div id="eventEffect" class="eventEffect"></div><div id="eventChoices" class="eventChoices"></div></div></div>
     </main>
 
-    <aside class="panel side">
+    <aside class="panel side nextOnly">
       <div><div class="label">NÄCHSTER SPIELER</div><div id="nextName" class="playername">–</div></div>
-      <div class="playerbox"><div class="label">AKTUELLER SPIELER</div><div id="currentName" style="font-size:25px;font-weight:1000">–</div><div class="nextArrow">↓</div><div class="label">DANACH</div><div id="nextSmall" style="font-size:21px;font-weight:900">–</div></div>
+      <div class="playerbox nextPlaceholder" aria-hidden="true">
+        <div class="label">AKTUELLER SPIELER</div>
+        <div id="currentName" style="font-size:25px;font-weight:1000">–</div>
+        <div class="nextArrow">↓</div>
+        <div class="label">DANACH</div>
+        <div id="nextSmall" style="font-size:21px;font-weight:900">–</div>
+      </div>
     </aside>
+  </div>
+
+  <div id="masterControls" class="masterControls hide">
+    <div class="mastergrid">
+      <button class="red" onclick="start()">▶ SPIEL STARTEN</button>
+      <button class="red" id="releaseBtnTop" onclick="release()">🎲 WÜRFEL FREIGEBEN</button>
+      <button class="red" id="releaseEventBtnTop" onclick="skipEvent()" disabled>⏭ EREIGNISKARTEN ÜBERSPRINGEN</button>
+      <button class="gold" id="continueEventBtnTop" onclick="continueEvent()" disabled>➡️ WEITER</button>
+      <button class="blue" id="skipBtnTop" onclick="skip()">⏭ SPIELER ÜBERSPRINGEN</button>
+      <button class="gray" onclick="newRound()">↻ NEUER DURCHLAUF</button>
+      <button class="gray" onclick="resetGame()">↩ ZURÜCKSETZEN</button>
+    </div>
   </div>
 
   <div id="master" class="panel master hide">
@@ -293,16 +320,6 @@ button.gold{
       <div id="masterChoiceStatus" style="margin-top:9px;color:#aaa;font-weight:800">Bitte vor dem Spielstart entscheiden.</div>
     </div>
     <div id="masterInfo" style="color:#bbb;margin-bottom:12px">–</div>
-    <div class="mastergrid">
-      <button class="red" onclick="start()">▶ SPIEL STARTEN</button>
-      <button class="red" id="releaseBtn" onclick="release()">🎲 WÜRFEL FREIGEBEN</button>
-      <button class="red" id="releaseEventBtn" onclick="releaseEvent()" disabled>🃏 EREIGNISKARTEN FREIGEBEN</button>
-      <button class="gold" id="continueEventBtn" onclick="continueEvent()" disabled>➡️ WEITER</button>
-      <button class="red" id="skipEventBtn" onclick="skipEvent()" disabled>⏭ EREIGNISKARTEN ÜBERSPRINGEN</button>
-      <button class="blue" id="skipBtn" onclick="skip()">⏭ SPIELER ÜBERSPRINGEN</button>
-      <button class="gray" onclick="newRound()">↻ NEUER DURCHLAUF</button>
-      <button class="gray" onclick="resetGame()">↩ ZURÜCKSETZEN</button>
-    </div>
     <div id="masterCards" class="masterCards hide"></div>
     <div class="me">Der Master sieht immer, welche Karte an welchem Platz liegt. Spieler sehen die Texte erst nach ihrer Auswahl.</div>
   </div>
@@ -323,7 +340,8 @@ function copyOverlayLink(){const link=getOverlayLink(); if(!link)return; copyTex
 function openOverlayLink(){const link=getOverlayLink(); if(link)window.open(link,"_blank")}
 function masterPlay(participate){myId=participate?0:null;s.emit("masterPlay",{participate,name:document.getElementById("masterName").value.trim()||"Master"})}
 function join(){s.emit("join",{code:document.getElementById("joinCode").value.trim(),name:document.getElementById("playerName").value.trim()})}
-function start(){s.emit("start")} function release(){s.emit("release")} function releaseEvent(){s.emit("releaseEvent")} function claimEvent(slot){s.emit("claimEvent",{slot})} function continueEvent(){s.emit("continueEvent")} function skipEvent(){s.emit("skipEvent")} function skip(){s.emit("skip")} function newRound(){s.emit("newRound")} function resetGame(){s.emit("reset")} function roll(){s.emit("roll")}
+function start(){s.emit("start")} function release(){s.emit("release")} function releaseEvent(){s.emit("releaseEvent")} function claimEvent(slot){s.emit("claimEvent",{slot})} function skipEvent(){s.emit("skipEvent")}
+function continueEvent(){s.emit("continueEvent")} function skip(){s.emit("skip")} function newRound(){s.emit("newRound")} function resetGame(){s.emit("reset")} function roll(){s.emit("roll")}
 s.on("created",d=>{
   role="master"; myId=null;
   document.getElementById("gameCode").textContent=d.code||"–";
@@ -386,7 +404,9 @@ s.on("state",st=>{
   document.getElementById("you").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"Du bist dran – zuerst Ereigniskarte abwarten.":(st.released?"Du bist dran – du darfst würfeln!":"Warte auf die Würfelfreigabe.")):"Du bist der Master – du steuerst die Freigabe."):(isMine?(st.event?(st.event.accessGranted?"Wähle eine verdeckte Ereigniskarte.":"Ereigniskarten sind noch nicht freigegeben."):(st.released?"Du bist dran – du darfst würfeln!":"Du bist dran – warte auf die Freigabe.")):"Der Master steuert die Freigabe.");
   document.getElementById("myStatus").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"EREIGNISKARTE":(st.released?"WÜRFELN FREIGEGEBEN":"WARTE AUF FREIGABE")):"MASTER-STEUERUNG"):(isMine?(st.event?(st.event.accessGranted?"KARTE AUSWÄHLEN":"WARTE AUF KARTENFREIGABE"):(st.released?"WÜRFEL FREIGEGEBEN":"Warte auf Freigabe…")):"Warte auf deinen Zug…");
   renderCards(st,isMine);
+  if(role!=="master") document.getElementById("masterControls").classList.add("hide");
   if(role==="master"){
+    document.getElementById("masterControls").classList.remove("hide");
     document.getElementById("master").classList.remove("hide");
     document.getElementById("masterInfo").textContent=st.started?(current?`${current.name} ist aktuell an der Reihe.`:"Kein Spieler an der Reihe."):"Spiel nicht gestartet.";
     const mc=document.getElementById("masterChoice"), mcs=document.getElementById("masterChoiceStatus");
@@ -394,15 +414,14 @@ s.on("state",st=>{
     if(st.masterChoiceMade){
       mcs.textContent=st.masterParticipates?`Master spielt mit: ${st.players[st.masterPlayerId]?.name||"Master"}`:"Master spielt nicht mit.";
     } else { mcs.textContent="Bitte vor dem Spielstart entscheiden."; }
-    document.querySelector('.mastergrid button[onclick="start()"]') .disabled=!st.masterChoiceMade || st.started;
-    document.getElementById("releaseBtn").disabled=!st.started||st.released||!!st.event||!current;
-    document.getElementById("releaseBtn").textContent=st.released?"✅ WÜRFEL FREIGEGEBEN":"🎲 WÜRFEL FREIGEBEN";
-    const pending=!!st.event; document.getElementById("releaseEventBtn").disabled=!st.started||!pending||!!st.event?.accessGranted||!!st.event?.revealedCard;
-    document.getElementById("releaseEventBtn").textContent=st.event?.accessGranted?"✅ KARTEN FREIGEGEBEN":"🃏 EREIGNISKARTEN FREIGEBEN";
-    const skipEventBtn=document.getElementById("skipEventBtn"); skipEventBtn.disabled=!st.started||!pending;
-    const continueBtn=document.getElementById("continueEventBtn"); continueBtn.disabled=!st.started||!st.event?.revealedCard;
+    document.querySelector('#masterControls .mastergrid button[onclick="start()"]') .disabled=!st.masterChoiceMade || st.started;
+    document.getElementById("releaseBtnTop").disabled=!st.started||st.released||!!st.event||!current;
+    document.getElementById("releaseBtnTop").textContent=st.released?"✅ WÜRFEL FREIGEGEBEN":"🎲 WÜRFEL FREIGEBEN";
+    const pending=!!st.event; document.getElementById("releaseEventBtnTop").disabled=!st.started||!pending;
+    document.getElementById("releaseEventBtnTop").textContent="⏭ EREIGNISKARTEN ÜBERSPRINGEN";
+    const continueBtn=document.getElementById("continueEventBtnTop"); continueBtn.disabled=!st.started||!st.event?.revealedCard;
     continueBtn.textContent=st.event?.revealedCard?"➡️ WEITER":"➡️ WEITER";
-    document.getElementById("skipBtn").disabled=!st.started||st.released||pending||!current;
+    document.getElementById("skipBtnTop").disabled=!st.started||st.released||pending||!current;
     renderMasterCards(st);
   }
 });
