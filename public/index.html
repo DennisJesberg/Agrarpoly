@@ -123,10 +123,17 @@ button.gold{
   border-color:#f3ca54;
 }
 .game{
-  grid-template-columns:minmax(240px,.85fr) minmax(480px,1.5fr) minmax(240px,.85fr);
+  display:grid !important;
+  grid-template-columns:minmax(360px,.85fr) minmax(560px,1.5fr) minmax(360px,.85fr);
   gap:14px;
+  align-items:stretch;
+  margin:0 0 14px 0;
 }
 .side,.center{min-height:500px}
+.game > .side:last-child{grid-column:3;grid-row:1}
+.game > .center{grid-column:2;grid-row:1}
+.game > .side:first-child{grid-column:1;grid-row:1}
+.master{margin-top:0 !important}
 .side{
   background:
     linear-gradient(160deg,#141414,#050505);
@@ -184,7 +191,7 @@ button.gold{
 .masterCards{background:linear-gradient(145deg,#12070a,#050505)}
 .masterCardGrid{grid-template-columns:repeat(5,1fr)}
 
-@media(max-width:1050px){
+@media(max-width:900px){
   .heroBanner{height:clamp(220px,34vw,380px)}
   .heroPlayer{top:66%;height:12%}
   .game{grid-template-columns:1fr}
