@@ -354,6 +354,14 @@ s.on("created",d=>{
 s.on("joined",d=>{role="player";myId=d.playerId;showGame()})
 function updatePlayerLink(code){const link=code?`${window.location.origin}/player.html?code=${encodeURIComponent(code)}`:getPlayerLink(); const el=document.getElementById("playerLink"); if(el&&link)el.value=link; const overlay=code?`${window.location.origin}/overlay.html?code=${encodeURIComponent(code)}`:getOverlayLink(); const oe=document.getElementById("overlayLink"); if(oe&&overlay)oe.value=overlay}
 s.on("errorMsg",m=>document.getElementById("err").textContent=m)
+s.on("releaseEventResult",d=>{
+  const el=document.getElementById("err");
+  if(el) el.textContent=d?.message||"";
+  if(d?.ok){
+    const b=document.getElementById("releaseEventBtn");
+    if(b){ b.textContent="✅ KARTEN FREIGEGEBEN"; b.disabled=true; }
+  }
+})
 function showGame(){document.getElementById("home").classList.add("hide");document.getElementById("game").classList.remove("hide")}
 function renderCards(st,isMine){
   const card=document.getElementById("eventCard"), title=document.getElementById("eventTitle"), text=document.getElementById("eventText"), effect=document.getElementById("eventEffect"), choices=document.getElementById("eventChoices");
@@ -417,9 +425,13 @@ s.on("state",st=>{
     document.querySelector('.mastergrid button[onclick="start()"]') .disabled=!st.masterChoiceMade || st.started;
     document.getElementById("releaseBtn").disabled=!st.started||st.released||!!st.event||!current;
     document.getElementById("releaseBtn").textContent=st.released?"✅ WÜRFEL FREIGEGEBEN":"🎲 WÜRFEL FREIGEBEN";
-    const eventWaitingForMaster=!!st.event && !st.event.accessGranted && st.event.revealedSlot===null; const releaseEventBtn=document.getElementById("releaseEventBtn"); releaseEventBtn.disabled=!(role==="master" && eventWaitingForMaster);
-    document.getElementById("releaseEventBtn").textContent=st.event?.accessGranted?"✅ KARTEN FREIGEGEBEN":"🃏 EREIGNISKARTEN FREIGEBEN";
-    document.getElementById("releaseEventBtn").title=eventWaitingForMaster?"Ereigniskarten für den aktuellen Spieler freigeben":"";
+    const eventWaitingForMaster=!!st.event && !st.event.accessGranted && st.event.revealedSlot===null;
+    const releaseEventBtn=document.getElementById("releaseEventBtn");
+    // Der Button wird absichtlich nicht mehr anhand des Client-Zustands gesperrt.
+    // Der Server ist die einzige Instanz, die entscheidet, ob die Freigabe zulässig ist.
+    releaseEventBtn.disabled=!(role==="master" && st.started && !!st.event && st.event.accessGranted!==true && st.event.revealedSlot===null);
+    releaseEventBtn.textContent=st.event?.accessGranted===true?"✅ KARTEN FREIGEGEBEN":"🃏 EREIGNISKARTEN FREIGEBEN";
+    releaseEventBtn.title=eventWaitingForMaster?"MASTER-AKTION: Erst nach diesem Klick sieht der aktuelle Spieler die 20 Karten.":"";
     const continueBtn=document.getElementById("continueEventBtn"); continueBtn.disabled=!st.started||!st.event?.revealedCard;
     continueBtn.textContent=st.event?.revealedCard?"➡️ WEITER":"➡️ WEITER";
     document.getElementById("skipBtn").disabled=!st.started||st.released||!!st.event||!current;
