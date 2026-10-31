@@ -280,33 +280,110 @@ button.gold{
 
 
 <style id="master-layout-hard-fix">
-/* MASTER HARD FIX: always keep the three main panels in one row. */
+/* MASTER HARD FIX 2: right panel is physically anchored at the top-right.
+   This avoids every responsive/grid rule being able to push it underneath. */
 #game.master-mode > .game {
+  position:relative !important;
   display:grid !important;
   width:100% !important;
   max-width:none !important;
   min-width:0 !important;
-  grid-template-columns:minmax(0,0.85fr) minmax(0,1.5fr) minmax(0,0.85fr) !important;
+  grid-template-columns:minmax(0,0.85fr) minmax(0,1.5fr) !important;
   grid-template-rows:auto !important;
-  grid-template-areas:"left center right" !important;
+  grid-template-areas:"left center" !important;
   gap:14px !important;
   align-items:stretch !important;
+  padding-right:24% !important;
 }
 #game.master-mode > .game > aside:first-child {
   grid-area:left !important; grid-column:1 !important; grid-row:1 !important;
+  min-width:0 !important;
 }
 #game.master-mode > .game > main.center {
   grid-area:center !important; grid-column:2 !important; grid-row:1 !important;
+  min-width:0 !important;
 }
 #game.master-mode > .game > aside:last-child {
-  grid-area:right !important; grid-column:3 !important; grid-row:1 !important;
+  position:absolute !important;
+  top:0 !important;
+  right:0 !important;
+  width:23% !important;
+  min-width:0 !important;
+  height:100% !important;
   display:flex !important;
   visibility:visible !important;
+  grid-area:auto !important;
+  grid-column:auto !important;
+  grid-row:auto !important;
+  z-index:5 !important;
 }
-/* Do not let responsive rules collapse the MASTER layout. */
+/* Keep the Master layout in this arrangement even when the browser reports a narrow CSS viewport. */
 @media (max-width:1200px) {
   #game.master-mode > .game {
-    grid-template-columns:minmax(0,0.85fr) minmax(0,1.5fr) minmax(0,0.85fr) !important;
+    grid-template-columns:minmax(0,0.85fr) minmax(0,1.5fr) !important;
+    grid-template-areas:"left center" !important;
+    padding-right:24% !important;
+  }
+  #game.master-mode > .game > aside:last-child {
+    position:absolute !important;
+    top:0 !important; right:0 !important; width:23% !important;
+    height:100% !important;
+  }
+}
+
+
+/* ===== MASTER: EXAKT DAS FUNKTIONIERENDE SPIELER-LAYOUT ===== */
+/* Die Master-Spielansicht verwendet dieselbe 3-Spalten-Struktur wie player.html. */
+#game.master-mode .game {
+  display:grid !important;
+  grid-template-columns:1fr 1.5fr 1fr !important;
+  grid-template-rows:auto !important;
+  grid-template-areas:"left center right" !important;
+  gap:18px !important;
+  align-items:stretch !important;
+  width:100% !important;
+  max-width:none !important;
+  padding-right:0 !important;
+  position:relative !important;
+}
+#game.master-mode .game > aside:first-child {
+  grid-area:left !important;
+  grid-column:1 !important;
+  grid-row:1 !important;
+  position:static !important;
+  width:auto !important;
+  height:auto !important;
+}
+#game.master-mode .game > main.center {
+  grid-area:center !important;
+  grid-column:2 !important;
+  grid-row:1 !important;
+}
+#game.master-mode .game > aside:last-child {
+  grid-area:right !important;
+  grid-column:3 !important;
+  grid-row:1 !important;
+  position:static !important;
+  top:auto !important;
+  right:auto !important;
+  width:auto !important;
+  height:auto !important;
+  min-height:430px !important;
+  display:flex !important;
+  visibility:visible !important;
+  z-index:auto !important;
+}
+/* Die normale Spieleransicht darf weiterhin auf schmale Bildschirme reagieren.
+   Für die Masteransicht bleibt die gewünschte Anordnung bestehen. */
+@media(max-width:1050px){
+  #game.master-mode .game {
+    grid-template-columns:1fr 1.5fr 1fr !important;
+    grid-template-areas:"left center right" !important;
+  }
+}
+@media(max-width:620px){
+  #game.master-mode .game {
+    grid-template-columns:1fr 1.5fr 1fr !important;
     grid-template-areas:"left center right" !important;
   }
 }
