@@ -401,12 +401,14 @@ button.gold{
 @media(max-width:620px){.masterCardGrid{grid-template-columns:repeat(2,minmax(130px,1fr));gap:9px}.masterCardItem{min-height:135px;padding:10px}}
 </style>
 <style id="event-grid-fix">
-.eventChoices{display:block !important;margin-top:18px;width:100%}
-.eventGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;width:100%}
-.eventChoice{min-height:112px;padding:12px 10px;text-align:center}
-@media(max-width:1150px){.eventGrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}}
-@media(max-width:800px){.eventGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}}
-@media(max-width:560px){.eventGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+/* V2.5: event cards use one clean AGRARPOLY label; no duplicate pseudo text */
+.eventChoices{display:grid !important;grid-template-columns:repeat(5,minmax(0,1fr)) !important;gap:16px;width:100%;margin-top:18px}
+.eventChoice{min-height:112px;padding:12px 8px;text-align:center;display:flex;align-items:center;justify-content:center;box-sizing:border-box;overflow:hidden}
+.eventChoice:before{content:none !important}
+.eventChoice span{display:block;margin:0 !important;font-size:13px !important;line-height:1.1 !important;letter-spacing:1px !important;font-weight:1000 !important;color:#ffd45b !important;white-space:nowrap !important;text-align:center}
+@media(max-width:1150px){.eventChoices{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:14px}}
+@media(max-width:800px){.eventChoices{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:12px}}
+@media(max-width:560px){.eventChoices{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px}.eventChoice{min-height:105px}}
 </style>
 </head>
 <body><div class="wrap">
