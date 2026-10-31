@@ -106,7 +106,9 @@ function publicState(room, socketId, role) {
       rolled: p.rolled,
       active: room.started && room.currentPlayer === p.id,
       connected: !!p.socketId,
-      isMasterPlayer: !!p.isMasterPlayer
+      isMasterPlayer: !!p.isMasterPlayer,
+      // Once a player has revealed an event card, everyone can see which card they have.
+      eventCard: p.eventCard ? cardPublic(p.eventCard) : null
     })),
     isMaster: room.master === socketId,
     masterParticipates: !!room.masterParticipates,
@@ -161,9 +163,9 @@ io.on("connection", socket => {
       masterChoiceMade: false,
       masterPlayerId: 0,
       players: [
-        { id: 0, name: "Master", total: 0, last: null, rolled: false, socketId: null, isMasterPlayer: true },
+        { id: 0, name: "Master", total: 0, last: null, rolled: false, socketId: null, isMasterPlayer: true, eventCard: null },
         ...Array.from({ length: Math.max(1, Math.min(100, Number(count) || 1)) }, (_, i) => ({
-          id: i + 1, name: `Spieler ${i + 1}`, total: 0, last: null, rolled: false, socketId: null, isMasterPlayer: false
+          id: i + 1, name: `Spieler ${i + 1}`, total: 0, last: null, rolled: false, socketId: null, isMasterPlayer: false, eventCard: null
         }))
       ]
     };
@@ -224,7 +226,7 @@ io.on("connection", socket => {
     room.eventDeck = makeCards();
     const masterPlayer = room.players.find(p => p.isMasterPlayer);
     if (masterPlayer) masterPlayer.socketId = room.masterParticipates ? socket.id : null;
-    room.players.forEach(p => { p.last = null; p.rolled = false; p.total = 0; });
+    room.players.forEach(p => { p.last = null; p.rolled = false; p.total = 0; p.eventCard = null; });
     broadcast(room);
   });
 
@@ -293,6 +295,8 @@ io.on("connection", socket => {
     if (!card) return;
     room.event.revealedSlot = index;
     room.event.revealedCard = card;
+    // Keep the revealed card on the player so the player overview can show it to everyone.
+    p.eventCard = card;
     broadcast(room);
   });
 
@@ -331,7 +335,7 @@ io.on("connection", socket => {
     room.event = null;
     room.lastEvent = null;
     room.eventDeck = makeCards();
-    room.players.forEach(p => { p.last = null; p.rolled = false; });
+    room.players.forEach(p => { p.last = null; p.rolled = false; p.eventCard = null; });
     broadcast(room);
   });
 
