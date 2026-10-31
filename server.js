@@ -102,7 +102,7 @@ function publicState(room, socketId, role) {
       name: p.name,
       total: p.total,
       // Other players never receive another player's roll.
-      last: p.last,
+      last: role === "master" || p.socketId === socketId || role === "observer" ? p.last : null,
       rolled: p.rolled,
       active: room.started && room.currentPlayer === p.id,
       connected: !!p.socketId,

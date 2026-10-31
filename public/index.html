@@ -180,19 +180,11 @@ button.gold{
   margin-top:14px;
   padding:22px;
 }
-.masterTopGrid{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:14px;align-items:stretch;margin:0 0 14px}
-.masterControlsGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-content:start}
-.masterNextPlayer{border:2px solid #3f3f3f;border-radius:12px;padding:16px 18px;background:linear-gradient(145deg,#111,#050505);box-shadow:inset 0 0 20px #000,0 0 18px rgba(229,9,47,.12);display:flex;flex-direction:column;justify-content:center;min-height:100%}
-.masterNextPlayer .label{color:#ffcf4a}
-.masterNextName{font-size:clamp(24px,2.3vw,38px);font-weight:1000;color:#fff;word-break:break-word;text-shadow:0 2px 0 #000,0 0 10px rgba(229,9,47,.3)}
-.masterNextHint{margin-top:8px;color:#888;font-size:12px;line-height:1.35;font-weight:700}
 .mastergrid{grid-template-columns:repeat(4,1fr)}
 .masterCards{background:linear-gradient(145deg,#12070a,#050505)}
 .masterCardGrid{grid-template-columns:repeat(5,1fr)}
 
 @media(max-width:1050px){
-  .masterTopGrid{grid-template-columns:1fr}
-  .masterControlsGrid{grid-template-columns:1fr 1fr}
   .heroBanner{height:clamp(220px,34vw,380px)}
   .heroPlayer{top:66%;height:12%}
   .game{grid-template-columns:1fr}
@@ -200,7 +192,6 @@ button.gold{
   .mastergrid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:620px){
-  .masterControlsGrid{grid-template-columns:1fr}
   .heroBanner{height:clamp(180px,48vw,300px);margin-bottom:8px}
   .heroPlayerName{font-size:14px}
   .home{padding:18px}
@@ -273,22 +264,6 @@ button.gold{
       <div><div style="font-size:12px;font-weight:900;color:#aaa;letter-spacing:1px">DEIN SPIELCODE</div><div id="gameCode" style="font-size:34px;font-weight:1000;letter-spacing:7px;color:#fff;text-shadow:0 0 10px #f00">–</div></div>
       <button class="gray" type="button" onclick="copyGameCode()">📋 CODE KOPIEREN</button>
     </div>
-    <div class="masterTopGrid">
-      <div class="masterControlsGrid">
-        <button class="red" onclick="start()">▶ SPIEL STARTEN</button>
-        <button class="red" id="releaseBtn" onclick="release()">🎲 WÜRFEL FREIGEBEN</button>
-        <button class="red" id="releaseEventBtn" onclick="releaseEvent()" disabled>🃏 EREIGNISKARTEN FREIGEBEN</button>
-        <button class="gold" id="continueEventBtn" onclick="continueEvent()" disabled>➡️ WEITER</button>
-        <button class="blue" id="skipBtn" onclick="skip()">⏭ SPIELER ÜBERSPRINGEN</button>
-        <button class="gray" onclick="newRound()">↻ NEUER DURCHLAUF</button>
-        <button class="gray" onclick="resetGame()">↩ ZURÜCKSETZEN</button>
-      </div>
-      <div class="masterNextPlayer">
-        <div class="label">NÄCHSTER SPIELER</div>
-        <div id="masterNextName" class="masterNextName">–</div>
-        <div class="masterNextHint">Wartet nach dem aktuellen Zug auf die nächste Freigabe.</div>
-      </div>
-    </div>
     <div class="shareBox">
       <div class="shareTitle">SPIELER-LINK</div>
       <div class="shareRow">
@@ -318,6 +293,15 @@ button.gold{
       <div id="masterChoiceStatus" style="margin-top:9px;color:#aaa;font-weight:800">Bitte vor dem Spielstart entscheiden.</div>
     </div>
     <div id="masterInfo" style="color:#bbb;margin-bottom:12px">–</div>
+    <div class="mastergrid">
+      <button class="red" onclick="start()">▶ SPIEL STARTEN</button>
+      <button class="red" id="releaseBtn" onclick="release()">🎲 WÜRFEL FREIGEBEN</button>
+      <button class="red" id="releaseEventBtn" onclick="releaseEvent()" disabled>🃏 EREIGNISKARTEN FREIGEBEN</button>
+      <button class="gold" id="continueEventBtn" onclick="continueEvent()" disabled>➡️ WEITER</button>
+      <button class="blue" id="skipBtn" onclick="skip()">⏭ SPIELER ÜBERSPRINGEN</button>
+      <button class="gray" onclick="newRound()">↻ NEUER DURCHLAUF</button>
+      <button class="gray" onclick="resetGame()">↩ ZURÜCKSETZEN</button>
+    </div>
     <div id="masterCards" class="masterCards hide"></div>
     <div class="me">Der Master sieht immer, welche Karte an welchem Platz liegt. Spieler sehen die Texte erst nach ihrer Auswahl.</div>
   </div>
@@ -390,7 +374,7 @@ function renderCards(st,isMine){
 
 s.on("state",st=>{
   const current=st.players[st.currentPlayer], next=st.players[st.currentPlayer+1], mine=role==="master"&&st.masterParticipates?st.players.find(p=>p.isMasterPlayer):st.players.find(p=>p.id===myId), isMine=(role==="player"&&current?.id===myId)||(role==="master"&&st.masterParticipates&&current?.isMasterPlayer);
-  document.getElementById("currentName").textContent=current?.name||"–"; document.getElementById("nextName").textContent=next?.name||"–"; document.getElementById("nextSmall").textContent=next?.name||"–"; document.getElementById("masterNextName").textContent=next?.name||"–"; document.getElementById("heroCurrentName").textContent=current?.name||"–"; document.getElementById("heroNextName").textContent=next?.name||"–";
+  document.getElementById("currentName").textContent=current?.name||"–"; document.getElementById("nextName").textContent=next?.name||"–"; document.getElementById("nextSmall").textContent=next?.name||"–"; document.getElementById("heroCurrentName").textContent=current?.name||"–"; document.getElementById("heroNextName").textContent=next?.name||"–";
   document.getElementById("myName").textContent=mine?.name||"MASTER";
   const canRoll=!!(isMine&&st.started&&st.released&&!mine?.rolled);
   const rb=document.getElementById("rollBtn"); rb.disabled=!canRoll; rb.textContent=canRoll?"🎲 WÜRFELN":(isMine?"⏳ WARTE AUF FREIGABE":"🎲 WÜRFELN");
