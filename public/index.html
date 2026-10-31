@@ -208,6 +208,10 @@ button.gold{
 .joinHint{font-size:13px;color:#999;margin-top:7px;font-weight:700}
 @media(max-width:700px){.shareRow{grid-template-columns:1fr}.shareBtn{width:100%}}
 
+
+/* ===== MASTER SPIELERÜBERSICHT – gleiche Ansicht wie beim Spieler ===== */
+.playerOverviewPanel{margin-top:18px;padding:16px;background:#0b0b0b;border:2px solid #333;border-radius:14px;box-shadow:inset 0 0 20px #000}.overviewTitle{font-size:20px;font-weight:1000;letter-spacing:2px;text-align:center;color:#eee}.overviewSub{text-align:center;color:#aaa;margin:5px 0 12px;font-size:12px;line-height:1.35}.playerOverview{display:grid;gap:8px;max-height:280px;overflow:auto;padding-right:2px}.overviewPlayer{border:1px solid #333;border-radius:10px;padding:10px;background:#101010;display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:center}.overviewPlayer.current{border-color:#e5092f;box-shadow:0 0 12px #e5092f33}.overviewName{font-size:16px;font-weight:1000;word-break:break-word}.overviewStatus{font-size:11px;color:#aaa;font-weight:800}.overviewCard{grid-column:1 / -1;margin-top:4px;padding:6px 8px;border-radius:7px;border:1px solid #6d1727;background:#16080b;color:#ffd45b;font-size:10px;font-weight:900;line-height:1.25}.overviewCard span{display:block;color:#aaa;font-weight:700;margin-top:2px}.overviewPoints{grid-row:1 / span 2;grid-column:2;font-size:16px;font-weight:1000;color:#eee}.overviewDot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#666}.overviewPlayer.current .overviewDot{background:#e5092f;box-shadow:0 0 8px #e5092f}
+
 /* ===== V2 MASTER-LAYOUT: 3 SPALTEN + STEUERUNG DIREKT DARUNTER ===== */
 .game{
   grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr) minmax(0,.85fr) !important;
@@ -268,6 +272,11 @@ button.gold{
     <aside class="panel side">
       <div><div class="label">DEIN SPIELER</div><div id="myName" class="playername">–</div></div>
       <div id="playerHint" class="playerbox"><div class="label">STATUS</div><div id="myStatus" style="font-size:21px;font-weight:900">Warte auf das Spiel…</div></div>
+      <section class="playerOverviewPanel">
+        <div class="overviewTitle">SPIELERÜBERSICHT</div>
+        <div class="overviewSub">Hier siehst du, was die anderen Spieler gerade machen.</div>
+        <div id="playerOverview" class="playerOverview"></div>
+      </section>
     </aside>
 
     <main class="panel red center">
@@ -410,6 +419,7 @@ s.on("state",st=>{
   document.getElementById("you").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"Du bist dran – zuerst Ereigniskarte abwarten.":(st.released?"Du bist dran – du darfst würfeln!":"Warte auf die Würfelfreigabe.")):"Du bist der Master – du steuerst die Freigabe."):(isMine?(st.event?(st.event.accessGranted?"Wähle eine verdeckte Ereigniskarte.":"Ereigniskarten sind noch nicht freigegeben."):(st.released?"Du bist dran – du darfst würfeln!":"Du bist dran – warte auf die Freigabe.")):"Der Master steuert die Freigabe.");
   document.getElementById("myStatus").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"EREIGNISKARTE":(st.released?"WÜRFELN FREIGEGEBEN":"WARTE AUF FREIGABE")):"MASTER-STEUERUNG"):(isMine?(st.event?(st.event.accessGranted?"KARTE AUSWÄHLEN":"WARTE AUF KARTENFREIGABE"):(st.released?"WÜRFEL FREIGEGEBEN":"Warte auf Freigabe…")):"Warte auf deinen Zug…");
   renderCards(st,isMine);
+  renderPlayerOverview(st);
   if(role==="master"){
     document.getElementById("master").classList.remove("hide");
     document.getElementById("masterInfo").textContent=st.started?(current?`${current.name} ist aktuell an der Reihe.`:"Kein Spieler an der Reihe."):"Spiel nicht gestartet.";
@@ -430,6 +440,25 @@ s.on("state",st=>{
     renderMasterCards(st);
   }
 });
+function renderPlayerOverview(st){
+  const el=document.getElementById("playerOverview");
+  if(!el)return;
+  el.innerHTML="";
+  (st.players||[]).forEach(p=>{
+    const row=document.createElement("div");
+    row.className="overviewPlayer"+(p.active?" current":"");
+    let status="Wartet auf seinen Zug";
+    if(!p.connected) status="Nicht verbunden";
+    else if(p.active && st.event) status=st.event.accessGranted?"Wählt eine Ereigniskarte":"Wartet auf Kartenfreigabe";
+    else if(p.active && st.released && !p.rolled) status="Ist zum Würfeln dran";
+    else if(p.active) status="Wartet auf Freigabe";
+    else if(p.rolled) status="Zug abgeschlossen";
+    const cardHtml=p.eventCard?'<div class="overviewCard">🃏 '+escapeHtml(p.eventCard.title)+'<span>'+escapeHtml(p.eventCard.text||'')+'</span></div>':'';
+    row.innerHTML='<div class="overviewName"><span class="overviewDot"></span>'+escapeHtml(p.name)+'</div><div class="overviewPoints">'+Number(p.total||0)+' P</div><div class="overviewStatus">'+status+'</div>'+cardHtml;
+    el.appendChild(row);
+  });
+}
+
 function loadInviteCode(){const code=new URLSearchParams(window.location.search).get("code"); if(code){document.getElementById("joinCode").value=code.toUpperCase(); document.getElementById("playerName").focus(); document.getElementById("joinCodeInfo").textContent="Spielcode aus dem Einladungslink übernommen."}}
 loadInviteCode();
 
