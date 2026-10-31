@@ -48,13 +48,168 @@ button.gray{background:linear-gradient(#555,#222)}
 @media(max-width:620px){.row,.row.three{grid-template-columns:1fr}.top{grid-template-columns:70px 1fr 90px;min-height:100px}.logo{max-width:70px}.jesberg{max-width:90px}.title{font-size:32px}.title small{font-size:11px;letter-spacing:4px}.die{width:160px;height:160px;font-size:90px}}
 
 .eventChoices{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}.eventChoice{min-height:72px;border:2px solid #9d0b24;border-radius:10px;background:linear-gradient(145deg,#090909,#2a090e);color:#fff;cursor:pointer;box-shadow:0 0 10px #e5092f35;position:relative;overflow:hidden}.eventChoice:before{content:"?";display:block;font-size:30px;font-weight:1000;color:#c9a227;line-height:1}.eventChoice span{display:block;font-size:10px;color:#aaa;margin-top:3px}.eventChoice:hover{transform:translateY(-2px);box-shadow:0 0 16px #e5092f88;border-color:#ff304f}.eventReveal{grid-column:1/-1;padding:18px;border:2px solid #c9a227;border-radius:14px;background:linear-gradient(145deg,#17110a,#070707);box-shadow:0 0 24px #c9a22755}.eventReveal .big{font-size:30px;font-weight:1000;color:#ffd45b}.eventReveal .desc{font-size:16px;color:#eee;margin-top:8px}.eventWaiting{grid-column:1/-1;color:#bbb;font-weight:800;padding:12px}.mastergrid button:disabled{opacity:.35;cursor:not-allowed}.masterCards{margin-top:16px;padding:14px;border:1px solid #e51b3e;border-radius:14px;background:#080808;box-shadow:inset 0 0 20px #000}.masterCards h3{margin:0 0 10px;color:#ffcf4a;font-size:15px;letter-spacing:1px}.masterCardGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.masterCardItem{min-height:82px;padding:8px;border:1px solid #6d1727;border-radius:8px;background:linear-gradient(145deg,#1a0a0d,#080808)}.masterCardItem .slot{font-size:10px;color:#888;font-weight:900}.masterCardItem strong{display:block;color:#fff;font-size:12px;margin-top:3px}.masterCardItem span{display:block;color:#aaa;font-size:10px;line-height:1.15;margin-top:3px}.masterCardItem.selected{border-color:#ffd45b;box-shadow:0 0 12px #ffd45b55}.masterCardItem .value{color:#ffcf4a;font-weight:900;margin-top:4px}
+
+/* ===== AGRARPOLY PC DESIGN – based on the supplied overview banner ===== */
+:root{
+  --red:#e5092f;--red2:#ff304f;--black:#030303;--panel:#0b0b0b;
+  --gold:#ffd45b;--steel:#b9bec5;--green:#79ff00;
+}
+body{
+  background:
+    radial-gradient(circle at 50% 0%,rgba(150,0,15,.32),transparent 38%),
+    radial-gradient(circle at 50% 55%,rgba(80,0,8,.18),transparent 55%),
+    #020202;
+}
+body:before{
+  opacity:.08;
+  background-image:linear-gradient(135deg,transparent 0 48%,#fff 49% 50%,transparent 51%);
+  background-size:120px 120px;
+}
+.wrap{width:min(1680px,98vw);padding:8px 0 34px}
+.heroBanner{
+  position:relative;width:100%;margin:0 auto 14px;
+  aspect-ratio:1669/942;max-height:520px;overflow:visible;
+}
+.heroImage{
+  display:block;width:100%;height:100%;object-fit:contain;
+  filter:drop-shadow(0 0 18px rgba(229,9,47,.24));
+}
+.heroPlayer{
+  position:absolute;top:72.5%;width:20.8%;height:8.8%;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.heroCurrent{left:2.0%}
+.heroNext{right:2.0%}
+.heroPlayerName{
+  width:78%;text-align:center;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:clamp(18px,1.9vw,38px);
+  line-height:1;font-weight:1000;
+  color:#fff;text-shadow:0 3px 0 #000,0 0 10px #000;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.panel{
+  background:
+    linear-gradient(145deg,rgba(25,25,25,.97),rgba(3,3,3,.98)),
+    radial-gradient(circle at 50% 0%,rgba(255,30,55,.12),transparent 55%);
+  border:2px solid #3f3f3f;border-radius:12px;
+  box-shadow:0 0 0 1px #000,0 10px 35px rgba(0,0,0,.7),0 0 28px rgba(229,9,47,.14);
+}
+.panel.red{
+  border-color:#a70b27;
+  box-shadow:0 0 0 1px #000,0 0 24px rgba(229,9,47,.2),inset 0 0 35px rgba(100,0,10,.08);
+}
+.home{
+  max-width:1080px;margin:0 auto;padding:28px 34px;
+}
+.home h2,.master h2{
+  font-size:clamp(22px,2vw,32px);
+  letter-spacing:2px;text-transform:uppercase;
+  text-shadow:0 2px 0 #000,0 0 12px rgba(229,9,47,.35);
+}
+input,button{
+  border-radius:7px;border-color:#4a4a4a;
+  background:linear-gradient(#1b1b1b,#070707);
+  box-shadow:inset 0 1px rgba(255,255,255,.12),0 4px 12px rgba(0,0,0,.45);
+}
+button.red{
+  background:linear-gradient(#ef173b,#900019);
+  border-color:#ff3c58;
+  box-shadow:0 0 16px rgba(229,9,47,.24),inset 0 1px rgba(255,255,255,.2);
+}
+button.gold{
+  background:linear-gradient(#c99c25,#765408);
+  border-color:#f3ca54;
+}
+.game{
+  grid-template-columns:minmax(240px,.85fr) minmax(480px,1.5fr) minmax(240px,.85fr);
+  gap:14px;
+}
+.side,.center{min-height:500px}
+.side{
+  background:
+    linear-gradient(160deg,#141414,#050505);
+  border-color:#4b4b4b;
+  padding:22px;
+}
+.side:first-child{border-color:#8b0b25}
+.playerbox{
+  border-color:#3e3e3e;
+  background:linear-gradient(145deg,#171717,#060606);
+}
+.playerbox.current{
+  border-color:#d30e31;
+  box-shadow:0 0 20px rgba(229,9,47,.25),inset 0 0 20px #190308;
+}
+.center{
+  background:
+    radial-gradient(circle at 50% 40%,rgba(229,9,47,.13),transparent 38%),
+    linear-gradient(145deg,#101010,#030303);
+  border-color:#b00d2a;
+}
+.center .status{
+  font-size:clamp(22px,2vw,34px);
+  text-transform:uppercase;
+  letter-spacing:2px;
+}
+.die{
+  width:230px;height:230px;border-radius:32px;
+  background:linear-gradient(145deg,#fff,#c9cdd0);
+  box-shadow:0 14px 0 #555,0 0 40px rgba(229,9,47,.45),inset -12px -15px 25px #888;
+}
+.roll{
+  max-width:440px;
+  font-size:26px;
+  border-radius:9px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+}
+.eventCard{
+  max-width:760px;
+  border-color:#b70c29;
+  background:linear-gradient(145deg,#19090d,#050505);
+}
+.eventChoices{grid-template-columns:repeat(5,minmax(0,1fr))}
+.eventChoice{
+  min-height:82px;
+  border-color:#7d1226;
+  background:linear-gradient(145deg,#1a0a0d,#050505);
+}
+.master{
+  margin-top:14px;
+  padding:22px;
+}
+.mastergrid{grid-template-columns:repeat(4,1fr)}
+.masterCards{background:linear-gradient(145deg,#12070a,#050505)}
+.masterCardGrid{grid-template-columns:repeat(5,1fr)}
+
+@media(max-width:1050px){
+  .heroBanner{aspect-ratio:1669/942}
+  .heroPlayer{top:72%;height:9%}
+  .game{grid-template-columns:1fr}
+  .side,.center{min-height:unset}
+  .mastergrid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+  .heroBanner{margin-bottom:8px}
+  .heroPlayerName{font-size:14px}
+  .home{padding:18px}
+  .die{width:170px;height:170px;font-size:95px}
+  .mastergrid{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body><div class="wrap">
-<header class="top">
-  <img class="logo" src="/assets/nordic.png" alt="Idee und Konzept – Nordic Heero">
-  <div class="title">AGRARPOLY<small>ONLINE GAMING</small></div>
-  <div><div class="creator">TECHNIK UND UMSETZUNG</div><img class="jesberg" src="/assets/jesberg.png" alt="Jesberg Gaming"></div>
+<header class="heroBanner">
+  <img src="/assets/agrarpoly_header.png" class="heroImage" alt="AGRARPOLY Übersicht">
+  <div class="heroPlayer heroCurrent">
+    <div class="heroPlayerName" id="heroCurrentName">–</div>
+  </div>
+  <div class="heroPlayer heroNext">
+    <div class="heroPlayerName" id="heroNextName">–</div>
+  </div>
 </header>
 
 <section id="home" class="panel red home">
@@ -165,7 +320,7 @@ function renderCards(st,isMine){
 
 s.on("state",st=>{
   const current=st.players[st.currentPlayer], next=st.players[st.currentPlayer+1], mine=role==="master"&&st.masterParticipates?st.players.find(p=>p.isMasterPlayer):st.players.find(p=>p.id===myId), isMine=(role==="player"&&current?.id===myId)||(role==="master"&&st.masterParticipates&&current?.isMasterPlayer);
-  document.getElementById("currentName").textContent=current?.name||"–"; document.getElementById("nextName").textContent=next?.name||"–"; document.getElementById("nextSmall").textContent=next?.name||"–";
+  document.getElementById("currentName").textContent=current?.name||"–"; document.getElementById("nextName").textContent=next?.name||"–"; document.getElementById("nextSmall").textContent=next?.name||"–"; document.getElementById("heroCurrentName").textContent=current?.name||"–"; document.getElementById("heroNextName").textContent=next?.name||"–";
   document.getElementById("myName").textContent=mine?.name||"MASTER";
   const canRoll=!!(isMine&&st.started&&st.released&&!mine?.rolled);
   const rb=document.getElementById("rollBtn"); rb.disabled=!canRoll; rb.textContent=canRoll?"🎲 WÜRFELN":(isMine?"⏳ WARTE AUF FREIGABE":"🎲 WÜRFELN");
