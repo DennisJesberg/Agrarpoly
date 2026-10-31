@@ -222,6 +222,14 @@ button.gold{
 .joinStatus{margin-top:12px;color:#ff5872;font-weight:900;min-height:24px;text-align:center}
 .playerTop{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:18px;align-items:stretch}
 @media(max-width:1050px){.playerTop{grid-template-columns:1fr}}
+
+.playerOverviewPanel{margin-top:18px;padding:18px;background:#0b0b0b;border:2px solid #333;border-radius:14px;box-shadow:inset 0 0 20px #000}
+.overviewTitle{font-size:26px;font-weight:1000;letter-spacing:3px;text-align:center;color:#eee}
+.overviewSub{text-align:center;color:#aaa;margin:6px 0 16px}
+.playerOverview{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.overviewPlayer{border:1px solid #333;border-radius:10px;padding:12px;background:#101010;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
+.overviewPlayer.current{border-color:var(--red);box-shadow:0 0 12px #e5092f33}
+.overviewName{font-size:18px;font-weight:1000;word-break:break-word}.overviewStatus{font-size:13px;color:#aaa;font-weight:800}.overviewPoints{grid-row:1 / span 2;grid-column:2;font-size:18px;font-weight:1000;color:#eee}.overviewDot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:#666}.overviewPlayer.current .overviewDot{background:var(--red);box-shadow:0 0 8px var(--red)}
 </style></head><body><div class="wrap playerPage">
 <header class="heroBanner"><img src="/assets/agrarpoly_header.png" class="heroImage" alt="AGRARPOLY"><div class="heroPlayer heroCurrent"><div class="heroPlayerName" id="heroCurrentName">–</div></div><div class="heroPlayer heroNext"><div class="heroPlayerName" id="heroNextName">–</div></div></header>
 <section id="joinPanel" class="panel red home playerJoin">
@@ -233,7 +241,12 @@ button.gold{
 <aside class="panel side"><div><div class="label">DEIN SPIELER</div><div id="myName" class="playername">–</div></div><div class="playerbox"><div class="label">STATUS</div><div id="myStatus" style="font-size:21px;font-weight:900">Warte auf das Spiel…</div></div></aside>
 <main class="panel red center"><div id="status" class="status wait">Warte auf Spielstart…</div><div id="you" class="you">Der Master steuert die Freigabe.</div><div id="die" class="die">–</div><button id="rollBtn" class="roll red" onclick="roll()" disabled>WÜRFELN</button><div id="eventCard" class="eventCard"><div class="eventLabel">EREIGNISKARTEN</div><div id="eventTitle" class="eventTitle">–</div><div id="eventText" class="eventText">Der Master entscheidet, ob du die Karten sehen darfst.</div><div id="eventEffect" class="eventEffect"></div><div id="eventChoices" class="eventChoices"></div></div></main>
 <aside class="panel side"><div><div class="label">NÄCHSTER SPIELER</div><div id="nextName" class="playername">–</div></div><div class="playerbox"><div class="label">AKTUELLER SPIELER</div><div id="currentName" style="font-size:25px;font-weight:1000">–</div><div class="nextArrow">↓</div><div class="label">DANACH</div><div id="nextSmall" style="font-size:21px;font-weight:900">–</div></div></aside>
-</div></section></div>
+<section class="panel playerOverviewPanel">
+<div class="overviewTitle">SPIELERÜBERSICHT</div>
+<div class="overviewSub">Hier siehst du, was die anderen Spieler gerade machen.</div>
+<div id="playerOverview" class="playerOverview"></div>
+</section>
+</div>
 <script src="/socket.io/socket.io.js"></script><script>
 const s=io();let myId=null,lastShown=null,joined=false;const faces=["","1","2","3","4","5","6"];
 const params=new URLSearchParams(location.search);const inviteCode=(params.get('code')||'').trim().toUpperCase();document.getElementById('joinCode').value=inviteCode;
@@ -251,8 +264,28 @@ s.on('state',st=>{
  document.getElementById('status').textContent=!st.started?'Warte auf Spielstart…':(st.event?'EREIGNISKARTEN AUSWAHL':(st.released?(isMine?'DU BIST DRAN':'WÜRFEL FREIGEGEBEN'):'Warte auf Freigabe…'));document.getElementById('status').className='status '+(st.released?'red':'wait');
  document.getElementById('you').textContent=isMine?(st.event?(st.event.accessGranted?'Wähle eine verdeckte Ereigniskarte.':'Ereigniskarten sind noch nicht freigegeben.'):(st.released?'Du darfst würfeln!':'Du bist dran – warte auf die Freigabe.')):'Der Master steuert die Freigabe.';
  document.getElementById('myStatus').textContent=isMine?(st.event?(st.event.accessGranted?'KARTE AUSWÄHLEN':'WARTE AUF KARTENFREIGABE'):(st.released?'WÜRFELN FREIGEGEBEN':'WARTE AUF FREIGABE')):'Warte auf deinen Zug…';
+ renderPlayerOverview(st);
  renderCards(st,isMine);
 });
+
+function renderPlayerOverview(st){
+ const el=document.getElementById('playerOverview');
+ if(!el)return;
+ el.innerHTML='';
+ (st.players||[]).forEach(p=>{
+   const row=document.createElement('div');
+   row.className='overviewPlayer'+(p.active?' current':'');
+   let status='Wartet auf seinen Zug';
+   if(!p.connected) status='Nicht verbunden';
+   else if(p.active && st.event) status=st.event.accessGranted?'Wählt eine Ereigniskarte':'Wartet auf Kartenfreigabe';
+   else if(p.active && st.released && !p.rolled) status='Ist zum Würfeln dran';
+   else if(p.active) status='Wartet auf Freigabe';
+   else if(p.rolled) status='Zug abgeschlossen';
+   row.innerHTML='<div class="overviewName"><span class="overviewDot"></span>'+escapeHtml(p.name)+'</div><div class="overviewPoints">'+Number(p.total||0)+' P</div><div class="overviewStatus">'+status+'</div>';
+   el.appendChild(row);
+ });
+}
+
 function renderCards(st,isMine){const card=document.getElementById('eventCard'),title=document.getElementById('eventTitle'),text=document.getElementById('eventText'),effect=document.getElementById('eventEffect'),choices=document.getElementById('eventChoices');choices.innerHTML='';if(!st.event||!isMine||!st.event.accessGranted){card.classList.remove('show');return}card.classList.add('show');title.textContent=st.event.revealedSlot===null?'WÄHLE EINE VON 20 KARTEN':'EREIGNISKARTE AUFGEDECKT';text.textContent=st.event.revealedSlot===null?'Wähle eine Karte. Nur diese Karte wird aufgedeckt.':(st.event.revealedCard?.title||'');effect.textContent=st.event.revealedSlot===null?'Nur die gewählte Karte wird aufgedeckt.':'Nur aufgedeckt – kein automatischer Karteneffekt.';const grid=document.createElement('div');grid.className='eventChoices';(st.event.cards||[]).forEach(c=>{const b=document.createElement('button');b.className='eventChoice';b.type='button';b.disabled=st.event.revealedSlot!==null||c.revealed;b.setAttribute('aria-label','Ereigniskarte '+(c.slot+1));if(c.revealed){b.innerHTML='<strong>'+escapeHtml(c.title)+'</strong><span>'+escapeHtml(c.text)+'</span>'}else{b.innerHTML='<span>PLATZ '+(c.slot+1)+'</span>';b.onclick=()=>claimEvent(c.slot)}grid.appendChild(b)});choices.appendChild(grid)}
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 if(inviteCode)document.getElementById('playerName').focus();
