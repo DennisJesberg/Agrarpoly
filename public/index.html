@@ -215,10 +215,13 @@ button.gold{
 /* ===== V2 MASTER-LAYOUT: 3 SPALTEN + STEUERUNG DIREKT DARUNTER ===== */
 .game{
   grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr) minmax(0,.85fr) !important;
+  grid-template-areas:"left center right" !important;
   gap:14px !important;
   align-items:stretch !important;
 }
-.game > .side{min-width:0 !important;}
+.game > .side:first-child{grid-area:left !important; min-width:0 !important;}
+.game > .center{grid-area:center !important; min-width:0 !important;}
+.game > .side:last-child{grid-area:right !important; min-width:0 !important;}
 .master{margin-top:14px !important;}
 .mastergrid{
   display:grid !important;
@@ -227,8 +230,11 @@ button.gold{
   margin-top:0 !important;
 }
 .mastergrid button{font-size:14px !important;}
+@media(max-width:1050px){
+  .game{grid-template-columns:1fr !important; grid-template-areas:"left" "center" "right" !important;}
+}
 @media(max-width:700px){
-  .game{grid-template-columns:1fr 1.6fr 1fr !important;}
+  .game{grid-template-columns:1fr !important; grid-template-areas:"left" "center" "right" !important;}
   .mastergrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
 }
 @media(max-width:500px){
