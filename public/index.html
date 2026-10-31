@@ -677,3 +677,53 @@ function renderMasterCards(st){
   });
 }
 </script></body></html>
+
+<style id="master-fine-tuning-v21">
+/* ===== V2.1 MASTER FEINSCHLIFF – nur Abstände/Größen, keine Spiellogik ===== */
+@media (min-width:1051px){
+  #game.master-mode > .game{
+    grid-template-columns:minmax(0,.92fr) minmax(0,1.5fr) minmax(0,.92fr) !important;
+    gap:16px !important;
+  }
+  #game.master-mode > .game > .side,
+  #game.master-mode > .game > .center{
+    min-height:480px !important;
+  }
+  #game.master-mode > .game > .side{
+    padding:20px !important;
+  }
+  #game.master-mode > .game > .center{
+    padding:18px 20px !important;
+  }
+  #game.master-mode .die{
+    width:215px !important;
+    height:215px !important;
+    font-size:116px !important;
+    margin:10px auto 18px !important;
+  }
+  #game.master-mode .roll{
+    max-width:410px !important;
+    font-size:24px !important;
+    padding:16px !important;
+  }
+  #game.master-mode .playerOverviewPanel{
+    margin-top:14px !important;
+    padding:14px !important;
+  }
+  #game.master-mode .overviewPlayer{
+    padding:9px !important;
+  }
+  #game.master-mode .master{
+    padding:18px !important;
+    margin-top:12px !important;
+  }
+  #game.master-mode .mastergrid{
+    gap:9px !important;
+  }
+  #game.master-mode .mastergrid button{
+    min-height:50px !important;
+    padding:12px 10px !important;
+    font-size:13px !important;
+  }
+}
+</style>
