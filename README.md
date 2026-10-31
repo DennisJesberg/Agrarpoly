@@ -1,5 +1,11 @@
 # AGRARPOLY – Render V3
 
+### V2.2 – Master-Kartenübersicht
+- Master sieht in der Spielerübersicht, welche Ereigniskarte jeder Spieler bereits aufgedeckt hat.
+- Normale Spieler sehen weiterhin nur ihre eigene aufgedeckte Karte.
+- OBS/Beobachter dürfen die aufgedeckten Karten weiterhin sehen.
+- Die bestehende Master-Mitspielen-Funktion und das aktuelle Layout bleiben erhalten.
+
 Aktueller Stand:
 - Master oder Master spielt mit
 - variable Spielerzahl

@@ -107,8 +107,11 @@ function publicState(room, socketId, role) {
       active: room.started && room.currentPlayer === p.id,
       connected: !!p.socketId,
       isMasterPlayer: !!p.isMasterPlayer,
-      // Once a player has revealed an event card, everyone can see which card they have.
-      eventCard: p.eventCard ? cardPublic(p.eventCard) : null
+      // The Master/OBS may see the cards already revealed by every player.
+      // A normal player only sees their own revealed card.
+      eventCard: p.eventCard && (role === "master" || role === "observer" || p.socketId === socketId)
+        ? cardPublic(p.eventCard)
+        : null
     })),
     isMaster: room.master === socketId,
     masterParticipates: !!room.masterParticipates,
