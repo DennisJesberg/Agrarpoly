@@ -286,7 +286,9 @@ io.on("connection", socket => {
   // Master only decides whether the current player gets access to the 20 card backs.
   socket.on("releaseEvent", () => {
     const room = rooms.get(socket.data.room);
-    if (!room || socket.data.role !== "master" || !room.started || !room.event || room.event.accessGranted) return;
+    if (!room || socket.data.role !== "master") return;
+    if (!room.event || room.event.accessGranted || room.event.revealedSlot !== null) return;
+    // Die Kartenfreigabe ist unabhängig davon, ob der Master selbst mitspielt.
     room.event.accessGranted = true;
     broadcast(room);
   });

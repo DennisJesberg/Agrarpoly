@@ -417,11 +417,12 @@ s.on("state",st=>{
     document.querySelector('.mastergrid button[onclick="start()"]') .disabled=!st.masterChoiceMade || st.started;
     document.getElementById("releaseBtn").disabled=!st.started||st.released||!!st.event||!current;
     document.getElementById("releaseBtn").textContent=st.released?"✅ WÜRFEL FREIGEGEBEN":"🎲 WÜRFEL FREIGEBEN";
-    const pending=!!st.eventPending || !!(st.event && !st.event.accessGranted); const releaseEventBtn=document.getElementById("releaseEventBtn"); releaseEventBtn.disabled=!st.started||!pending;
+    const eventWaitingForMaster=!!st.event && !st.event.accessGranted && st.event.revealedSlot===null; const releaseEventBtn=document.getElementById("releaseEventBtn"); releaseEventBtn.disabled=!(role==="master" && eventWaitingForMaster);
     document.getElementById("releaseEventBtn").textContent=st.event?.accessGranted?"✅ KARTEN FREIGEGEBEN":"🃏 EREIGNISKARTEN FREIGEBEN";
+    document.getElementById("releaseEventBtn").title=eventWaitingForMaster?"Ereigniskarten für den aktuellen Spieler freigeben":"";
     const continueBtn=document.getElementById("continueEventBtn"); continueBtn.disabled=!st.started||!st.event?.revealedCard;
     continueBtn.textContent=st.event?.revealedCard?"➡️ WEITER":"➡️ WEITER";
-    document.getElementById("skipBtn").disabled=!st.started||st.released||pending||!current;
+    document.getElementById("skipBtn").disabled=!st.started||st.released||!!st.event||!current;
     renderMasterCards(st);
   }
 });
