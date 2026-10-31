@@ -264,6 +264,15 @@ button.gold{
       <div><div style="font-size:12px;font-weight:900;color:#aaa;letter-spacing:1px">DEIN SPIELCODE</div><div id="gameCode" style="font-size:34px;font-weight:1000;letter-spacing:7px;color:#fff;text-shadow:0 0 10px #f00">–</div></div>
       <button class="gray" type="button" onclick="copyGameCode()">📋 CODE KOPIEREN</button>
     </div>
+    <div class="mastergrid" style="margin:0 0 16px">
+      <button class="red" onclick="start()">▶ SPIEL STARTEN</button>
+      <button class="red" id="releaseBtn" onclick="release()">🎲 WÜRFEL FREIGEBEN</button>
+      <button class="red" id="releaseEventBtn" onclick="releaseEvent()" disabled>🃏 EREIGNISKARTEN FREIGEBEN</button>
+      <button class="gold" id="continueEventBtn" onclick="continueEvent()" disabled>➡️ WEITER</button>
+      <button class="blue" id="skipBtn" onclick="skip()">⏭ SPIELER ÜBERSPRINGEN</button>
+      <button class="gray" onclick="newRound()">↻ NEUER DURCHLAUF</button>
+      <button class="gray" onclick="resetGame()">↩ ZURÜCKSETZEN</button>
+    </div>
     <div class="shareBox">
       <div class="shareTitle">SPIELER-LINK</div>
       <div class="shareRow">
@@ -293,15 +302,6 @@ button.gold{
       <div id="masterChoiceStatus" style="margin-top:9px;color:#aaa;font-weight:800">Bitte vor dem Spielstart entscheiden.</div>
     </div>
     <div id="masterInfo" style="color:#bbb;margin-bottom:12px">–</div>
-    <div class="mastergrid">
-      <button class="red" onclick="start()">▶ SPIEL STARTEN</button>
-      <button class="red" id="releaseBtn" onclick="release()">🎲 WÜRFEL FREIGEBEN</button>
-      <button class="red" id="releaseEventBtn" onclick="releaseEvent()" disabled>🃏 EREIGNISKARTEN FREIGEBEN</button>
-      <button class="gold" id="continueEventBtn" onclick="continueEvent()" disabled>➡️ WEITER</button>
-      <button class="blue" id="skipBtn" onclick="skip()">⏭ SPIELER ÜBERSPRINGEN</button>
-      <button class="gray" onclick="newRound()">↻ NEUER DURCHLAUF</button>
-      <button class="gray" onclick="resetGame()">↩ ZURÜCKSETZEN</button>
-    </div>
     <div id="masterCards" class="masterCards hide"></div>
     <div class="me">Der Master sieht immer, welche Karte an welchem Platz liegt. Spieler sehen die Texte erst nach ihrer Auswahl.</div>
   </div>
