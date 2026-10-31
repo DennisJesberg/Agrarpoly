@@ -123,17 +123,10 @@ button.gold{
   border-color:#f3ca54;
 }
 .game{
-  display:grid !important;
-  grid-template-columns:minmax(360px,.85fr) minmax(560px,1.5fr) minmax(360px,.85fr);
+  grid-template-columns:minmax(240px,.85fr) minmax(480px,1.5fr) minmax(240px,.85fr);
   gap:14px;
-  align-items:stretch;
-  margin:0 0 14px 0;
 }
 .side,.center{min-height:500px}
-.game > .side:last-child{grid-column:3;grid-row:1}
-.game > .center{grid-column:2;grid-row:1}
-.game > .side:first-child{grid-column:1;grid-row:1}
-.master{margin-top:0 !important}
 .side{
   background:
     linear-gradient(160deg,#141414,#050505);
@@ -191,7 +184,7 @@ button.gold{
 .masterCards{background:linear-gradient(145deg,#12070a,#050505)}
 .masterCardGrid{grid-template-columns:repeat(5,1fr)}
 
-@media(max-width:900px){
+@media(max-width:1050px){
   .heroBanner{height:clamp(220px,34vw,380px)}
   .heroPlayer{top:66%;height:12%}
   .game{grid-template-columns:1fr}
@@ -305,6 +298,7 @@ button.gold{
       <button class="red" id="releaseBtn" onclick="release()">🎲 WÜRFEL FREIGEBEN</button>
       <button class="red" id="releaseEventBtn" onclick="releaseEvent()" disabled>🃏 EREIGNISKARTEN FREIGEBEN</button>
       <button class="gold" id="continueEventBtn" onclick="continueEvent()" disabled>➡️ WEITER</button>
+      <button class="red" id="skipEventBtn" onclick="skipEvent()" disabled>⏭ EREIGNISKARTEN ÜBERSPRINGEN</button>
       <button class="blue" id="skipBtn" onclick="skip()">⏭ SPIELER ÜBERSPRINGEN</button>
       <button class="gray" onclick="newRound()">↻ NEUER DURCHLAUF</button>
       <button class="gray" onclick="resetGame()">↩ ZURÜCKSETZEN</button>
@@ -329,7 +323,7 @@ function copyOverlayLink(){const link=getOverlayLink(); if(!link)return; copyTex
 function openOverlayLink(){const link=getOverlayLink(); if(link)window.open(link,"_blank")}
 function masterPlay(participate){myId=participate?0:null;s.emit("masterPlay",{participate,name:document.getElementById("masterName").value.trim()||"Master"})}
 function join(){s.emit("join",{code:document.getElementById("joinCode").value.trim(),name:document.getElementById("playerName").value.trim()})}
-function start(){s.emit("start")} function release(){s.emit("release")} function releaseEvent(){s.emit("releaseEvent")} function claimEvent(slot){s.emit("claimEvent",{slot})} function continueEvent(){s.emit("continueEvent")} function skip(){s.emit("skip")} function newRound(){s.emit("newRound")} function resetGame(){s.emit("reset")} function roll(){s.emit("roll")}
+function start(){s.emit("start")} function release(){s.emit("release")} function releaseEvent(){s.emit("releaseEvent")} function claimEvent(slot){s.emit("claimEvent",{slot})} function continueEvent(){s.emit("continueEvent")} function skipEvent(){s.emit("skipEvent")} function skip(){s.emit("skip")} function newRound(){s.emit("newRound")} function resetGame(){s.emit("reset")} function roll(){s.emit("roll")}
 s.on("created",d=>{
   role="master"; myId=null;
   document.getElementById("gameCode").textContent=d.code||"–";
@@ -405,6 +399,7 @@ s.on("state",st=>{
     document.getElementById("releaseBtn").textContent=st.released?"✅ WÜRFEL FREIGEGEBEN":"🎲 WÜRFEL FREIGEBEN";
     const pending=!!st.event; document.getElementById("releaseEventBtn").disabled=!st.started||!pending||!!st.event?.accessGranted||!!st.event?.revealedCard;
     document.getElementById("releaseEventBtn").textContent=st.event?.accessGranted?"✅ KARTEN FREIGEGEBEN":"🃏 EREIGNISKARTEN FREIGEBEN";
+    const skipEventBtn=document.getElementById("skipEventBtn"); skipEventBtn.disabled=!st.started||!pending;
     const continueBtn=document.getElementById("continueEventBtn"); continueBtn.disabled=!st.started||!st.event?.revealedCard;
     continueBtn.textContent=st.event?.revealedCard?"➡️ WEITER":"➡️ WEITER";
     document.getElementById("skipBtn").disabled=!st.started||st.released||pending||!current;
