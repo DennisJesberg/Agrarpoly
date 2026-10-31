@@ -169,6 +169,7 @@ io.on("connection", socket => {
     socket.join(room.code);
     socket.data.room = room.code;
     socket.data.role = "master";
+    socket.data.playerId = null;
     socket.emit("created", { code: room.code });
     broadcast(room);
   });
@@ -205,6 +206,7 @@ io.on("connection", socket => {
     room.masterParticipates = !!participate;
     room.masterChoiceMade = true;
     masterPlayer.socketId = room.masterParticipates ? socket.id : null;
+    socket.data.playerId = room.masterParticipates ? masterPlayer.id : null;
     masterPlayer.name = (name || "Master").trim().slice(0, 30) || "Master";
     broadcast(room);
   });
@@ -244,10 +246,16 @@ io.on("connection", socket => {
 
   socket.on("roll", () => {
     const room = rooms.get(socket.data.room);
-    const isMasterPlayer = room && socket.data.role === "master" && room.masterParticipates;
-    const p = room && (isMasterPlayer ? room.players.find(x => x.isMasterPlayer) : room.players[socket.data.playerId]);
-    if (!room || (!isMasterPlayer && socket.data.role !== "player") || !room.started || !room.released || !p) return;
-    if (p.id !== room.currentPlayer || p.rolled) return;
+    if (!room || !room.started || !room.released) return;
+
+    const isMasterPlayer = socket.data.role === "master" && room.masterParticipates;
+    const p = isMasterPlayer
+      ? room.players.find(x => x.isMasterPlayer && x.socketId === socket.id)
+      : (socket.data.role === "player" ? room.players[socket.data.playerId] : null);
+
+    if (!p) return socket.emit("errorMsg", "Du bist nicht als Spieler dieser Runde registriert.");
+    if (p.id !== room.currentPlayer) return socket.emit("errorMsg", "Du bist noch nicht an der Reihe.");
+    if (p.rolled) return socket.emit("errorMsg", "Du hast bereits gewürfelt.");
 
     const value = Math.floor(Math.random() * 6) + 1;
     p.last = value;
@@ -317,7 +325,7 @@ io.on("connection", socket => {
     const room = rooms.get(socket.data.room);
     if (!room || socket.data.role !== "master") return;
     room.round = 1;
-    room.currentPlayer = 0;
+    room.currentPlayer = room.masterParticipates ? room.masterPlayerId : 1;
     room.started = false;
     room.released = false;
     room.event = null;

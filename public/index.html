@@ -67,15 +67,15 @@ body:before{
 }
 .wrap{width:min(1680px,98vw);padding:8px 0 34px}
 .heroBanner{
-  position:relative;width:100%;margin:0 auto 14px;
-  aspect-ratio:1669/942;max-height:520px;overflow:visible;
+  position:relative;width:100%;margin:0 auto 12px;
+  height:clamp(280px,31vw,500px);max-height:500px;overflow:hidden;
 }
 .heroImage{
-  display:block;width:100%;height:100%;object-fit:contain;
+  display:block;width:100%;height:100%;object-fit:cover;object-position:top center;
   filter:drop-shadow(0 0 18px rgba(229,9,47,.24));
 }
 .heroPlayer{
-  position:absolute;top:72.5%;width:20.8%;height:8.8%;
+  position:absolute;top:67.5%;width:20.8%;height:12%;
   display:flex;align-items:center;justify-content:center;
   pointer-events:none;
 }
@@ -185,20 +185,28 @@ button.gold{
 .masterCardGrid{grid-template-columns:repeat(5,1fr)}
 
 @media(max-width:1050px){
-  .heroBanner{aspect-ratio:1669/942}
-  .heroPlayer{top:72%;height:9%}
+  .heroBanner{height:clamp(220px,34vw,380px)}
+  .heroPlayer{top:66%;height:12%}
   .game{grid-template-columns:1fr}
   .side,.center{min-height:unset}
   .mastergrid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:620px){
-  .heroBanner{margin-bottom:8px}
+  .heroBanner{height:clamp(180px,48vw,300px);margin-bottom:8px}
   .heroPlayerName{font-size:14px}
   .home{padding:18px}
   .die{width:170px;height:170px;font-size:95px}
   .mastergrid{grid-template-columns:1fr}
 }
 
+
+.shareBox{margin:0 0 16px;padding:14px 16px;border:2px solid #8d0b24;border-radius:12px;background:linear-gradient(145deg,#16070a,#050505);box-shadow:inset 0 0 18px #000,0 0 18px #e5092f18}
+.shareTitle{font-size:12px;color:#aaa;font-weight:1000;letter-spacing:2px;margin-bottom:7px}
+.shareRow{display:grid;grid-template-columns:1fr auto auto;gap:9px;align-items:center}
+.shareInput{font-size:14px!important;color:#ddd!important;letter-spacing:0!important;font-weight:700!important}
+.shareBtn{width:auto;min-width:170px}
+.joinHint{font-size:13px;color:#999;margin-top:7px;font-weight:700}
+@media(max-width:700px){.shareRow{grid-template-columns:1fr}.shareBtn{width:100%}}
 </style>
 </head>
 <body><div class="wrap">
@@ -214,6 +222,11 @@ button.gold{
 
 <section id="home" class="panel red home">
   <h2>🎲 SPIEL ERSTELLEN</h2>
+  <div id="createdCodeHome" class="hide" style="margin-bottom:14px;padding:14px 16px;border:2px solid #b00;border-radius:10px;background:#0b0b0b">
+    <div style="color:#aaa;font-size:12px;font-weight:900;letter-spacing:2px">SPIEL ERSTELLT</div>
+    <div style="margin-top:4px">Spielcode: <strong id="createdCodeText" style="font-size:26px;letter-spacing:5px">–</strong></div>
+    <button class="gray" type="button" style="margin-top:10px" onclick="copyPlayerLink()">🔗 SPIELER-LINK KOPIEREN</button>
+  </div>
   <div class="row">
     <div><label>Spielerplätze</label><input id="count" type="number" min="1" max="100" value="15"></div>
     <div style="display:flex;align-items:end"><button class="red" onclick="create()">SPIEL ERSTELLEN</button></div>
@@ -247,6 +260,20 @@ button.gold{
 
   <div id="master" class="panel master hide">
     <h2>👑 MASTER STEUERUNG</h2>
+    <div id="gameCodeBox" style="margin:10px 0 16px;padding:14px 18px;border:2px solid #d00;border-radius:12px;background:linear-gradient(135deg,#180000,#050505);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+      <div><div style="font-size:12px;font-weight:900;color:#aaa;letter-spacing:1px">DEIN SPIELCODE</div><div id="gameCode" style="font-size:34px;font-weight:1000;letter-spacing:7px;color:#fff;text-shadow:0 0 10px #f00">–</div></div>
+      <button class="gray" type="button" onclick="copyGameCode()">📋 CODE KOPIEREN</button>
+    </div>
+    <div class="shareBox">
+      <div class="shareTitle">SPIELER-LINK</div>
+      <div class="shareRow">
+        <input id="playerLink" class="shareInput" readonly value="">
+        <button class="gray shareBtn" type="button" onclick="copyPlayerLink()">🔗 LINK KOPIEREN</button>
+        <button class="red shareBtn" type="button" onclick="openPlayerLink()">↗ ÖFFNEN</button>
+      </div>
+      <div class="joinHint">Diesen Link kannst du direkt an deine Mitspieler schicken. Der Spielcode wird automatisch übernommen.</div>
+    </div>
+    <div id="joinCodeInfo" style="margin:-4px 0 14px;color:#aaa;font-weight:800">Mit diesem Code können andere Spieler beitreten.</div>
     <div id="masterChoice" class="masterCards" style="margin-top:0;margin-bottom:14px">
       <h3>👑 MÖCHTEST DU MITSPIELEN?</h3>
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
@@ -275,11 +302,26 @@ button.gold{
 <script>
 const s=io(); let role="", myId=null, lastShown=null; const faces=["","1","2","3","4","5","6"];
 function create(){s.emit("create",{count:document.getElementById("count").value})}
-function masterPlay(participate){s.emit("masterPlay",{participate,name:document.getElementById("masterName").value.trim()||"Master"})}
+function getGameCode(){return document.getElementById("gameCode").textContent.trim()}
+function getPlayerLink(){const code=getGameCode(); return (!code||code==="–")?"":`${window.location.origin}${window.location.pathname}?code=${encodeURIComponent(code)}`}
+async function copyText(text,success){if(!text)return false; try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text); if(success)success(); return true}}catch(e){} window.prompt("Zum Kopieren markieren:",text); return false}
+function copyGameCode(){const code=getGameCode(); if(!code)return; copyText(code,()=>{document.getElementById("joinCodeInfo").textContent="Spielcode kopiert: "+code;});}
+function copyPlayerLink(){const link=getPlayerLink(); if(!link)return; copyText(link,()=>{const info=document.getElementById("joinCodeInfo"); if(info)info.textContent="Spieler-Link kopiert. Du kannst ihn jetzt verschicken.";});}
+function openPlayerLink(){const link=getPlayerLink(); if(link)window.open(link,"_blank")}
+function masterPlay(participate){myId=participate?0:null;s.emit("masterPlay",{participate,name:document.getElementById("masterName").value.trim()||"Master"})}
 function join(){s.emit("join",{code:document.getElementById("joinCode").value.trim(),name:document.getElementById("playerName").value.trim()})}
 function start(){s.emit("start")} function release(){s.emit("release")} function releaseEvent(){s.emit("releaseEvent")} function claimEvent(slot){s.emit("claimEvent",{slot})} function continueEvent(){s.emit("continueEvent")} function skip(){s.emit("skip")} function newRound(){s.emit("newRound")} function resetGame(){s.emit("reset")} function roll(){s.emit("roll")}
-s.on("created",d=>{role="master";showGame();document.getElementById("master").classList.remove("hide")})
+s.on("created",d=>{
+  role="master"; myId=null;
+  document.getElementById("gameCode").textContent=d.code||"–";
+  document.getElementById("createdCodeText").textContent=d.code||"–";
+  document.getElementById("createdCodeHome").classList.remove("hide");
+  updatePlayerLink(d.code);
+  showGame();
+  document.getElementById("master").classList.remove("hide");
+})
 s.on("joined",d=>{role="player";myId=d.playerId;showGame()})
+function updatePlayerLink(code){const link=code?`${window.location.origin}${window.location.pathname}?code=${encodeURIComponent(code)}`:getPlayerLink(); const el=document.getElementById("playerLink"); if(el&&link)el.value=link}
 s.on("errorMsg",m=>document.getElementById("err").textContent=m)
 function showGame(){document.getElementById("home").classList.add("hide");document.getElementById("game").classList.remove("hide")}
 function renderCards(st,isMine){
@@ -328,8 +370,8 @@ s.on("state",st=>{
   if(shown&&shown!==lastShown){die.classList.remove("rollAnim");void die.offsetWidth;die.classList.add("rollAnim");lastShown=shown} die.textContent=shown?faces[shown]:"–";
   document.getElementById("status").textContent=!st.started?"Warte auf Spielstart…":(st.event?"EREIGNISKARTEN AUSWAHL":(st.released?"WÜRFEL FREIGEGEBEN":"Warte auf Freigabe…"));
   document.getElementById("status").className="status "+(st.released?"red":"wait");
-  document.getElementById("you").textContent=role==="master"?"Du bist der Master.":(isMine?(st.event?(st.event.accessGranted?"Wähle eine verdeckte Ereigniskarte.":"Ereigniskarten sind noch nicht freigegeben."):(st.released?"Du bist dran – du darfst würfeln!":"Du bist dran – warte auf die Freigabe.")):"Der Master steuert die Freigabe.");
-  document.getElementById("myStatus").textContent=role==="master"?"Du steuerst das Spiel.":(isMine?(st.event?(st.event.accessGranted?"KARTE AUSWÄHLEN":"WARTE AUF KARTENFREIGABE"):(st.released?"WÜRFEL FREIGEGEBEN":"Warte auf Freigabe…")):"Warte auf deinen Zug…");
+  document.getElementById("you").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"Du bist dran – zuerst Ereigniskarte abwarten.":(st.released?"Du bist dran – du darfst würfeln!":"Warte auf die Würfelfreigabe.")):"Du bist der Master – du steuerst die Freigabe."):(isMine?(st.event?(st.event.accessGranted?"Wähle eine verdeckte Ereigniskarte.":"Ereigniskarten sind noch nicht freigegeben."):(st.released?"Du bist dran – du darfst würfeln!":"Du bist dran – warte auf die Freigabe.")):"Der Master steuert die Freigabe.");
+  document.getElementById("myStatus").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"EREIGNISKARTE":(st.released?"WÜRFELN FREIGEGEBEN":"WARTE AUF FREIGABE")):"MASTER-STEUERUNG"):(isMine?(st.event?(st.event.accessGranted?"KARTE AUSWÄHLEN":"WARTE AUF KARTENFREIGABE"):(st.released?"WÜRFEL FREIGEGEBEN":"Warte auf Freigabe…")):"Warte auf deinen Zug…");
   renderCards(st,isMine);
   if(role==="master"){
     document.getElementById("master").classList.remove("hide");
@@ -350,6 +392,9 @@ s.on("state",st=>{
     renderMasterCards(st);
   }
 });
+function loadInviteCode(){const code=new URLSearchParams(window.location.search).get("code"); if(code){document.getElementById("joinCode").value=code.toUpperCase(); document.getElementById("playerName").focus(); document.getElementById("joinCodeInfo").textContent="Spielcode aus dem Einladungslink übernommen."}}
+loadInviteCode();
+
 function renderMasterCards(st){
   const box=document.getElementById("masterCards");
   if(role!=="master" || !st.event || !Array.isArray(st.event.masterCards)){ box.classList.add("hide"); box.innerHTML=""; return; }
