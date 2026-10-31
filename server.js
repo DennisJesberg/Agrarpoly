@@ -296,18 +296,6 @@ io.on("connection", socket => {
     broadcast(room);
   });
 
-  // The master can skip the event-card phase completely.
-  socket.on("skipEvent", () => {
-    const room = rooms.get(socket.data.room);
-    if (!room || socket.data.role !== "master" || !room.started || !room.event) return;
-    room.lastEvent = null;
-    room.event = null;
-    room.eventDeck = makeCards();
-    room.released = false;
-    advance(room);
-    broadcast(room);
-  });
-
   // The master only continues after the card has been revealed.
   // No card effect is executed. The revealed card is informational only.
   socket.on("continueEvent", () => {
