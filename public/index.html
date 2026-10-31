@@ -400,6 +400,14 @@ button.gold{
 @media(max-width:850px){.masterCardGrid{grid-template-columns:repeat(3,minmax(140px,1fr))}}
 @media(max-width:620px){.masterCardGrid{grid-template-columns:repeat(2,minmax(130px,1fr));gap:9px}.masterCardItem{min-height:135px;padding:10px}}
 </style>
+<style id="event-grid-fix">
+.eventChoices{display:block !important;margin-top:18px;width:100%}
+.eventGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;width:100%}
+.eventChoice{min-height:112px;padding:12px 10px;text-align:center}
+@media(max-width:1150px){.eventGrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}}
+@media(max-width:800px){.eventGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}}
+@media(max-width:560px){.eventGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+</style>
 </head>
 <body><div class="wrap">
 <header class="heroBanner">
@@ -549,7 +557,7 @@ function renderCards(st,isMine){
       title.textContent=st.event.revealedSlot===null?"WÄHLE EINE VON 20 KARTEN":"EREIGNISKARTE AUFGEDECKT";
       text.textContent=st.event.revealedSlot===null?"Die Karten sind verdeckt. Klicke auf eine Karte, um sie aufzudecken.":(st.event.revealedCard?.title||"");
       effect.textContent=st.event.revealedSlot===null?"Nur die von dir gewählte Karte wird aufgedeckt.":(st.event.revealedCard?.text||"Warte auf den Master. Die Karte wird nur aufgedeckt. Es wird kein Karteneffekt automatisch ausgeführt.");
-      const grid=document.createElement("div"); grid.className="eventChoices";
+      const grid=document.createElement("div"); grid.className="eventGrid";
       st.event.cards.forEach(c=>{
         const b=document.createElement("button"); b.className="eventChoice"+(c.revealed?" revealed":""); b.type="button";
         b.setAttribute("aria-label",`Ereigniskarte ${c.slot+1}`);
