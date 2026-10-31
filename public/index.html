@@ -256,6 +256,25 @@ button.gold{
   #game > .game { grid-template-columns: 1fr !important; grid-template-areas: "left" "center" "right" !important; }
   #game > .game > aside:first-child, #game > .game > main.center, #game > .game > aside:last-child { grid-column: 1 !important; grid-row: auto !important; }
 }
+<style id="master-layout-final-fix">
+/* MASTER: immer drei Spalten – Nächster Spieler rechts oben */
+#game.master-mode > .game {
+  display:grid !important;
+  grid-template-columns:minmax(0,0.85fr) minmax(0,1.5fr) minmax(0,0.85fr) !important;
+  grid-template-areas:"left center right" !important;
+  grid-template-rows:auto !important;
+  align-items:stretch !important;
+  gap:14px !important;
+}
+#game.master-mode > .game > aside:first-child { grid-area:left !important; grid-column:1 !important; grid-row:1 !important; }
+#game.master-mode > .game > main.center { grid-area:center !important; grid-column:2 !important; grid-row:1 !important; }
+#game.master-mode > .game > aside:last-child { grid-area:right !important; grid-column:3 !important; grid-row:1 !important; }
+@media(max-width:1050px){
+  #game.master-mode > .game {
+    grid-template-columns:minmax(0,0.8fr) minmax(0,1.4fr) minmax(0,0.8fr) !important;
+    grid-template-areas:"left center right" !important;
+  }
+}
 </style>
 
 </head>
@@ -444,6 +463,7 @@ s.on("state",st=>{
   document.getElementById("myStatus").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"EREIGNISKARTE":(st.released?"WÜRFELN FREIGEGEBEN":"WARTE AUF FREIGABE")):"MASTER-STEUERUNG"):(isMine?(st.event?(st.event.accessGranted?"KARTE AUSWÄHLEN":"WARTE AUF KARTENFREIGABE"):(st.released?"WÜRFEL FREIGEGEBEN":"Warte auf Freigabe…")):"Warte auf deinen Zug…");
   renderCards(st,isMine);
   renderPlayerOverview(st);
+  document.getElementById("game").classList.toggle("master-mode", role === "master");
   if(role==="master"){
     document.getElementById("master").classList.remove("hide");
     document.getElementById("masterInfo").textContent=st.started?(current?`${current.name} ist aktuell an der Reihe.`:"Kein Spieler an der Reihe."):"Spiel nicht gestartet.";
