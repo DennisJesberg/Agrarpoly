@@ -17,7 +17,10 @@
 Diese Version baut auf V2.11 auf. Es gibt nur diese eine `README.md`.
 
 
-## V2.15
+## V2.16
 - Neues Würfel-Popup mit weißem/silbernem Würfel in Draufsicht.
 - Spielername bleibt dynamisch.
 - Gemeinsames Schließen des Würfel-Popups bleibt erhalten.
+
+
+Änderung V2.16: Bei den Ereigniskarten im Spielerbereich werden die Zeilen „PLATZ 1–20“ nicht mehr angezeigt. Das Kartenlayout und die Spielfunktion bleiben unverändert.
