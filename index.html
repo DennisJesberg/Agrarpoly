@@ -415,6 +415,11 @@ button.gold{
 /* V2.6: the 20 selectable event cards are inside .eventGrid.
    The previous version styled .eventChoices, but .eventChoices contains
    the inner .eventGrid, which caused all cards to stack vertically. */
+.eventChoices{
+  display:block !important;
+  width:100% !important;
+  margin-top:18px !important;
+}
 .eventGrid{
   display:grid !important;
   grid-template-columns:repeat(5,minmax(0,1fr)) !important;
@@ -422,6 +427,7 @@ button.gold{
   gap:16px !important;
   width:100% !important;
   margin:0 !important;
+  box-sizing:border-box !important;
 }
 .eventGrid .eventChoice{
   width:100% !important;

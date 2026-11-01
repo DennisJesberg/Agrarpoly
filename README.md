@@ -29,3 +29,7 @@ Start Command: `npm start`
 Health Check: `/health`
 
 Wichtig für GitHub: `package.json`, `server.js`, `render.yaml` und der Ordner `public` müssen direkt im Repository-Root liegen.
+
+
+## V2.8 Karten-Grid-Fix
+Die Ereigniskarten im Spielerfenster werden nicht mehr als einzelnes Grid-Element innerhalb von `.eventChoices` behandelt. `.eventChoices` ist jetzt ein normaler Block-Container und `.eventGrid` übernimmt allein das 5x4-Raster. Dadurch werden die 20 Karten über die gesamte verfügbare Breite verteilt.
