@@ -15,3 +15,9 @@
 
 ## Hinweis
 Diese Version baut auf V2.11 auf. Es gibt nur diese eine `README.md`.
+
+
+## V2.15
+- Neues Würfel-Popup mit weißem/silbernem Würfel in Draufsicht.
+- Spielername bleibt dynamisch.
+- Gemeinsames Schließen des Würfel-Popups bleibt erhalten.
