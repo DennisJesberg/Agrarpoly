@@ -1,26 +1,15 @@
-# AGRARPOLY V2.12
+# AGRARPOLY V2.17
 
-## Änderung
-- Würfel-Popup wird nach jedem Wurf bei allen verbundenen Spielern angezeigt.
-- Schließt ein Spieler das Würfel-Popup, wird es für alle Spieler im Raum geschlossen.
-- Der nächste Wurf erzeugt ein neues Würfel-Popup.
-- Der bestehende Spielablauf und der Master-Button **WEITER** bleiben erhalten.
+## Änderungen
+- Spieleransicht auf neues Drei-Kästen-Layout umgestellt.
+- Aktueller Spieler, Würfelbereich und nächster Spieler stehen übersichtlich nebeneinander.
+- Bestehende Würfel- und Ereigniskarten-Funktionen bleiben erhalten.
+- Weißes Würfel-Popup aus V2.15/V2.16 bleibt erhalten.
+- Spieler-Ereigniskarten bleiben ohne PLATZ-1-bis-20-Zeile.
 
 ## Render
-1. ZIP entpacken bzw. Projektinhalt ins GitHub-Repository übernehmen.
-2. In Render den bestehenden Web Service verwenden.
-3. Root Directory leer lassen, wenn `server.js` und `package.json` im Repository-Hauptverzeichnis liegen.
-4. Build Command: `npm install`
-5. Start Command: `npm start`
+Repository-Inhalt hochladen/committen und Render anschließend neu deployen.
+Start: `npm start`
 
 ## Hinweis
-Diese Version baut auf V2.11 auf. Es gibt nur diese eine `README.md`.
-
-
-## V2.16
-- Neues Würfel-Popup mit weißem/silbernem Würfel in Draufsicht.
-- Spielername bleibt dynamisch.
-- Gemeinsames Schließen des Würfel-Popups bleibt erhalten.
-
-
-Änderung V2.16: Bei den Ereigniskarten im Spielerbereich werden die Zeilen „PLATZ 1–20“ nicht mehr angezeigt. Das Kartenlayout und die Spielfunktion bleiben unverändert.
+Diese Version basiert auf V2.16 und ändert primär das Layout der Spieleransicht.
