@@ -75,6 +75,7 @@ function publicState(room, socketId, role) {
     revealedSlot: room.event.revealedSlot ?? null,
     revealedCard: room.event.revealedCard ? cardPublic(room.event.revealedCard) : null,
     popupClosed: !!room.event.popupClosed,
+    dicePopupClosed: !!room.event.dicePopupClosed,
     // IMPORTANT: only card backs are sent after the master grants access.
     cards: (room.event.accessGranted && (role === "observer" || ((role === "player") || (role === "master" && room.masterParticipates)) && ownPlayer?.id === room.event.playerId))
       ? Array.from({ length: CARD_COUNT }, (_, i) => {
@@ -271,7 +272,7 @@ io.on("connection", socket => {
     p.rolled = true;
     room.released = false;
     room.eventDeck = makeCards();
-    room.event = { playerId: p.id, rollValue: value, accessGranted: false, revealedSlot: null, revealedCard: null };
+    room.event = { playerId: p.id, rollValue: value, accessGranted: false, revealedSlot: null, revealedCard: null, popupClosed: false, dicePopupClosed: false };
     room.lastEvent = null;
     broadcast(room);
   });
@@ -302,6 +303,14 @@ io.on("connection", socket => {
     room.event.popupClosed = false;
     // Keep the revealed card on the player so the player overview can show it to everyone.
     p.eventCard = card;
+    broadcast(room);
+  });
+
+  // Any connected player can close the shared dice popup for everyone.
+  socket.on("closeDicePopup", () => {
+    const room = rooms.get(socket.data.room);
+    if (!room || !room.event?.rollValue) return;
+    room.event.dicePopupClosed = true;
     broadcast(room);
   });
 

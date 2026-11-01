@@ -501,7 +501,9 @@ button.gold{
     </aside>
   </div>
 
-  <div id="master" class="panel master hide">
+  
+<div id="dicePopup" class="dicePopup hidden"><div class="dicePopupBox"><div class="dicePopupLabel">🎲 WÜRFELERGEBNIS</div><div id="dicePopupPlayer" class="dicePopupPlayer">–</div><div id="dicePopupDie" class="dicePopupDie">–</div><div id="dicePopupValue" class="dicePopupValue">–</div><button class="red dicePopupClose" type="button" onclick="closeDicePopupGlobal()">✓ WÜRFEL SCHLIESSEN</button></div></div>
+<div id="master" class="panel master hide">
     <div class="mastergrid mastergrid-top">
       <button class="red" onclick="start()">▶ SPIEL STARTEN</button>
       <button class="red" id="releaseBtn" onclick="release()">🎲 WÜRFEL FREIGEBEN</button>
@@ -568,7 +570,7 @@ function copyOverlayLink(){const link=getOverlayLink(); if(!link)return; copyTex
 function openOverlayLink(){const link=getOverlayLink(); if(link)window.open(link,"_blank")}
 function masterPlay(participate){myId=participate?0:null;s.emit("masterPlay",{participate,name:document.getElementById("masterName").value.trim()||"Master"})}
 function join(){s.emit("join",{code:document.getElementById("joinCode").value.trim(),name:document.getElementById("playerName").value.trim()})}
-function start(){s.emit("start")} function release(){s.emit("release")} function releaseEvent(){s.emit("releaseEvent")} function skipEvent(){s.emit("skipEvent")} function claimEvent(slot){s.emit("claimEvent",{slot})} function continueEvent(){s.emit("continueEvent")} function skip(){s.emit("skip")} function newRound(){s.emit("newRound")} function resetGame(){s.emit("reset")} function roll(){s.emit("roll")}
+function start(){s.emit("start")} function release(){s.emit("release")} function releaseEvent(){s.emit("releaseEvent")} function skipEvent(){s.emit("skipEvent")} function claimEvent(slot){s.emit("claimEvent",{slot})} function continueEvent(){s.emit("continueEvent")} function skip(){s.emit("skip")} function newRound(){s.emit("newRound")} function resetGame(){s.emit("reset")} function roll(){s.emit("roll")} function closeDicePopupGlobal(){s.emit("closeDicePopup")}
 s.on("created",d=>{
   role="master"; myId=null;
   document.getElementById("gameCode").textContent=d.code||"–";
@@ -618,6 +620,18 @@ function renderCards(st,isMine){
   }
 }
 
+function renderDicePopup(st){
+  const popup=document.getElementById("dicePopup");
+  if(!popup)return;
+  const show=!!(st.event&&st.event.rollValue&&!st.event.dicePopupClosed);
+  popup.classList.toggle("hidden",!show);
+  if(!show)return;
+  const p=st.players?.find(x=>x.id===st.event.playerId);
+  document.getElementById("dicePopupPlayer").textContent=p?.name||"Spieler";
+  document.getElementById("dicePopupDie").textContent=faces[st.event.rollValue]||String(st.event.rollValue);
+  document.getElementById("dicePopupValue").textContent="Gewürfelt: "+st.event.rollValue;
+}
+
 s.on("state",st=>{
   const current=st.players[st.currentPlayer], next=st.players[st.currentPlayer+1], mine=role==="master"&&st.masterParticipates?st.players.find(p=>p.isMasterPlayer):st.players.find(p=>p.id===myId), isMine=(role==="player"&&current?.id===myId)||(role==="master"&&st.masterParticipates&&current?.isMasterPlayer);
   document.getElementById("currentName").textContent=current?.name||"–"; document.getElementById("nextName").textContent=next?.name||"–"; document.getElementById("nextSmall").textContent=next?.name||"–"; document.getElementById("heroCurrentName").textContent=current?.name||"–"; document.getElementById("heroNextName").textContent=next?.name||"–";
@@ -631,6 +645,7 @@ s.on("state",st=>{
   document.getElementById("you").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"Du bist dran – zuerst Ereigniskarte abwarten.":(st.released?"Du bist dran – du darfst würfeln!":"Warte auf die Würfelfreigabe.")):"Du bist der Master – du steuerst die Freigabe."):(isMine?(st.event?(st.event.accessGranted?"Wähle eine verdeckte Ereigniskarte.":"Ereigniskarten sind noch nicht freigegeben."):(st.released?"Du bist dran – du darfst würfeln!":"Du bist dran – warte auf die Freigabe.")):"Der Master steuert die Freigabe.");
   document.getElementById("myStatus").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"EREIGNISKARTE":(st.released?"WÜRFELN FREIGEGEBEN":"WARTE AUF FREIGABE")):"MASTER-STEUERUNG"):(isMine?(st.event?(st.event.accessGranted?"KARTE AUSWÄHLEN":"WARTE AUF KARTENFREIGABE"):(st.released?"WÜRFEL FREIGEGEBEN":"Warte auf Freigabe…")):"Warte auf deinen Zug…");
   renderCards(st,isMine);
+  renderDicePopup(st);
   renderPlayerOverview(st);
   document.getElementById("game").classList.toggle("master-mode", role === "master");
   const gameShell=document.querySelector("#game > .game");

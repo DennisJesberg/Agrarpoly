@@ -1,33 +1,17 @@
-# AGRARPOLY – V2.11
+# AGRARPOLY V2.12
 
-## Änderung in V2.11
-- Ereigniskarten-Popup bleibt bei jedem Spieler sichtbar, bis dieser Spieler selbst auf **KARTE SCHLIESSEN** klickt.
-- Das Schließen ist lokal: Andere Spieler sehen ihr Popup weiterhin, bis sie es ebenfalls schließen.
-- Das Popup erscheint nicht erneut bei jedem weiteren Server-State derselben Karte.
-- Beim nächsten gezogenen Ereignis wird automatisch ein neues Popup geöffnet.
-- Spielablauf, Kartenraster und Master-Steuerung bleiben unverändert.
+## Änderung
+- Würfel-Popup wird nach jedem Wurf bei allen verbundenen Spielern angezeigt.
+- Schließt ein Spieler das Würfel-Popup, wird es für alle Spieler im Raum geschlossen.
+- Der nächste Wurf erzeugt ein neues Würfel-Popup.
+- Der bestehende Spielablauf und der Master-Button **WEITER** bleiben erhalten.
 
 ## Render
-1. Repository mit den Projektdateien verbinden.
-2. Root Directory leer lassen, wenn `server.js`, `package.json` und `public/` im Repository-Hauptverzeichnis liegen.
-3. Build Command: `npm install`
-4. Start Command: `npm start`
+1. ZIP entpacken bzw. Projektinhalt ins GitHub-Repository übernehmen.
+2. In Render den bestehenden Web Service verwenden.
+3. Root Directory leer lassen, wenn `server.js` und `package.json` im Repository-Hauptverzeichnis liegen.
+4. Build Command: `npm install`
+5. Start Command: `npm start`
 
-## Lokal
-```bash
-npm install
-npm start
-```
-
-Danach ist die Anwendung über den vom Server verwendeten Port erreichbar.
-
-## Wichtig
-- Nur diese `README.md` gehört zur ZIP.
-- Der Spielcode wird vom Master erzeugt.
-- Spieler öffnen den Spieler-Link mit dem enthaltenen Spielcode.
-- Das OBS-Overlay verwendet den Overlay-Link mit dem Spielcode.
-
-
-## V2.11 – Gemeinsames Popup-Schließen
-- Schließt ein Spieler das Ereigniskarten-Popup, wird es bei allen Spielern im Raum geschlossen.
-- Der Master kann weiterhin mit „WEITER“ fortfahren.
+## Hinweis
+Diese Version baut auf V2.11 auf. Es gibt nur diese eine `README.md`.
