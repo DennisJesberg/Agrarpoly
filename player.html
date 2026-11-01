@@ -242,6 +242,7 @@ function joinGame(){const code=document.getElementById('joinCode').value.trim();
 function setJoinStatus(t){document.getElementById('joinStatus').textContent=t||''}
 function roll(){s.emit('roll')}
 function claimEvent(slot){s.emit('claimEvent',{slot})}
+function closeEventPopupGlobal(){s.emit('closeEventPopup')}
 s.on('joined',d=>{myId=d.playerId;joined=true;document.getElementById('joinPanel').style.display='none';document.getElementById('game').classList.add('show');setJoinStatus('')})
 s.on('errorMsg',m=>setJoinStatus(m))
 s.on('state',st=>{

@@ -74,6 +74,7 @@ function publicState(room, socketId, role) {
     accessGranted: !!room.event.accessGranted,
     revealedSlot: room.event.revealedSlot ?? null,
     revealedCard: room.event.revealedCard ? cardPublic(room.event.revealedCard) : null,
+    popupClosed: !!room.event.popupClosed,
     // IMPORTANT: only card backs are sent after the master grants access.
     cards: (room.event.accessGranted && (role === "observer" || ((role === "player") || (role === "master" && room.masterParticipates)) && ownPlayer?.id === room.event.playerId))
       ? Array.from({ length: CARD_COUNT }, (_, i) => {
@@ -298,8 +299,17 @@ io.on("connection", socket => {
     if (!card) return;
     room.event.revealedSlot = index;
     room.event.revealedCard = card;
+    room.event.popupClosed = false;
     // Keep the revealed card on the player so the player overview can show it to everyone.
     p.eventCard = card;
+    broadcast(room);
+  });
+
+  // Any player can close the shared event-card popup for everyone.
+  socket.on("closeEventPopup", () => {
+    const room = rooms.get(socket.data.room);
+    if (!room || !room.event?.revealedCard) return;
+    room.event.popupClosed = true;
     broadcast(room);
   });
 

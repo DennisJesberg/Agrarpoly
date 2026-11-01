@@ -245,11 +245,12 @@ function joinGame(){const code=document.getElementById('joinCode').value.trim();
 function setJoinStatus(t){document.getElementById('joinStatus').textContent=t||''}
 function roll(){s.emit('roll')}
 function claimEvent(slot){s.emit('claimEvent',{slot})}
+function closeEventPopupGlobal(){s.emit('closeEventPopup')}
 function closeEventPopup(){const el=document.getElementById('eventPopupOverlay');el.classList.remove('show');el.setAttribute('aria-hidden','true');}
 function renderEventPopup(st){
  const overlay=document.getElementById('eventPopupOverlay');
  if(!overlay)return;
- if(!st?.event?.revealedCard || st.event.revealedSlot===null){ dismissedPopupKey=null; closeEventPopup(); return; }
+ if(!st?.event?.revealedCard || st.event.revealedSlot===null || st.event.popupClosed){ dismissedPopupKey=null; closeEventPopup(); return; }
  const key=String(st.event.playerId)+':'+String(st.event.revealedSlot);
  if(dismissedPopupKey===key){ closeEventPopup(); return; }
  const player=(st.players||[]).find(p=>p.id===st.event.playerId);
@@ -261,7 +262,7 @@ function renderEventPopup(st){
 document.getElementById('eventPopupClose').addEventListener('click',()=>{
  const st=window.__state;
  if(st?.event?.revealedCard && st.event.revealedSlot!==null) dismissedPopupKey=String(st.event.playerId)+':'+String(st.event.revealedSlot);
- closeEventPopup();
+ closeEventPopupGlobal();
 });
 s.on('joined',d=>{myId=d.playerId;joined=true;document.getElementById('joinPanel').style.display='none';document.getElementById('game').classList.add('show');setJoinStatus('')})
 s.on('errorMsg',m=>setJoinStatus(m))

@@ -1,6 +1,6 @@
-# AGRARPOLY – V2.10
+# AGRARPOLY – V2.11
 
-## Änderung in V2.10
+## Änderung in V2.11
 - Ereigniskarten-Popup bleibt bei jedem Spieler sichtbar, bis dieser Spieler selbst auf **KARTE SCHLIESSEN** klickt.
 - Das Schließen ist lokal: Andere Spieler sehen ihr Popup weiterhin, bis sie es ebenfalls schließen.
 - Das Popup erscheint nicht erneut bei jedem weiteren Server-State derselben Karte.
@@ -26,3 +26,8 @@ Danach ist die Anwendung über den vom Server verwendeten Port erreichbar.
 - Der Spielcode wird vom Master erzeugt.
 - Spieler öffnen den Spieler-Link mit dem enthaltenen Spielcode.
 - Das OBS-Overlay verwendet den Overlay-Link mit dem Spielcode.
+
+
+## V2.11 – Gemeinsames Popup-Schließen
+- Schließt ein Spieler das Ereigniskarten-Popup, wird es bei allen Spielern im Raum geschlossen.
+- Der Master kann weiterhin mit „WEITER“ fortfahren.
