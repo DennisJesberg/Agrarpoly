@@ -68,10 +68,10 @@ body:before{
 .wrap{width:min(1680px,98vw);padding:8px 0 34px}
 .heroBanner{
   position:relative;width:100%;margin:0 auto 12px;
-  height:clamp(280px,31vw,500px);max-height:500px;overflow:hidden;
+  aspect-ratio:1672 / 285;height:auto;max-height:none;overflow:hidden;
 }
 .heroImage{
-  display:block;width:100%;height:100%;object-fit:cover;object-position:top center;
+  display:block;width:100%;height:100%;object-fit:contain;object-position:center top;
   filter:drop-shadow(0 0 18px rgba(229,9,47,.24));
 }
 .heroPlayer{
@@ -185,14 +185,14 @@ button.gold{
 .masterCardGrid{grid-template-columns:repeat(5,1fr)}
 
 @media(max-width:1050px){
-  .heroBanner{height:clamp(220px,34vw,380px)}
-  .heroPlayer{top:66%;height:12%}
+ .heroBanner{aspect-ratio:1672 / 285;height:auto}
+  .heroPlayer{display:none}
   .game{grid-template-columns:1fr}
   .side,.center{min-height:unset}
   .mastergrid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:620px){
-  .heroBanner{height:clamp(180px,48vw,300px);margin-bottom:8px}
+ .heroBanner{aspect-ratio:1672 / 285;height:auto;margin-bottom:8px}
   .heroPlayerName{font-size:14px}
   .home{padding:18px}
   .die{width:170px;height:170px;font-size:95px}
@@ -734,3 +734,8 @@ function renderMasterCards(st){
   });
 }
 </script></body></html>
+
+<style>
+/* V2.11: clean supplied header — player names are shown in the game panels, not over the header */
+.heroPlayer{display:none!important}
+</style>
