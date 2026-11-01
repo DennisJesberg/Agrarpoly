@@ -68,10 +68,11 @@ body:before{
 .wrap{width:min(1680px,98vw);padding:8px 0 34px}
 .heroBanner{
   position:relative;width:100%;margin:0 auto 12px;
-  height:clamp(280px,31vw,500px);max-height:500px;overflow:hidden;
+  height:auto;overflow:hidden;line-height:0;
+  aspect-ratio:1672 / 285;
 }
 .heroImage{
-  display:block;width:100%;height:100%;object-fit:cover;object-position:top center;
+  display:block;width:100%;height:100%;object-fit:fill;object-position:center center;
   filter:drop-shadow(0 0 18px rgba(229,9,47,.24));
 }
 .heroPlayer{
@@ -185,14 +186,12 @@ button.gold{
 .masterCardGrid{grid-template-columns:repeat(5,1fr)}
 
 @media(max-width:1050px){
-  .heroBanner{height:clamp(220px,34vw,380px)}
-  .heroPlayer{top:66%;height:12%}
   .game{grid-template-columns:1fr}
   .side,.center{min-height:unset}
   .mastergrid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:620px){
-  .heroBanner{height:clamp(180px,48vw,300px);margin-bottom:8px}
+  .heroBanner{margin-bottom:8px}
   .heroPlayerName{font-size:14px}
   .home{padding:18px}
   .die{width:170px;height:170px;font-size:95px}
@@ -450,12 +449,6 @@ button.gold{
 <body><div class="wrap">
 <header class="heroBanner">
   <img src="/assets/agrarpoly_header.png" class="heroImage" alt="AGRARPOLY Übersicht">
-  <div class="heroPlayer heroCurrent">
-    <div class="heroPlayerName" id="heroCurrentName">–</div>
-  </div>
-  <div class="heroPlayer heroNext">
-    <div class="heroPlayerName" id="heroNextName">–</div>
-  </div>
 </header>
 
 <section id="home" class="panel red home">
@@ -620,7 +613,7 @@ function renderCards(st,isMine){
 
 s.on("state",st=>{
   const current=st.players[st.currentPlayer], next=st.players[st.currentPlayer+1], mine=role==="master"&&st.masterParticipates?st.players.find(p=>p.isMasterPlayer):st.players.find(p=>p.id===myId), isMine=(role==="player"&&current?.id===myId)||(role==="master"&&st.masterParticipates&&current?.isMasterPlayer);
-  document.getElementById("currentName").textContent=current?.name||"–"; document.getElementById("nextName").textContent=next?.name||"–"; document.getElementById("nextSmall").textContent=next?.name||"–"; document.getElementById("heroCurrentName").textContent=current?.name||"–"; document.getElementById("heroNextName").textContent=next?.name||"–";
+  document.getElementById("currentName").textContent=current?.name||"–"; document.getElementById("nextName").textContent=next?.name||"–"; document.getElementById("nextSmall").textContent=next?.name||"–"; 
   document.getElementById("myName").textContent=mine?.name||"MASTER";
   const canRoll=!!(isMine&&st.started&&st.released&&!mine?.rolled);
   const rb=document.getElementById("rollBtn"); rb.disabled=!canRoll; rb.textContent=canRoll?"🎲 WÜRFELN":(isMine?"⏳ WARTE AUF FREIGABE":"🎲 WÜRFELN");
