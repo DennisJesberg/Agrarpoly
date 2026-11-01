@@ -1,35 +1,28 @@
-# AGRARPOLY – Render V3
+# AGRARPOLY – V2.10
 
-### V2.2 – Master-Kartenübersicht
-- Master sieht in der Spielerübersicht, welche Ereigniskarte jeder Spieler bereits aufgedeckt hat.
-- Normale Spieler sehen weiterhin nur ihre eigene aufgedeckte Karte.
-- OBS/Beobachter dürfen die aufgedeckten Karten weiterhin sehen.
-- Die bestehende Master-Mitspielen-Funktion und das aktuelle Layout bleiben erhalten.
-
-Aktueller Stand:
-- Master oder Master spielt mit
-- variable Spielerzahl
-- Master startet das Spiel
-- Master gibt den Würfel für den aktuellen Spieler frei
-- aktueller Spieler darf würfeln
-- Master kann Spieler überspringen
-- nach dem Würfeln entscheidet der Master über die Kartenfreigabe
-- 20 verdeckte Ereigniskarten
-- Spieler wählt genau eine Karte
-- nur die gewählte Karte wird aufgedeckt
-- KEIN Karteneffekt wird automatisch ausgeführt
-- Master sieht die Kartenpositionen und Texte
-- OBS-Overlay zeigt Würfel und Ereigniskartenstatus
-- OBS-Overlay hat Schalter „ANDERE SPIELER EIN/AUS"
-- bei EIN werden die übrigen Spieler im Overlay angezeigt
+## Änderung in V2.10
+- Ereigniskarten-Popup bleibt bei jedem Spieler sichtbar, bis dieser Spieler selbst auf **KARTE SCHLIESSEN** klickt.
+- Das Schließen ist lokal: Andere Spieler sehen ihr Popup weiterhin, bis sie es ebenfalls schließen.
+- Das Popup erscheint nicht erneut bei jedem weiteren Server-State derselben Karte.
+- Beim nächsten gezogenen Ereignis wird automatisch ein neues Popup geöffnet.
+- Spielablauf, Kartenraster und Master-Steuerung bleiben unverändert.
 
 ## Render
-Build Command: `npm install`
-Start Command: `npm start`
-Health Check: `/health`
+1. Repository mit den Projektdateien verbinden.
+2. Root Directory leer lassen, wenn `server.js`, `package.json` und `public/` im Repository-Hauptverzeichnis liegen.
+3. Build Command: `npm install`
+4. Start Command: `npm start`
 
-Wichtig für GitHub: `package.json`, `server.js`, `render.yaml` und der Ordner `public` müssen direkt im Repository-Root liegen.
+## Lokal
+```bash
+npm install
+npm start
+```
 
+Danach ist die Anwendung über den vom Server verwendeten Port erreichbar.
 
-## V2.8 Karten-Grid-Fix
-Die Ereigniskarten im Spielerfenster werden nicht mehr als einzelnes Grid-Element innerhalb von `.eventChoices` behandelt. `.eventChoices` ist jetzt ein normaler Block-Container und `.eventGrid` übernimmt allein das 5x4-Raster. Dadurch werden die 20 Karten über die gesamte verfügbare Breite verteilt.
+## Wichtig
+- Nur diese `README.md` gehört zur ZIP.
+- Der Spielcode wird vom Master erzeugt.
+- Spieler öffnen den Spieler-Link mit dem enthaltenen Spielcode.
+- Das OBS-Overlay verwendet den Overlay-Link mit dem Spielcode.

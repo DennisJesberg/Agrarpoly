@@ -64,10 +64,10 @@ body:before{
 .wrap{width:min(1680px,98vw);padding:8px 0 34px}
 .heroBanner{
   position:relative;width:100%;margin:0 auto 12px;
-  aspect-ratio:1672/285;height:auto;max-height:none;overflow:hidden;
+  height:clamp(280px,31vw,500px);max-height:500px;overflow:hidden;
 }
 .heroImage{
-  display:block;width:100%;height:auto;aspect-ratio:1672/285;object-fit:contain;object-position:center top;
+  display:block;width:100%;height:100%;object-fit:cover;object-position:top center;
   filter:drop-shadow(0 0 18px rgba(229,9,47,.24));
 }
 .heroPlayer{
@@ -75,8 +75,8 @@ body:before{
   display:flex;align-items:center;justify-content:center;
   pointer-events:none;
 }
-.heroCurrent{left:2.0%;display:none}
-.heroNext{right:2.0%;display:none}
+.heroCurrent{left:2.0%}
+.heroNext{right:2.0%}
 .heroPlayerName{
   width:78%;text-align:center;
   font-family:Arial,Helvetica,sans-serif;
@@ -181,14 +181,14 @@ button.gold{
 .masterCardGrid{grid-template-columns:repeat(5,1fr)}
 
 @media(max-width:1050px){
-  .heroBanner{height:auto;aspect-ratio:1672/285}
+  .heroBanner{height:clamp(220px,34vw,380px)}
   .heroPlayer{top:66%;height:12%}
   .game{grid-template-columns:1fr}
   .side,.center{min-height:unset}
   .mastergrid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:620px){
-  .heroBanner{height:auto;aspect-ratio:1672/285;margin-bottom:8px}
+  .heroBanner{height:clamp(180px,48vw,300px);margin-bottom:8px}
   .heroPlayerName{font-size:14px}
   .home{padding:18px}
   .die{width:170px;height:170px;font-size:95px}
@@ -223,28 +223,7 @@ button.gold{
 .joinStatus{margin-top:12px;color:#ff5872;font-weight:900;min-height:24px;text-align:center}
 .playerTop{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:18px;align-items:stretch}
 .playerOverviewPanel{margin-top:18px;padding:16px;background:#0b0b0b;border:2px solid #333;border-radius:14px;box-shadow:inset 0 0 20px #000}.overviewTitle{font-size:20px;font-weight:1000;letter-spacing:2px;text-align:center;color:#eee}.overviewSub{text-align:center;color:#aaa;margin:5px 0 12px;font-size:12px;line-height:1.35}.playerOverview{display:grid;gap:8px;max-height:280px;overflow:auto;padding-right:2px}.overviewPlayer{border:1px solid #333;border-radius:10px;padding:10px;background:#101010;display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:center}.overviewPlayer.current{border-color:#e5092f;box-shadow:0 0 12px #e5092f33}.overviewName{font-size:16px;font-weight:1000;word-break:break-word}.overviewStatus{font-size:11px;color:#aaa;font-weight:800}.overviewCard{grid-column:1 / -1;margin-top:4px;padding:6px 8px;border-radius:7px;border:1px solid #6d1727;background:#16080b;color:#ffd45b;font-size:10px;font-weight:900;line-height:1.25}.overviewCard span{display:block;color:#aaa;font-weight:700;margin-top:2px}.overviewPoints{grid-row:1 / span 2;grid-column:2;font-size:16px;font-weight:1000;color:#eee}.overviewDot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#666}.overviewPlayer.current .overviewDot{background:#e5092f;box-shadow:0 0 8px #e5092f}@media(max-width:1050px){.playerTop{grid-template-columns:1fr}}
-
-/* V2.13 – Ereigniskarten-Popup für alle Spieler */
-.eventPopup{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.82);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .22s ease}
-.eventPopup.show{opacity:1;pointer-events:auto}
-.eventPopupCard{width:min(560px,92vw);border:3px solid #e5092f;border-radius:20px;background:linear-gradient(145deg,#16070b,#050505 60%,#1b080d);box-shadow:0 0 35px #e5092f88,0 0 90px #e5092f33,inset 0 0 35px #000;padding:28px 30px;text-align:center;transform:translateY(25px) scale(.92);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
-.eventPopup.show .eventPopupCard{transform:translateY(0) scale(1)}
-.eventPopupKicker{font-size:13px;letter-spacing:4px;color:#ffd45b;font-weight:1000;margin-bottom:8px}
-.eventPopupTitle{font-size:clamp(30px,4vw,46px);line-height:1.05;font-weight:1000;color:#fff;text-shadow:0 0 12px #e5092f;margin:0}
-.eventPopupText{font-size:19px;line-height:1.35;color:#eee;margin:16px auto 0;max-width:470px}
-.eventPopupValue{font-size:22px;font-weight:1000;color:#ffd45b;margin-top:14px}
-.eventPopupClose{margin-top:22px;padding:12px 28px;border:2px solid #e5092f;border-radius:10px;background:linear-gradient(145deg,#e5092f,#720518);color:#fff;font-weight:1000;cursor:pointer;box-shadow:0 0 16px #e5092f66}
-.eventPopupClose:hover{box-shadow:0 0 26px #e5092f99;transform:translateY(-1px)}
-</style></head><body>
-<div id="eventPopup" class="eventPopup" aria-hidden="true">
-  <div class="eventPopupCard" role="dialog" aria-modal="true" aria-labelledby="eventPopupTitle">
-    <div class="eventPopupKicker">EREIGNISKARTE AUFGEDECKT</div>
-    <h2 id="eventPopupTitle" class="eventPopupTitle">–</h2>
-    <div id="eventPopupText" class="eventPopupText">–</div>
-    <div id="eventPopupValue" class="eventPopupValue"></div>
-    <button id="eventPopupClose" class="eventPopupClose" type="button">OK – KARTE GESEHEN</button>
-  </div>
-</div><div class="wrap playerPage">
+</style></head><body><div class="wrap playerPage">
 <header class="heroBanner"><img src="/assets/agrarpoly_header.png" class="heroImage" alt="AGRARPOLY"><div class="heroPlayer heroCurrent"><div class="heroPlayerName" id="heroCurrentName">–</div></div><div class="heroPlayer heroNext"><div class="heroPlayerName" id="heroNextName">–</div></div></header>
 <section id="joinPanel" class="panel red home playerJoin">
 <h2>🎮 SPIEL BEITRETEN</h2><div class="sub">Du bist auf dem Spielerlink. Der Spielcode wurde automatisch übernommen.</div>
@@ -258,11 +237,6 @@ button.gold{
 </div></section></div>
 <script src="/socket.io/socket.io.js"></script><script>
 const s=io();let myId=null,lastShown=null,joined=false;const faces=["","1","2","3","4","5","6"];
-let lastPopupCardKey=null;
-function hideEventPopup(){const el=document.getElementById('eventPopup');if(!el)return;el.classList.remove('show');el.setAttribute('aria-hidden','true');}
-function showEventPopup(card){if(!card)return;const el=document.getElementById('eventPopup');if(!el)return;document.getElementById('eventPopupTitle').textContent=card.title||'Ereigniskarte';document.getElementById('eventPopupText').textContent=card.text||'';const value=document.getElementById('eventPopupValue');value.textContent=(typeof card.value==='number'&&card.value!==0)?((card.value>0?'+':'')+card.value+' Punkte'):'';el.classList.add('show');el.setAttribute('aria-hidden','false');}
-document.addEventListener('DOMContentLoaded',()=>{const b=document.getElementById('eventPopupClose');if(b)b.addEventListener('click',hideEventPopup);const el=document.getElementById('eventPopup');if(el)el.addEventListener('click',e=>{if(e.target===el)hideEventPopup()});});
-
 const params=new URLSearchParams(location.search);const inviteCode=(params.get('code')||'').trim().toUpperCase();document.getElementById('joinCode').value=inviteCode;
 function joinGame(){const code=document.getElementById('joinCode').value.trim();const name=document.getElementById('playerName').value.trim();if(!code)return setJoinStatus('Kein Spielcode vorhanden.');if(!name)return setJoinStatus('Bitte deinen Namen eingeben.');s.emit('join',{code,name})}
 function setJoinStatus(t){document.getElementById('joinStatus').textContent=t||''}
@@ -271,15 +245,7 @@ function claimEvent(slot){s.emit('claimEvent',{slot})}
 s.on('joined',d=>{myId=d.playerId;joined=true;document.getElementById('joinPanel').style.display='none';document.getElementById('game').classList.add('show');setJoinStatus('')})
 s.on('errorMsg',m=>setJoinStatus(m))
 s.on('state',st=>{
- if(!joined)return;
- const popupCard=st.event?.revealedCard||null;
- if(popupCard){
-   const key=JSON.stringify([popupCard.title,popupCard.text,popupCard.value]);
-   if(key!==lastPopupCardKey){lastPopupCardKey=key;showEventPopup(popupCard);}
- }else{
-   lastPopupCardKey=null;
-   hideEventPopup();
- }const current=st.players[st.currentPlayer],next=st.players[st.currentPlayer+1],mine=st.players.find(p=>p.id===myId),isMine=current?.id===myId;
+ if(!joined)return;const current=st.players[st.currentPlayer],next=st.players[st.currentPlayer+1],mine=st.players.find(p=>p.id===myId),isMine=current?.id===myId;
  document.getElementById('myName').textContent=mine?.name||'–';document.getElementById('currentName').textContent=current?.name||'–';document.getElementById('nextName').textContent=next?.name||'–';document.getElementById('nextSmall').textContent=next?.name||'–';document.getElementById('heroCurrentName').textContent=current?.name||'–';document.getElementById('heroNextName').textContent=next?.name||'–';
  const canRoll=!!(isMine&&st.started&&st.released&&!mine?.rolled&&!st.event);const rb=document.getElementById('rollBtn');rb.disabled=!canRoll;rb.textContent=canRoll?'🎲 WÜRFELN':(isMine?'⏳ WARTE':'🎲 WÜRFELN');
  const shown=mine?.last||null,die=document.getElementById('die');if(shown&&shown!==lastShown){die.classList.remove('rollAnim');void die.offsetWidth;die.classList.add('rollAnim');lastShown=shown}die.textContent=shown?faces[shown]:'–';
