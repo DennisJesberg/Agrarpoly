@@ -235,6 +235,8 @@ button.gold{
   .mastergrid{grid-template-columns:1fr !important;}
 }
 
+
+.eventPopup{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.78);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .22s ease}.eventPopup.show{opacity:1;pointer-events:none}.eventPopupBox{pointer-events:auto;width:min(560px,88vw);padding:28px 30px;border:3px solid #e5092f;border-radius:22px;background:linear-gradient(145deg,#18080c,#050505);box-shadow:0 0 45px #e5092f99,0 0 100px #000,inset 0 0 30px #000;text-align:center;transform:translateY(25px) scale(.9);transition:transform .25s ease}.eventPopup.show .eventPopupBox{transform:translateY(0) scale(1)}.eventPopupLabel{font-size:13px;letter-spacing:4px;color:#ffd45b;font-weight:1000}.eventPopupTitle{margin-top:8px;font-size:34px;line-height:1.08;color:#fff;font-weight:1000;text-shadow:0 0 12px #e5092f}.eventPopupText{margin-top:14px;font-size:18px;line-height:1.35;color:#eee}.eventPopupValue{margin-top:12px;font-size:17px;font-weight:1000;color:#ffd45b}.eventPopupBtn{margin-top:22px;padding:12px 28px;border:2px solid #e5092f;border-radius:10px;background:#e5092f;color:#fff;font-weight:1000;cursor:pointer;box-shadow:0 0 18px #e5092f66}.eventPopupPlayer{margin-top:8px;color:#aaa;font-size:13px;font-weight:800}
 </style>
 
 <style id="master-three-column-fix">
@@ -481,7 +483,8 @@ button.gold{
       </section>
     </aside>
 
-    <main class="panel red center">
+    <div id="eventPopup" class="eventPopup" aria-hidden="true"><div class="eventPopupBox"><div class="eventPopupLabel">EREIGNISKARTE AUFGEDECKT</div><div id="eventPopupPlayer" class="eventPopupPlayer"></div><div id="eventPopupTitle" class="eventPopupTitle">–</div><div id="eventPopupText" class="eventPopupText"></div><div id="eventPopupValue" class="eventPopupValue"></div><button class="eventPopupBtn" type="button" onclick="closeEventPopup()">OK – KARTE GESEHEN</button></div></div>
+<main class="panel red center">
       <div id="status" class="status wait">Warte auf Spielstart…</div>
       <div id="you" class="you">Der Master steuert die Freigabe.</div>
       <div id="die" class="die">🎲</div>
@@ -611,7 +614,12 @@ function renderCards(st,isMine){
   }
 }
 
+let lastPopupKey = null;
+function showEventPopup(card, playerName){const pop=document.getElementById("eventPopup");if(!pop||!card)return;document.getElementById("eventPopupPlayer").textContent=playerName?`Gezogen von: ${playerName}`:"";document.getElementById("eventPopupTitle").textContent=card.title||"Ereigniskarte";document.getElementById("eventPopupText").textContent=card.text||"";document.getElementById("eventPopupValue").textContent=(card.value&&card.value!==0)?((card.value>0?"+":"")+card.value+" Punkte"):"";pop.classList.add("show");pop.setAttribute("aria-hidden","false");}
+function closeEventPopup(){const pop=document.getElementById("eventPopup");if(!pop)return;pop.classList.remove("show");pop.setAttribute("aria-hidden","true");}
+function checkEventPopup(st){if(!st||!st.event||!st.event.revealedCard)return;const key=`${st.event.playerId}:${st.event.revealedCard.title}:${st.event.revealedCard.text}`;if(key!==lastPopupKey){lastPopupKey=key;const pl=st.players?.find(p=>p.id===st.event.playerId);showEventPopup(st.event.revealedCard,pl?.name||"Spieler");}}
 s.on("state",st=>{
+  checkEventPopup(st);
   const current=st.players[st.currentPlayer], next=st.players[st.currentPlayer+1], mine=role==="master"&&st.masterParticipates?st.players.find(p=>p.isMasterPlayer):st.players.find(p=>p.id===myId), isMine=(role==="player"&&current?.id===myId)||(role==="master"&&st.masterParticipates&&current?.isMasterPlayer);
   document.getElementById("currentName").textContent=current?.name||"–"; document.getElementById("nextName").textContent=next?.name||"–"; document.getElementById("nextSmall").textContent=next?.name||"–"; 
   document.getElementById("myName").textContent=mine?.name||"MASTER";
