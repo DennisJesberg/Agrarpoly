@@ -26,20 +26,7 @@ button.gold{background:#b88b12;color:#fff;border:1px solid #e0bb4f}
 button.gray{background:linear-gradient(#555,#222)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.row.three{grid-template-columns:repeat(3,1fr)}
 .error{color:#ff5872;font-weight:800;min-height:24px}.hide{display:none!important}
-
-.playerInfoStrip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin:14px 0 18px;align-items:stretch}
-.playerInfoBox{min-height:150px;padding:18px 20px;border:2px solid #8d0b25;border-radius:16px;background:linear-gradient(145deg,#111,#050505);box-shadow:0 0 22px #e5092f22,inset 0 0 22px #000;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
-.playerInfoBox:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,transparent 0 48%,#fff 49% 50%,transparent 51%);background-size:90px 90px;opacity:.035}
-.playerInfoLabel{position:relative;font-size:19px;font-weight:1000;letter-spacing:2px;color:#eee;text-shadow:0 0 8px #e5092f;margin-bottom:12px}
-.playerInfoName{position:relative;width:92%;padding:12px 14px;border:2px solid #e5092f;border-radius:10px;background:linear-gradient(180deg,#181818,#080808);font-size:25px;font-weight:1000;color:#ffd45b;word-break:break-word;box-shadow:0 0 14px #e5092f33}
-.playerInfoBox.rollBox{border-color:#bdbdbd;box-shadow:0 0 22px #e5092f22,inset 0 0 22px #000}
-.playerInfoDie{position:relative;width:76px;height:76px;margin:0 auto 2px;border-radius:15px;background:linear-gradient(145deg,#fff,#c4c7ca);box-shadow:0 7px 0 #555,0 0 18px #e5092f44,inset -6px -8px 12px #888;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:11px;transform:rotate(-5deg)}
-.playerInfoPip{width:13px;height:13px;border-radius:50%;background:#101010;box-shadow:inset 2px 2px 2px #444;justify-self:center;align-self:center}
-.playerInfoPip.p1{grid-area:1/1}.playerInfoPip.p2{grid-area:1/3}.playerInfoPip.p3{grid-area:2/2}.playerInfoPip.p4{grid-area:3/1}.playerInfoPip.p5{grid-area:3/3}.playerInfoPip.p6{grid-area:2/1}.playerInfoPip.p7{grid-area:2/3}
-.playerInfoRollText{position:relative;font-size:13px;color:#aaa;font-weight:900;margin-top:10px}
-@media(max-width:1050px){.playerInfoStrip{grid-template-columns:1fr;gap:12px}.playerInfoBox{min-height:125px}}
-
-.legacySide{display:none!important}.game{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:18px;align-items:stretch}
+.game{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:18px;align-items:stretch}
 .side{min-height:430px;display:flex;flex-direction:column;justify-content:space-between}.side h2,.master h2{margin:0 0 14px;font-size:21px;letter-spacing:2px}
 .playerbox{border:2px solid #333;border-radius:14px;padding:18px;background:#0b0b0b;box-shadow:inset 0 0 20px #000}
 .playerbox.current{border-color:var(--red);box-shadow:0 0 22px #e5092f33,inset 0 0 20px #190308}
@@ -243,22 +230,7 @@ button.gold{
 .dicePopupOverlay{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.68);backdrop-filter:blur(3px);padding:18px}.dicePopupOverlay.show{display:flex}.dicePopup{position:relative;width:min(620px,94vw);aspect-ratio:1312/1199;overflow:visible;text-align:center;filter:drop-shadow(0 0 32px rgba(229,9,47,.55))}.dicePopupArt{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}.diceFace{position:absolute;left:24.5%;top:24.2%;width:51%;aspect-ratio:1;border-radius:18%;background:radial-gradient(circle at 35% 28%,#ff4b4b 0%,#e5092f 28%,#a40018 68%,#62000d 100%);border:5px solid #ff5a5a;box-shadow:inset 0 0 22px #ff7a7a88,inset 0 -14px 22px #4a0008,0 0 16px #e5092f99;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:11%;box-sizing:border-box;z-index:2}.dicePip{width:58%;aspect-ratio:1;border-radius:50%;justify-self:center;align-self:center;background:radial-gradient(circle at 35% 30%,#fff 0%,#f4f4f4 55%,#bfc2c5 100%);box-shadow:0 2px 7px #30000a,0 0 8px #fff8}.dicePip.p1{grid-area:1/1}.dicePip.p2{grid-area:1/2}.dicePip.p3{grid-area:1/3}.dicePip.p4{grid-area:2/1}.dicePip.p5{grid-area:2/2}.dicePip.p6{grid-area:2/3}.dicePip.p7{grid-area:3/1}.dicePip.p8{grid-area:3/2}.dicePip.p9{grid-area:3/3}.dicePopupNameCover{position:absolute;left:23%;top:75.7%;width:54%;height:12.2%;z-index:3;border-radius:20px;background:linear-gradient(180deg,#d9162f 0%,#8f001d 65%,#5b000c 100%);border:3px solid #ff5555;box-shadow:inset 0 0 12px #ff777766,0 0 10px #e5092f66;display:flex;align-items:center;justify-content:center}.dicePopupPlayer{font-size:clamp(15px,3vw,24px);font-weight:1000;color:#fff;text-shadow:0 2px 3px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 12px}.dicePopupClose{position:absolute;left:30%;bottom:-2%;width:40%;z-index:4;padding:11px 12px;border:2px solid #e5092f;border-radius:10px;background:#8f001d;color:#fff;font-size:14px;font-weight:1000;cursor:pointer;box-shadow:0 0 18px #e5092f55}.dicePopupClose:hover{background:#b00025;box-shadow:0 0 25px #e5092f88}@media(max-width:560px){.dicePopupClose{font-size:11px;padding:8px 6px}.dicePopupNameCover{border-radius:12px}}
 </style>
 </head><body><div class="wrap playerPage">
-<header class="heroBanner"><img src="/assets/agrarpoly_header.png" class="heroImage" alt="AGRARPOLY"></header>
-<div class="playerInfoStrip">
-  <div class="playerInfoBox">
-    <div class="playerInfoLabel">AKTUELLER SPIELER</div>
-    <div id="stripCurrentName" class="playerInfoName">–</div>
-  </div>
-  <div class="playerInfoBox rollBox">
-    <div class="playerInfoLabel">GEWÜRFELT</div>
-    <div id="stripDie" class="playerInfoDie" aria-label="Letztes Würfelergebnis"></div>
-    <div id="stripRollText" class="playerInfoRollText">Noch kein Wurf</div>
-  </div>
-  <div class="playerInfoBox">
-    <div class="playerInfoLabel">NÄCHSTER SPIELER</div>
-    <div id="stripNextName" class="playerInfoName">–</div>
-  </div>
-</div>
+<header class="heroBanner"><img src="/assets/agrarpoly_header.png" class="heroImage" alt="AGRARPOLY"><div class="heroPlayer heroCurrent"><div class="heroPlayerName" id="heroCurrentName">–</div></div><div class="heroPlayer heroNext"><div class="heroPlayerName" id="heroNextName">–</div></div></header>
 <section id="joinPanel" class="panel red home playerJoin">
 <h2>🎮 SPIEL BEITRETEN</h2><div class="sub">Du bist auf dem Spielerlink. Der Spielcode wurde automatisch übernommen.</div>
 <label>Spielcode</label><input id="joinCode" readonly placeholder="Spielcode"><label style="margin-top:14px">Dein Name</label><input id="playerName" placeholder="Dein Spielername" maxlength="30"><button class="red" style="margin-top:14px" onclick="joinGame()">🎮 BEITRETEN</button><div id="joinStatus" class="joinStatus"></div>
@@ -267,7 +239,7 @@ button.gold{
 <div class="game">
 <aside class="panel side"><div><div class="label">DEIN SPIELER</div><div id="myName" class="playername">–</div></div><div class="playerbox"><div class="label">STATUS</div><div id="myStatus" style="font-size:21px;font-weight:900">Warte auf das Spiel…</div></div><section class="playerOverviewPanel"><div class="overviewTitle">SPIELERÜBERSICHT</div><div class="overviewSub">Hier siehst du, was die anderen Spieler gerade machen.</div><div id="playerOverview" class="playerOverview"></div></section></aside>
 <main class="panel red center"><div id="status" class="status wait">Warte auf Spielstart…</div><div id="you" class="you">Der Master steuert die Freigabe.</div><div id="die" class="die">–</div><button id="rollBtn" class="roll red" onclick="roll()" disabled>WÜRFELN</button><div id="eventCard" class="eventCard"><div class="eventLabel">EREIGNISKARTEN</div><div id="eventTitle" class="eventTitle">–</div><div id="eventText" class="eventText">Der Master entscheidet, ob du die Karten sehen darfst.</div><div id="eventEffect" class="eventEffect"></div><div id="eventChoices" class="eventChoices"></div></div></main>
-<aside class="panel side legacySide" aria-hidden="true"><div><div class="label">NÄCHSTER SPIELER</div><div id="nextName" class="playername">–</div></div><div class="playerbox"><div class="label">AKTUELLER SPIELER</div><div id="currentName" style="font-size:25px;font-weight:1000">–</div><div class="nextArrow">↓</div><div class="label">DANACH</div><div id="nextSmall" style="font-size:21px;font-weight:900">–</div></div></aside>
+<aside class="panel side"><div><div class="label">NÄCHSTER SPIELER</div><div id="nextName" class="playername">–</div></div><div class="playerbox"><div class="label">AKTUELLER SPIELER</div><div id="currentName" style="font-size:25px;font-weight:1000">–</div><div class="nextArrow">↓</div><div class="label">DANACH</div><div id="nextSmall" style="font-size:21px;font-weight:900">–</div></div></aside>
 </div></section></div>
 
 <div id="dicePopupOverlay" class="dicePopupOverlay" aria-hidden="true"><div class="dicePopup" role="dialog" aria-modal="true"><img class="dicePopupArt" src="/assets/dice_popup_base.png" alt="Würfel"><div id="dicePopupDie" class="diceFace" aria-label="Würfelergebnis"></div><div class="dicePopupNameCover"><div id="dicePopupPlayer" class="dicePopupPlayer"></div></div><button id="dicePopupClose" class="dicePopupClose" type="button">✓ WÜRFEL SCHLIESSEN</button></div></div>
@@ -308,10 +280,9 @@ s.on('joined',d=>{myId=d.playerId;joined=true;document.getElementById('joinPanel
 s.on('errorMsg',m=>setJoinStatus(m))
 s.on('state',st=>{
  if(!joined)return;const current=st.players[st.currentPlayer],next=st.players[st.currentPlayer+1],mine=st.players.find(p=>p.id===myId),isMine=current?.id===myId;
- document.getElementById('myName').textContent=mine?.name||'–';document.getElementById('currentName').textContent=current?.name||'–';document.getElementById('nextName').textContent=next?.name||'–';document.getElementById('nextSmall').textContent=next?.name||'–';document.getElementById('stripCurrentName').textContent=current?.name||'–';document.getElementById('stripNextName').textContent=next?.name||'–';
+ document.getElementById('myName').textContent=mine?.name||'–';document.getElementById('currentName').textContent=current?.name||'–';document.getElementById('nextName').textContent=next?.name||'–';document.getElementById('nextSmall').textContent=next?.name||'–';document.getElementById('heroCurrentName').textContent=current?.name||'–';document.getElementById('heroNextName').textContent=next?.name||'–';
  const canRoll=!!(isMine&&st.started&&st.released&&!mine?.rolled&&!st.event);const rb=document.getElementById('rollBtn');rb.disabled=!canRoll;rb.textContent=canRoll?'🎲 WÜRFELN':(isMine?'⏳ WARTE':'🎲 WÜRFELN');
  const shown=mine?.last||null,die=document.getElementById('die');if(shown&&shown!==lastShown){die.classList.remove('rollAnim');void die.offsetWidth;die.classList.add('rollAnim');lastShown=shown}die.textContent=shown?faces[shown]:'–';
- const stripDie=document.getElementById('stripDie'),stripText=document.getElementById('stripRollText'); if(stripDie&&stripText){ const n=Number(shown||0); const pos={1:[5],2:[1,7],3:[1,5,9],4:[1,3,7,9],5:[1,3,5,7,9],6:[1,3,4,6,7,9]}; stripDie.innerHTML=n?(pos[n]||[]).map(i=>`<span class=\"playerInfoPip p${i}\"></span>`).join(''):''; stripText.textContent=n?('Letzter Wurf: '+n):'Noch kein Wurf'; }
  document.getElementById('status').textContent=!st.started?'Warte auf Spielstart…':(st.event?'EREIGNISKARTEN AUSWAHL':(st.released?(isMine?'DU BIST DRAN':'WÜRFEL FREIGEGEBEN'):'Warte auf Freigabe…'));document.getElementById('status').className='status '+(st.released?'red':'wait');
  document.getElementById('you').textContent=isMine?(st.event?(st.event.accessGranted?'Wähle eine verdeckte Ereigniskarte.':'Ereigniskarten sind noch nicht freigegeben.'):(st.released?'Du darfst würfeln!':'Du bist dran – warte auf die Freigabe.')):'Der Master steuert die Freigabe.';
  document.getElementById('myStatus').textContent=isMine?(st.event?(st.event.accessGranted?'KARTE AUSWÄHLEN':'WARTE AUF KARTENFREIGABE'):(st.released?'WÜRFELN FREIGEGEBEN':'WARTE AUF FREIGABE')):'Warte auf deinen Zug…';
