@@ -225,7 +225,11 @@ button.gold{
 .playerOverviewPanel{margin-top:18px;padding:16px;background:#0b0b0b;border:2px solid #333;border-radius:14px;box-shadow:inset 0 0 20px #000}.overviewTitle{font-size:20px;font-weight:1000;letter-spacing:2px;text-align:center;color:#eee}.overviewSub{text-align:center;color:#aaa;margin:5px 0 12px;font-size:12px;line-height:1.35}.playerOverview{display:grid;gap:8px;max-height:280px;overflow:auto;padding-right:2px}.overviewPlayer{border:1px solid #333;border-radius:10px;padding:10px;background:#101010;display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:center}.overviewPlayer.current{border-color:#e5092f;box-shadow:0 0 12px #e5092f33}.overviewName{font-size:16px;font-weight:1000;word-break:break-word}.overviewStatus{font-size:11px;color:#aaa;font-weight:800}.overviewCard{grid-column:1 / -1;margin-top:4px;padding:6px 8px;border-radius:7px;border:1px solid #6d1727;background:#16080b;color:#ffd45b;font-size:10px;font-weight:900;line-height:1.25}.overviewCard span{display:block;color:#aaa;font-weight:700;margin-top:2px}.overviewPoints{grid-row:1 / span 2;grid-column:2;font-size:16px;font-weight:1000;color:#eee}.overviewDot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#666}.overviewPlayer.current .overviewDot{background:#e5092f;box-shadow:0 0 8px #e5092f}@media(max-width:1050px){.playerTop{grid-template-columns:1fr}}
 
 .eventPopupOverlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(4px);padding:24px}.eventPopupOverlay.show{display:flex}.eventPopup{position:relative;width:min(620px,92vw);padding:28px 30px 26px;border:3px solid #c9a227;border-radius:20px;background:linear-gradient(145deg,#191307,#050505);box-shadow:0 0 45px #c9a22766,0 0 90px #e5092f33,inset 0 0 28px #000;text-align:center}.eventPopupLabel{font-size:13px;letter-spacing:4px;color:#c9a227;font-weight:1000}.eventPopupTitle{font-size:34px;font-weight:1000;color:#fff;margin-top:10px;text-shadow:0 0 14px #e5092f}.eventPopupText{font-size:18px;color:#ddd;line-height:1.45;margin-top:12px}.eventPopupClose{margin-top:22px;padding:12px 28px;border:2px solid #e5092f;border-radius:10px;background:#8f001d;color:#fff;font-size:16px;font-weight:1000;cursor:pointer;box-shadow:0 0 18px #e5092f55}.eventPopupClose:hover{background:#b00025;box-shadow:0 0 25px #e5092f88}.eventPopupPlayer{margin-top:8px;color:#aaa;font-size:13px;font-weight:900}
-</style></head><body><div class="wrap playerPage">
+</style>
+<style>
+.dicePopupOverlay{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(4px);padding:24px}.dicePopupOverlay.show{display:flex}.dicePopup{position:relative;width:min(500px,90vw);padding:30px;border:3px solid #e5092f;border-radius:20px;background:linear-gradient(145deg,#191919,#050505);box-shadow:0 0 45px #e5092f66,0 0 90px #e5092f33,inset 0 0 28px #000;text-align:center}.dicePopupLabel{font-size:13px;letter-spacing:4px;color:#c9a227;font-weight:1000}.dicePopupTitle{font-size:30px;font-weight:1000;color:#fff;margin-top:10px;text-shadow:0 0 14px #e5092f}.dicePopupValue{font-size:110px;line-height:1;font-weight:1000;color:#fff;margin:18px 0;text-shadow:0 0 25px #e5092f,0 0 50px #e5092f}.dicePopupPlayer{color:#aaa;font-size:14px;font-weight:900}.dicePopupClose{margin-top:22px;padding:12px 28px;border:2px solid #e5092f;border-radius:10px;background:#8f001d;color:#fff;font-size:16px;font-weight:1000;cursor:pointer;box-shadow:0 0 18px #e5092f55}.dicePopupClose:hover{background:#b00025;box-shadow:0 0 25px #e5092f88}
+</style>
+</head><body><div class="wrap playerPage">
 <header class="heroBanner"><img src="/assets/agrarpoly_header.png" class="heroImage" alt="AGRARPOLY"><div class="heroPlayer heroCurrent"><div class="heroPlayerName" id="heroCurrentName">–</div></div><div class="heroPlayer heroNext"><div class="heroPlayerName" id="heroNextName">–</div></div></header>
 <section id="joinPanel" class="panel red home playerJoin">
 <h2>🎮 SPIEL BEITRETEN</h2><div class="sub">Du bist auf dem Spielerlink. Der Spielcode wurde automatisch übernommen.</div>
@@ -237,9 +241,11 @@ button.gold{
 <main class="panel red center"><div id="status" class="status wait">Warte auf Spielstart…</div><div id="you" class="you">Der Master steuert die Freigabe.</div><div id="die" class="die">–</div><button id="rollBtn" class="roll red" onclick="roll()" disabled>WÜRFELN</button><div id="eventCard" class="eventCard"><div class="eventLabel">EREIGNISKARTEN</div><div id="eventTitle" class="eventTitle">–</div><div id="eventText" class="eventText">Der Master entscheidet, ob du die Karten sehen darfst.</div><div id="eventEffect" class="eventEffect"></div><div id="eventChoices" class="eventChoices"></div></div></main>
 <aside class="panel side"><div><div class="label">NÄCHSTER SPIELER</div><div id="nextName" class="playername">–</div></div><div class="playerbox"><div class="label">AKTUELLER SPIELER</div><div id="currentName" style="font-size:25px;font-weight:1000">–</div><div class="nextArrow">↓</div><div class="label">DANACH</div><div id="nextSmall" style="font-size:21px;font-weight:900">–</div></div></aside>
 </div></section></div>
+
+<div id="dicePopupOverlay" class="dicePopupOverlay" aria-hidden="true"><div class="dicePopup" role="dialog" aria-modal="true"><div class="dicePopupLabel">WÜRFELERGEBNIS</div><div id="dicePopupPlayer" class="dicePopupPlayer"></div><div id="dicePopupValue" class="dicePopupValue">–</div><button id="dicePopupClose" class="dicePopupClose" type="button">✓ WÜRFEL SCHLIESSEN</button></div></div>
 <div id="eventPopupOverlay" class="eventPopupOverlay" aria-hidden="true"><div class="eventPopup" role="dialog" aria-modal="true" aria-labelledby="eventPopupTitle"><div class="eventPopupLabel">EREIGNISKARTE GEZOGEN</div><div id="eventPopupPlayer" class="eventPopupPlayer"></div><div id="eventPopupTitle" class="eventPopupTitle">–</div><div id="eventPopupText" class="eventPopupText">–</div><button id="eventPopupClose" class="eventPopupClose" type="button">✓ KARTE SCHLIESSEN</button></div></div>
 <script src="/socket.io/socket.io.js"></script><script>
-const s=io();let myId=null,lastShown=null,joined=false;let dismissedPopupKey=null;const faces=["","1","2","3","4","5","6"];
+const s=io();let myId=null,lastShown=null,joined=false;let dismissedPopupKey=null;let dismissedDicePopupKey=null;const faces=["","1","2","3","4","5","6"];
 const params=new URLSearchParams(location.search);const inviteCode=(params.get('code')||'').trim().toUpperCase();document.getElementById('joinCode').value=inviteCode;
 function joinGame(){const code=document.getElementById('joinCode').value.trim();const name=document.getElementById('playerName').value.trim();if(!code)return setJoinStatus('Kein Spielcode vorhanden.');if(!name)return setJoinStatus('Bitte deinen Namen eingeben.');s.emit('join',{code,name})}
 function setJoinStatus(t){document.getElementById('joinStatus').textContent=t||''}
@@ -247,6 +253,12 @@ function roll(){s.emit('roll')}
 function claimEvent(slot){s.emit('claimEvent',{slot})}
 function closeEventPopupGlobal(){s.emit('closeEventPopup')}
 function closeEventPopup(){const el=document.getElementById('eventPopupOverlay');el.classList.remove('show');el.setAttribute('aria-hidden','true');}
+
+function closeDicePopupGlobal(){s.emit('closeDicePopup')}
+function closeDicePopup(){const el=document.getElementById('dicePopupOverlay');if(el){el.classList.remove('show');el.setAttribute('aria-hidden','true')}}
+function renderDicePopup(st){const overlay=document.getElementById('dicePopupOverlay');if(!overlay)return;if(!st?.event?.rollValue||st.event.dicePopupClosed){dismissedDicePopupKey=null;closeDicePopup();return}const key=String(st.event.playerId)+':'+String(st.event.rollValue);if(dismissedDicePopupKey===key){closeDicePopup();return}const player=(st.players||[]).find(p=>p.id===st.event.playerId);document.getElementById('dicePopupPlayer').textContent='Gewürfelt von: '+(player?.name||'Spieler');document.getElementById('dicePopupValue').textContent=String(st.event.rollValue);overlay.classList.add('show');overlay.setAttribute('aria-hidden','false')}
+document.getElementById('dicePopupClose')?.addEventListener('click',()=>{const st=window.__state;if(st?.event?.rollValue)dismissedDicePopupKey=String(st.event.playerId)+':'+String(st.event.rollValue);closeDicePopupGlobal()});
+
 function renderEventPopup(st){
  const overlay=document.getElementById('eventPopupOverlay');
  if(!overlay)return;
@@ -277,6 +289,7 @@ s.on('state',st=>{
  renderPlayerOverview(st);
  renderCards(st,isMine);
  window.__state=st;
+ renderDicePopup(st);
  renderEventPopup(st);
 });
 function renderPlayerOverview(st){
