@@ -409,6 +409,36 @@ button.gold{
 @media(max-width:1150px){.eventChoices{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:14px}}
 @media(max-width:800px){.eventChoices{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:12px}}
 @media(max-width:560px){.eventChoices{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px}.eventChoice{min-height:105px}}
+
+<style id="event-grid-final-fix">
+/* V2.6: the 20 selectable event cards are inside .eventGrid.
+   The previous version styled .eventChoices, but .eventChoices contains
+   the inner .eventGrid, which caused all cards to stack vertically. */
+.eventGrid{
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  grid-template-rows:repeat(4,minmax(0,1fr)) !important;
+  gap:16px !important;
+  width:100% !important;
+  margin:0 !important;
+}
+.eventGrid .eventChoice{
+  width:100% !important;
+  min-width:0 !important;
+  min-height:112px !important;
+  margin:0 !important;
+}
+@media(max-width:1150px){
+  .eventGrid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;grid-template-rows:none !important}
+}
+@media(max-width:800px){
+  .eventGrid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
+}
+@media(max-width:560px){
+  .eventGrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px !important}
+  .eventGrid .eventChoice{min-height:105px !important}
+}
+</style>
 </style>
 </head>
 <body><div class="wrap">
