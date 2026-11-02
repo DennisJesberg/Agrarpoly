@@ -68,7 +68,7 @@ body:before{
 .wrap{width:min(1680px,98vw);padding:8px 0 34px}
 .heroBanner{
   position:relative;width:100%;margin:0 auto 12px;
-  aspect-ratio:1672/300;height:auto;max-height:none;overflow:hidden;
+  aspect-ratio:1672/205;height:auto;max-height:none;overflow:hidden;
 }
 .heroImage{
   display:block;width:100%;height:100%;object-fit:cover;object-position:top center;
@@ -185,7 +185,7 @@ button.gold{
 .masterCardGrid{grid-template-columns:repeat(5,1fr)}
 
 @media(max-width:1050px){
-  .heroBanner{height:auto;aspect-ratio:1672/300}
+  .heroBanner{height:auto;aspect-ratio:1672/205}
   .heroPlayer{top:66%;height:12%}
   .game{grid-template-columns:1fr}
   .side,.center{min-height:unset}
@@ -428,6 +428,10 @@ button.gold{
 @media(max-width:1050px){.masterBoardBody{grid-template-columns:1fr}.masterSelectedCard{min-height:190px;transform:none}.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;grid-template-rows:none !important;}}
 @media(max-width:700px){.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}.masterPlayerStrip{grid-template-columns:1fr;gap:10px}.masterBoardBody{padding:10px}.masterBoardTitle{font-size:20px;padding:8px 15px;}}
 @media(max-width:500px){.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}
+/* V2.24 – Master-Panel wie die neue Referenz: Titel/Anweisung aus der Mitte entfernt. */
+.masterBoardHeader,.masterBoardTitle,.masterBoardHint{display:none !important;}
+.masterBoardBody{grid-template-columns:minmax(0,1fr) 280px;gap:18px;padding:18px;min-height:540px;}
+.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(5,minmax(0,1fr)) !important;grid-template-rows:repeat(4,minmax(105px,1fr)) !important;gap:12px !important;}
 </style>
 <style id="master-card-grid-final">
 #masterCards{width:100%;padding:18px;margin-top:18px}
@@ -493,7 +497,7 @@ button.gold{
 </head>
 <body><div class="wrap">
 <header class="heroBanner">
-  <img src="/assets/agrarpoly_header_layout_v221.png" class="heroImage" alt="AGRARPOLY Übersicht">
+  <img src="/assets/agrarpoly_header_clean_v225.png" class="heroImage" alt="AGRARPOLY Übersicht">
 </header>
 
 <section id="home" class="panel red home">
@@ -546,10 +550,6 @@ button.gold{
   <div id="master" class="panel master hide">
     <div id="masterVisual" class="masterVisual">
       <div class="masterBoard">
-        <div class="masterBoardHeader">
-          <div class="masterBoardTitle">WÄHLE EINE EREIGNISKARTE</div>
-          <div id="masterBoardHint" class="masterBoardHint">Klicke auf eine Karte, um sie aufzudecken!</div>
-        </div>
         <div class="masterBoardBody">
           <div id="masterCards" class="masterCards masterCardsVisual hide"></div>
           <div id="masterSelectedCard" class="masterSelectedCard">
