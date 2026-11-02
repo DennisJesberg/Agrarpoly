@@ -390,6 +390,44 @@ button.gold{
 </style>
 
 
+
+<style id="master-reference-layout-v222">
+/* V2.22 MASTERANSICHT – Aufbau nach der gelieferten Referenzgrafik. */
+#game.master-mode > .game{display:none !important;}
+#game.master-mode > #master{display:block !important;margin-top:0 !important;padding:12px !important;background:transparent !important;border:0 !important;box-shadow:none !important;}
+#game.master-mode > #master .masterVisual{display:block !important;}
+#game.master-mode > #master .masterControlsPanel{margin-top:18px;padding:16px;background:linear-gradient(145deg,rgba(17,17,17,.98),rgba(3,3,3,.99));border:2px solid #3f3f3f;border-radius:14px;box-shadow:0 0 0 1px #000,0 0 28px rgba(229,9,47,.14);}
+.masterBoard{border:3px solid #e5092f;border-radius:20px;background:linear-gradient(145deg,#121212,#030303);box-shadow:0 0 0 1px #000,0 0 35px rgba(229,9,47,.35),inset 0 0 35px rgba(229,9,47,.08);overflow:hidden;}
+.masterBoardHeader{text-align:center;padding:12px 18px 10px;background:linear-gradient(180deg,rgba(30,0,5,.98),rgba(8,8,8,.98));border-bottom:2px solid #a70b27;}
+.masterBoardTitle{display:inline-block;padding:9px 34px;border:2px solid #e5092f;border-radius:16px;background:linear-gradient(180deg,#7d0018,#190307);font-size:clamp(22px,2.2vw,38px);font-weight:1000;font-style:italic;letter-spacing:1px;text-shadow:0 3px 0 #000,0 0 12px #e5092f;box-shadow:0 0 18px #e5092f44;}
+.masterBoardHint{margin-top:7px;font-size:15px;font-weight:900;color:#eee;}
+.masterBoardBody{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:18px;padding:18px;align-items:stretch;}
+.masterCardsVisual{display:block !important;margin:0 !important;padding:0 !important;border:0 !important;background:transparent !important;box-shadow:none !important;min-height:0;}
+.masterCardsVisual h3{display:none !important;}
+.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(5,minmax(0,1fr)) !important;grid-template-rows:repeat(4,minmax(90px,1fr)) !important;gap:12px !important;width:100%;}
+.masterCardsVisual .masterCardItem{min-height:100px !important;padding:10px !important;border:2px solid #8d1028 !important;border-radius:10px !important;background:linear-gradient(145deg,#13080b,#050505) !important;box-shadow:inset 0 0 16px #000,0 0 10px #e5092f22 !important;text-align:center;justify-content:center;}
+.masterCardsVisual .masterCardItem:before{content:"AGRARPOLY";display:block;color:#ffd45b;font-size:11px;font-weight:1000;letter-spacing:1.5px;margin-bottom:5px;text-shadow:0 0 7px #e5092f;}
+.masterCardsVisual .masterCardItem .slot{font-size:9px;color:#777;border:0;padding:0;}
+.masterCardsVisual .masterCardItem strong{font-size:12px;line-height:1.1;margin-top:4px;}
+.masterCardsVisual .masterCardItem span{font-size:9px;line-height:1.1;margin-top:3px;max-height:30px;overflow:hidden;}
+.masterCardsVisual .masterCardItem .value{font-size:10px;margin-top:4px;padding-top:4px;}
+.masterSelectedCard{min-height:100%;border:3px solid #c9a227;border-radius:16px;background:linear-gradient(145deg,#21170a,#080706);box-shadow:0 0 25px #c9a22755,inset 0 0 25px #000;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:24px 18px;transform:rotate(2deg);}
+.masterSelectedLabel{font-size:12px;letter-spacing:2px;color:#c9a227;font-weight:1000;margin-bottom:10px;}
+.masterSelectedTitle{font-size:clamp(22px,2vw,34px);font-weight:1000;color:#fff;text-shadow:0 2px 0 #000;}
+.masterSelectedText{font-size:15px;line-height:1.35;color:#ddd;margin-top:12px;}
+.masterSelectedValue{font-size:18px;font-weight:1000;color:#ffd45b;margin-top:14px;}
+.masterPlayerStrip{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:16px;}
+.masterPlayerBar{position:relative;min-height:78px;padding:13px 24px;border:3px solid #e5092f;border-radius:16px;background:linear-gradient(180deg,#151515,#050505);box-shadow:0 0 20px #e5092f25,inset 0 0 18px #000;overflow:hidden;text-align:center;}
+.masterPlayerBar:before{content:"";position:absolute;inset:4px;border:1px solid #5f0b18;border-radius:11px;pointer-events:none;}
+.masterPlayerBar.current{border-color:#ff304f;}
+.masterPlayerBar.next{border-color:#a70b27;}
+.masterPlayerCaption{font-size:12px;font-weight:1000;letter-spacing:2px;color:#ff304f;}
+.masterPlayerBar.next .masterPlayerCaption{color:#bbb;}
+.masterPlayerName{position:relative;margin-top:5px;font-size:clamp(20px,2vw,34px);font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 3px 0 #000,0 0 10px #e5092f66;}
+@media(max-width:1050px){.masterBoardBody{grid-template-columns:1fr}.masterSelectedCard{min-height:190px;transform:none}.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;grid-template-rows:none !important;}}
+@media(max-width:700px){.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}.masterPlayerStrip{grid-template-columns:1fr;gap:10px}.masterBoardBody{padding:10px}.masterBoardTitle{font-size:20px;padding:8px 15px;}}
+@media(max-width:500px){.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}
+</style>
 <style id="master-card-grid-final">
 #masterCards{width:100%;padding:18px;margin-top:18px}
 #masterCards h3{font-size:18px;margin-bottom:14px}
@@ -505,6 +543,34 @@ button.gold{
   </div>
 
   <div id="master" class="panel master hide">
+    <div id="masterVisual" class="masterVisual">
+      <div class="masterBoard">
+        <div class="masterBoardHeader">
+          <div class="masterBoardTitle">WÄHLE EINE EREIGNISKARTE</div>
+          <div id="masterBoardHint" class="masterBoardHint">Klicke auf eine Karte, um sie aufzudecken!</div>
+        </div>
+        <div class="masterBoardBody">
+          <div id="masterCards" class="masterCards masterCardsVisual hide"></div>
+          <div id="masterSelectedCard" class="masterSelectedCard">
+            <div class="masterSelectedLabel">AUSGEWÄHLTE KARTE</div>
+            <div id="masterSelectedTitle" class="masterSelectedTitle">–</div>
+            <div id="masterSelectedText" class="masterSelectedText">Noch keine Karte aufgedeckt.</div>
+            <div id="masterSelectedValue" class="masterSelectedValue"></div>
+          </div>
+        </div>
+      </div>
+      <div class="masterPlayerStrip">
+        <div class="masterPlayerBar current">
+          <div class="masterPlayerCaption">AKTUELLER SPIELER</div>
+          <div id="masterCurrentName" class="masterPlayerName">–</div>
+        </div>
+        <div class="masterPlayerBar next">
+          <div class="masterPlayerCaption">NÄCHSTER SPIELER</div>
+          <div id="masterNextName" class="masterPlayerName">–</div>
+        </div>
+      </div>
+    </div>
+    <div class="masterControlsPanel">
     <div class="mastergrid mastergrid-top">
       <button class="red" onclick="start()">▶ SPIEL STARTEN</button>
       <button class="red" id="releaseBtn" onclick="release()">🎲 WÜRFEL FREIGEBEN</button>
@@ -556,8 +622,8 @@ button.gold{
       <div id="masterChoiceStatus" style="margin-top:9px;color:#aaa;font-weight:800">Bitte vor dem Spielstart entscheiden.</div>
     </div>
     <div id="masterInfo" style="color:#bbb;margin-bottom:12px">–</div>
-    <div id="masterCards" class="masterCards hide"></div>
     <div class="me">Der Master sieht immer, welche Karte an welchem Platz liegt. Spieler sehen die Texte erst nach ihrer Auswahl.</div>
+    </div>
   </div>
 </section>
 </div>
@@ -651,7 +717,7 @@ document.getElementById('dicePopupClose')?.addEventListener('click',()=>{const s
 
 s.on("state",st=>{
   const current=st.players[st.currentPlayer], next=st.players[st.currentPlayer+1], mine=role==="master"&&st.masterParticipates?st.players.find(p=>p.isMasterPlayer):st.players.find(p=>p.id===myId), isMine=(role==="player"&&current?.id===myId)||(role==="master"&&st.masterParticipates&&current?.isMasterPlayer);
-  document.getElementById("currentName").textContent=current?.name||"–"; document.getElementById("nextName").textContent=next?.name||"–"; document.getElementById("nextSmall").textContent=next?.name||"–";
+  document.getElementById("currentName").textContent=current?.name||"–"; document.getElementById("nextName").textContent=next?.name||"–"; document.getElementById("nextSmall").textContent=next?.name||"–"; document.getElementById("masterCurrentName")?.replaceChildren(document.createTextNode(current?.name||"–")); document.getElementById("masterNextName")?.replaceChildren(document.createTextNode(next?.name||"–"));
   document.getElementById("myName").textContent=mine?.name||"MASTER";
   const canRoll=!!(isMine&&st.started&&st.released&&!mine?.rolled);
   const rb=document.getElementById("rollBtn"); rb.disabled=!canRoll; rb.textContent=canRoll?"🎲 WÜRFELN":(isMine?"⏳ WARTE AUF FREIGABE":"🎲 WÜRFELN");
@@ -755,15 +821,49 @@ loadInviteCode();
 
 function renderMasterCards(st){
   const box=document.getElementById("masterCards");
-  if(role!=="master" || !st.event || !Array.isArray(st.event.masterCards)){ box.classList.add("hide"); box.innerHTML=""; return; }
+  const selectedTitle=document.getElementById("masterSelectedTitle");
+  const selectedText=document.getElementById("masterSelectedText");
+  const selectedValue=document.getElementById("masterSelectedValue");
+  const boardHint=document.getElementById("masterBoardHint");
+  const current=st.players?.[st.currentPlayer];
+  const next=st.players?.[st.currentPlayer+1];
+  const currentName=document.getElementById("masterCurrentName");
+  const nextName=document.getElementById("masterNextName");
+  if(currentName) currentName.textContent=current?.name||"–";
+  if(nextName) nextName.textContent=next?.name||"–";
+  if(!box)return;
+  if(role!=="master" || !st.event || !Array.isArray(st.event.masterCards)){
+    box.classList.add("hide"); box.innerHTML="";
+    if(selectedTitle)selectedTitle.textContent="–";
+    if(selectedText)selectedText.textContent="Noch keine Karte aufgedeckt.";
+    if(selectedValue)selectedValue.textContent="";
+    if(boardHint)boardHint.textContent=st.started?"Warte auf den nächsten Würfelwurf.":"Starte das Spiel, um die Ereigniskarten zu sehen.";
+    return;
+  }
   box.classList.remove("hide");
-  const current=st.players[st.currentPlayer];
-  box.innerHTML=`<h3>👑 MASTER-ANSICHT – KARTENPOSITIONEN für ${current?.name||"Spieler"}</h3><div class="masterCardGrid"></div>`;
+  box.innerHTML='<div class="masterCardGrid"></div>';
   const grid=box.querySelector(".masterCardGrid");
   st.event.masterCards.forEach(c=>{
-    const item=document.createElement("div"); item.className="masterCardItem";
-    item.innerHTML=`<div class="slot">PLATZ ${c.slot+1}</div><strong>${c.title}</strong><span>${c.text}</span><div class="value">${c.type==="doubleRoll"?"Wurf ×2":(c.type==="all"?"Alle Spieler "+(c.value>=0?"+":"")+c.value:(c.value>=0?"+":"")+c.value+" Punkte")}</div>`;
+    const item=document.createElement("div"); item.className="masterCardItem"+(st.event.revealedSlot===c.slot?" selected":"");
+    item.innerHTML=`<div class="slot">PLATZ ${c.slot+1}</div><strong>${escapeHtml(c.title)}</strong><span>${escapeHtml(c.text)}</span><div class="value">${c.type==="doubleRoll"?"Wurf ×2":(c.type==="all"?"Alle Spieler "+(c.value>=0?"+":"")+c.value:(c.value>=0?"+":"")+c.value+" Punkte")}</div>`;
     grid.appendChild(item);
   });
+  const revealed=st.event.revealedCard;
+  if(revealed){
+    if(selectedTitle)selectedTitle.textContent=revealed.title||"Ereigniskarte";
+    if(selectedText)selectedText.textContent=revealed.text||"";
+    if(selectedValue)selectedValue.textContent=revealed.type==="doubleRoll"?"Wurf ×2":(revealed.type==="all"?"Alle Spieler "+(revealed.value>=0?"+":"")+revealed.value:(revealed.value>=0?"+":"")+revealed.value+" Punkte");
+    if(boardHint)boardHint.textContent=`${current?.name||"Der aktuelle Spieler"} hat eine Karte aufgedeckt.`;
+  }else if(st.event.accessGranted){
+    if(selectedTitle)selectedTitle.textContent="KARTE FREIGEGEBEN";
+    if(selectedText)selectedText.textContent=`${current?.name||"Der aktuelle Spieler"} kann jetzt eine der 20 Karten auswählen.`;
+    if(selectedValue)selectedValue.textContent="Nur die gewählte Karte wird aufgedeckt.";
+    if(boardHint)boardHint.textContent="Klicke auf eine Karte, um sie aufzudecken!";
+  }else{
+    if(selectedTitle)selectedTitle.textContent="KARTEN GESPERRT";
+    if(selectedText)selectedText.textContent="Der Master muss die Ereigniskarten zuerst freigeben.";
+    if(selectedValue)selectedValue.textContent="";
+    if(boardHint)boardHint.textContent="Würfel freigeben und anschließend Ereigniskarten freigeben.";
+  }
 }
 </script></body></html>
