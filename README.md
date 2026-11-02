@@ -1,7 +1,7 @@
-# AGRARPOLY V2.20
+# AGRARPOLY V2.21
 
 ## Basis
-Diese Version baut ausschließlich auf dem stabilen Stand **V2.16** auf.
+Diese Version baut ausschließlich auf dem stabilen Stand **V2.20** auf.
 
 ## Neue Funktionen
 - 💾 **3 SPEICHERSLOTS**: Jeder Spielcode hat drei getrennte Speicherplätze.
@@ -37,3 +37,10 @@ npm install
 npm start
 ```
 Dann im Browser den lokalen Server öffnen.
+
+
+## V2.21 – Layout-Kopf
+- Kopfbereich an die bereitgestellte AGRARPOLY-Ereigniskarten-Vorlage angepasst.
+- Nordic-Heero und Jesberg Gaming bleiben links/rechts, AGRARPOLY mittig.
+- Ereigniskarten-Überschrift und Neon-Rahmen sind Bestandteil des neuen Kopfes.
+- Keine Änderung an Spielmechanik, Speichern/Laden oder Endlosspiel.
