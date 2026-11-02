@@ -1,14 +1,23 @@
-# AGRARPOLY V2.19
+# AGRARPOLY V2.20
 
 ## Basis
 Diese Version baut ausschließlich auf dem stabilen Stand **V2.16** auf.
 
 ## Neue Funktionen
-- 💾 **SPIEL SPEICHERN**: Der aktuelle Spielstand wird serverseitig als JSON unter `saves/<SPIELCODE>.json` gespeichert.
+- 💾 **3 SPEICHERSLOTS**: Jeder Spielcode hat drei getrennte Speicherplätze.
+- 📂 **SPEICHERSTAND LADEN**: Speicherplatz 1, 2 oder 3 kann geladen werden.
+- 🗑️ **SPEICHERSTAND LÖSCHEN**: Ein einzelner Speicherplatz kann vollständig gelöscht werden.
+- 💾 **SPIEL SPEICHERN**: Der aktuelle Spielstand wird serverseitig als JSON unter `saves/<SPIELCODE>_slot1.json`, `_slot2.json` oder `_slot3.json` gespeichert.
 - 📂 **SPIEL LADEN**: Ein gespeicherter Spielstand kann innerhalb eines laufenden Spiels geladen werden.
 - 📂 **GESPEICHERTEN SPIELSTAND LADEN**: Auf der Startseite kann ein gespeicherter Spielstand über seinen Spielcode wieder als Master geöffnet werden.
 - ♾️ **ENDLOSSPIEL**: Nach dem letzten Spieler beginnt der nächste Durchlauf automatisch. Die Rundenzahl wird erhöht.
 - 🛑 **SPIEL BEENDEN**: Nur der Master kann das laufende Spiel beenden. Der Spielstand wird dabei automatisch gespeichert.
+
+## Speicherplätze
+- **Speicherplatz 1**
+- **Speicherplatz 2**
+- **Speicherplatz 3**
+- Alte V2.19-Spielstände ohne Slot-Kennung werden beim Laden als Speicherplatz 1 erkannt.
 
 ## Wichtig
 Die bestehende Würfel-, Ereigniskarten-, Popup- und Spielerlogik von V2.16 wurde nicht neu gestaltet.

@@ -98,6 +98,7 @@ function publicState(room, socketId, role) {
 
   return {
     code: room.code,
+    saveSlot: normalizeSlot(room.saveSlot),
     started: room.started,
     released: room.released,
     currentPlayer: room.currentPlayer,
@@ -128,13 +129,44 @@ function publicState(room, socketId, role) {
   };
 }
 
-function savePath(code) {
+function normalizeSlot(slot) {
+  const n = Number(slot);
+  return Number.isInteger(n) && n >= 1 && n <= 3 ? n : 1;
+}
+
+function savePath(code, slot = 1) {
+  const roomCode = String(code).toUpperCase();
+  return path.join(saveDir, `${roomCode}_slot${normalizeSlot(slot)}.json`);
+}
+
+function legacySavePath(code) {
   return path.join(saveDir, `${String(code).toUpperCase()}.json`);
+}
+
+function slotInfo(code) {
+  return [1, 2, 3].map(slot => {
+    const file = savePath(code, slot);
+    if (fs.existsSync(file)) {
+      try {
+        const data = JSON.parse(fs.readFileSync(file, "utf8"));
+        return { slot, exists: true, round: Number(data.round) || 1, started: !!data.started, savedAt: data.savedAt || null };
+      } catch {}
+    }
+    if (slot === 1 && fs.existsSync(legacySavePath(code))) {
+      try {
+        const data = JSON.parse(fs.readFileSync(legacySavePath(code), "utf8"));
+        return { slot, exists: true, round: Number(data.round) || 1, started: !!data.started, savedAt: data.savedAt || null, legacy: true };
+      } catch {}
+    }
+    return { slot, exists: false };
+  });
 }
 
 function serializeRoom(room) {
   return {
-    version: 1,
+    version: 2,
+    saveSlot: normalizeSlot(room.saveSlot),
+    savedAt: new Date().toISOString(),
     code: room.code,
     started: room.started,
     currentPlayer: room.currentPlayer,
@@ -153,9 +185,11 @@ function serializeRoom(room) {
   };
 }
 
-function saveRoom(room) {
+function saveRoom(room, slot = room.saveSlot || 1) {
   try {
-    fs.writeFileSync(savePath(room.code), JSON.stringify(serializeRoom(room), null, 2), "utf8");
+    const saveSlot = normalizeSlot(slot);
+    room.saveSlot = saveSlot;
+    fs.writeFileSync(savePath(room.code, saveSlot), JSON.stringify(serializeRoom(room), null, 2), "utf8");
     return true;
   } catch (err) {
     console.error("[SAVE] Fehler:", err.message);
@@ -163,9 +197,12 @@ function saveRoom(room) {
   }
 }
 
-function loadRoomFromFile(code) {
+function loadRoomFromFile(code, slot = 1) {
   try {
-    const data = JSON.parse(fs.readFileSync(savePath(code), "utf8"));
+    const saveSlot = normalizeSlot(slot);
+    let file = savePath(code, saveSlot);
+    if (saveSlot === 1 && !fs.existsSync(file) && fs.existsSync(legacySavePath(code))) file = legacySavePath(code);
+    const data = JSON.parse(fs.readFileSync(file, "utf8"));
     if (!Array.isArray(data.players) || !data.players.length) return null;
     return data;
   } catch {
@@ -235,18 +272,20 @@ io.on("connection", socket => {
     socket.data.room = room.code;
     socket.data.role = "master";
     socket.data.playerId = null;
-    socket.emit("created", { code: room.code });
+    socket.emit("created", { code: room.code, slots: slotInfo(room.code) });
     broadcast(room);
   });
 
-  socket.on("loadSavedRoom", ({ code }) => {
+  socket.on("loadSavedRoom", ({ code, slot }) => {
     const roomCode = String(code || "").trim().toUpperCase();
-    const data = loadRoomFromFile(roomCode);
-    if (!data) return socket.emit("errorMsg", "Kein gespeicherter Spielstand für diesen Spielcode gefunden.");
+    const saveSlot = normalizeSlot(slot);
+    const data = loadRoomFromFile(roomCode, saveSlot);
+    if (!data) return socket.emit("errorMsg", `Kein Spielstand in Speicherplatz ${saveSlot} für diesen Spielcode gefunden.`);
     if (rooms.has(roomCode)) return socket.emit("errorMsg", "Dieses Spiel läuft bereits auf dem Server.");
 
     const room = {
       code: roomCode, master: socket.id, members: new Set([socket.id]),
+      saveSlot,
       started: !!data.started, currentPlayer: Number.isInteger(data.currentPlayer) ? data.currentPlayer : 0,
       round: Number.isInteger(data.round) ? data.round : 1, released: !!data.released,
       event: data.event || null, lastEvent: data.lastEvent || null,
@@ -264,7 +303,7 @@ io.on("connection", socket => {
     rooms.set(room.code, room);
     socket.join(room.code); socket.data.room = room.code; socket.data.role = "master";
     socket.data.playerId = room.masterParticipates ? room.masterPlayerId : null;
-    socket.emit("created", { code: room.code });
+    socket.emit("created", { code: room.code, slots: slotInfo(room.code) });
     broadcast(room);
   });
 
@@ -440,23 +479,32 @@ io.on("connection", socket => {
     room.event = null;
     room.lastEvent = null;
     room.eventDeck = makeCards();
-    saveRoom(room);
+    saveRoom(room, room.saveSlot || 1);
     broadcast(room);
   });
 
-  socket.on("saveGame", () => {
+  socket.on("getSaveSlots", () => {
     const room = rooms.get(socket.data.room);
     if (!room || socket.data.role !== "master") return;
-    const ok = saveRoom(room);
-    socket.emit("saveResult", { ok, code: room.code });
+    socket.emit("saveSlots", { code: room.code, activeSlot: room.saveSlot || 1, slots: slotInfo(room.code) });
   });
 
-  socket.on("loadGame", () => {
+  socket.on("saveGame", ({ slot } = {}) => {
     const room = rooms.get(socket.data.room);
     if (!room || socket.data.role !== "master") return;
-    const data = loadRoomFromFile(room.code);
-    if (!data) return socket.emit("loadResult", { ok: false, message: "Kein gespeicherter Spielstand für diesen Spielcode gefunden." });
+    const saveSlot = normalizeSlot(slot);
+    const ok = saveRoom(room, saveSlot);
+    socket.emit("saveResult", { ok, code: room.code, slot: saveSlot, slots: slotInfo(room.code) });
+  });
 
+  socket.on("loadGame", ({ slot } = {}) => {
+    const room = rooms.get(socket.data.room);
+    if (!room || socket.data.role !== "master") return;
+    const saveSlot = normalizeSlot(slot);
+    const data = loadRoomFromFile(room.code, saveSlot);
+    if (!data) return socket.emit("loadResult", { ok: false, slot: saveSlot, message: `Kein Spielstand in Speicherplatz ${saveSlot}.` });
+
+    room.saveSlot = saveSlot;
     room.started = !!data.started;
     room.currentPlayer = Number.isInteger(data.currentPlayer) ? data.currentPlayer : 0;
     room.round = Number.isInteger(data.round) ? data.round : 1;
@@ -483,8 +531,23 @@ io.on("connection", socket => {
     const masterPlayer = room.players.find(p => p.isMasterPlayer);
     if (masterPlayer) masterPlayer.socketId = room.masterParticipates ? socket.id : null;
     socket.data.playerId = room.masterParticipates ? room.masterPlayerId : null;
-    socket.emit("loadResult", { ok: true, code: room.code });
+    socket.emit("loadResult", { ok: true, code: room.code, slot: saveSlot, slots: slotInfo(room.code) });
     broadcast(room);
+  });
+
+  socket.on("deleteGame", ({ slot } = {}) => {
+    const room = rooms.get(socket.data.room);
+    if (!room || socket.data.role !== "master") return;
+    const saveSlot = normalizeSlot(slot);
+    try {
+      const file = savePath(room.code, saveSlot);
+      if (fs.existsSync(file)) fs.unlinkSync(file);
+      if (saveSlot === 1 && fs.existsSync(legacySavePath(room.code))) fs.unlinkSync(legacySavePath(room.code));
+      socket.emit("deleteResult", { ok: true, slot: saveSlot, slots: slotInfo(room.code) });
+    } catch (err) {
+      console.error("[DELETE SAVE] Fehler:", err.message);
+      socket.emit("deleteResult", { ok: false, slot: saveSlot, message: "Speicherstand konnte nicht gelöscht werden." });
+    }
   });
 
   socket.on("newRound", () => {

@@ -480,7 +480,7 @@ button.gold{
   <button class="red" style="margin-top:12px" onclick="join()">BEITRETEN</button>
   <div style="margin-top:22px;padding-top:18px;border-top:1px solid #292929">
     <label>Gespeicherten Spielstand laden</label>
-    <div class="row"><input id="loadCode" placeholder="Spielcode des Spielstands"><div style="display:flex;align-items:end"><button class="gold" onclick="loadSavedRoom()">📂 SPIELSTAND LADEN</button></div></div>
+    <div class="row"><input id="loadCode" placeholder="Spielcode des Spielstands"><select id="loadSlot"><option value="1">Speicherplatz 1</option><option value="2">Speicherplatz 2</option><option value="3">Speicherplatz 3</option></select><div style="display:flex;align-items:end"><button class="gold" onclick="loadSavedRoom()">📂 SPIELSTAND LADEN</button></div></div>
   </div>
   <div id="err" class="error"></div>
 </section>
@@ -522,6 +522,11 @@ button.gold{
       <button class="gray" onclick="loadGame()">📂 SPIEL LADEN</button>
       <button class="red" onclick="endGame()">🛑 SPIEL BEENDEN</button>
       <button class="gray" onclick="resetGame()">↩ ZURÜCKSETZEN</button>
+    </div>
+    <div class="shareBox" id="saveSlotsPanel" style="margin-top:14px">
+      <div class="shareTitle">💾 SPEICHERSTÄNDE</div>
+      <div class="joinHint" style="margin-bottom:12px">Drei getrennte Speicherplätze. Ein Speicherstand kann geladen oder vollständig gelöscht werden.</div>
+      <div id="saveSlots" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px"></div>
     </div>
     <h2>👑 MASTER STEUERUNG</h2>
     <div id="gameCodeBox" style="margin:10px 0 16px;padding:14px 18px;border:2px solid #d00;border-radius:12px;background:linear-gradient(135deg,#180000,#050505);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
@@ -570,7 +575,13 @@ const s=io(); let role="", myId=null, lastShown=null; const faces=["","1","2","3
 function escapeHtml(value){
   return String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;", "'":"&#39;"}[ch]));
 }
-function create(){s.emit("create",{count:document.getElementById("count").value})} function loadSavedRoom(){s.emit("loadSavedRoom",{code:document.getElementById("loadCode").value.trim()})}
+function create(){s.emit("create",{count:document.getElementById("count").value})}
+let activeSaveSlot=1;
+function loadSavedRoom(){s.emit("loadSavedRoom",{code:document.getElementById("loadCode").value.trim(),slot:Number(document.getElementById("loadSlot")?.value||1)})}
+function saveGame(slot=activeSaveSlot){activeSaveSlot=Number(slot)||1;s.emit("saveGame",{slot:activeSaveSlot})}
+function loadGame(slot=activeSaveSlot){activeSaveSlot=Number(slot)||1;s.emit("loadGame",{slot:activeSaveSlot})}
+function deleteGame(slot){slot=Number(slot)||1;if(confirm(`Speicherplatz ${slot} wirklich löschen?`))s.emit("deleteGame",{slot})}
+function renderSaveSlots(slots){const el=document.getElementById("saveSlots");if(!el)return;el.innerHTML=(slots||[1,2,3].map(slot=>({slot,exists:false}))).map(x=>{const saved=x.exists?`Gespeichert${x.round?` · Runde ${x.round}`:""}`:"Leer";const date=x.savedAt?new Date(x.savedAt).toLocaleString("de-DE"):"";return `<div style="border:1px solid #333;border-radius:10px;padding:12px;background:#090909"><div style="font-weight:1000;font-size:18px">SPEICHERPLATZ ${x.slot}</div><div style="color:${x.exists?'#8f8':'#888'};font-weight:900;margin:5px 0">${saved}</div><div style="font-size:12px;color:#777;min-height:16px">${date}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px"><button class="gold" onclick="saveGame(${x.slot})">💾 SPEICHERN</button><button class="gray" ${x.exists?'':'disabled'} onclick="loadGame(${x.slot})">📂 LADEN</button><button class="red" style="grid-column:1/-1" ${x.exists?'':'disabled'} onclick="deleteGame(${x.slot})">🗑 LÖSCHEN</button></div></div>`}).join("")}
 function getGameCode(){return document.getElementById("gameCode").textContent.trim()}
 function getPlayerLink(){const code=getGameCode(); return (!code||code==="–")?"":`${window.location.origin}/player.html?code=${encodeURIComponent(code)}`}
 async function copyText(text,success){if(!text)return false; try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text); if(success)success(); return true}}catch(e){} window.prompt("Zum Kopieren markieren:",text); return false}
@@ -582,7 +593,7 @@ function copyOverlayLink(){const link=getOverlayLink(); if(!link)return; copyTex
 function openOverlayLink(){const link=getOverlayLink(); if(link)window.open(link,"_blank")}
 function masterPlay(participate){myId=participate?0:null;s.emit("masterPlay",{participate,name:document.getElementById("masterName").value.trim()||"Master"})}
 function join(){s.emit("join",{code:document.getElementById("joinCode").value.trim(),name:document.getElementById("playerName").value.trim()})}
-function start(){s.emit("start")} function release(){s.emit("release")} function releaseEvent(){s.emit("releaseEvent")} function skipEvent(){s.emit("skipEvent")} function claimEvent(slot){s.emit("claimEvent",{slot})} function continueEvent(){s.emit("continueEvent")} function skip(){s.emit("skip")} function newRound(){s.emit("newRound")} function saveGame(){s.emit("saveGame")} function loadGame(){s.emit("loadGame")} function endGame(){if(confirm("Spiel wirklich beenden?"))s.emit("endGame")} function resetGame(){s.emit("reset")} function roll(){s.emit("roll")}
+function start(){s.emit("start")} function release(){s.emit("release")} function releaseEvent(){s.emit("releaseEvent")} function skipEvent(){s.emit("skipEvent")} function claimEvent(slot){s.emit("claimEvent",{slot})} function continueEvent(){s.emit("continueEvent")} function skip(){s.emit("skip")} function newRound(){s.emit("newRound")} function endGame(){if(confirm("Spiel wirklich beenden?"))s.emit("endGame")} function resetGame(){s.emit("reset")} function roll(){s.emit("roll")}
 s.on("created",d=>{
   role="master"; myId=null;
   document.getElementById("gameCode").textContent=d.code||"–";
@@ -591,12 +602,16 @@ s.on("created",d=>{
   updatePlayerLink(d.code);
   showGame();
   document.getElementById("master").classList.remove("hide");
+  renderSaveSlots(d.slots||[]);
+  s.emit("getSaveSlots");
 })
 s.on("joined",d=>{role="player";myId=d.playerId;showGame()})
 function updatePlayerLink(code){const link=code?`${window.location.origin}/player.html?code=${encodeURIComponent(code)}`:getPlayerLink(); const el=document.getElementById("playerLink"); if(el&&link)el.value=link; const overlay=code?`${window.location.origin}/overlay.html?code=${encodeURIComponent(code)}`:getOverlayLink(); const oe=document.getElementById("overlayLink"); if(oe&&overlay)oe.value=overlay}
 s.on("errorMsg",m=>document.getElementById("err").textContent=m)
-s.on("saveResult",r=>document.getElementById("err").textContent=r.ok?`Spielstand gespeichert (${r.code}).`:("Speichern fehlgeschlagen."))
-s.on("loadResult",r=>document.getElementById("err").textContent=r.ok?"Spielstand geladen.":(r.message||"Laden fehlgeschlagen."))
+s.on("saveSlots",r=>{renderSaveSlots(r.slots);if(r.code)activeSaveSlot=Number(r.activeSlot)||activeSaveSlot})
+s.on("saveResult",r=>{if(r.ok){activeSaveSlot=Number(r.slot)||1;document.getElementById("err").textContent=`Spielstand in Speicherplatz ${activeSaveSlot} gespeichert.`;renderSaveSlots(r.slots)}else document.getElementById("err").textContent="Speichern fehlgeschlagen."})
+s.on("loadResult",r=>{if(r.ok){activeSaveSlot=Number(r.slot)||1;document.getElementById("err").textContent=`Speicherplatz ${activeSaveSlot} geladen.`;renderSaveSlots(r.slots)}else document.getElementById("err").textContent=r.message||"Laden fehlgeschlagen."})
+s.on("deleteResult",r=>{if(r.ok){document.getElementById("err").textContent=`Speicherplatz ${r.slot} gelöscht.`;renderSaveSlots(r.slots)}else document.getElementById("err").textContent=r.message||"Löschen fehlgeschlagen."})
 function showGame(){document.getElementById("home").classList.add("hide");document.getElementById("game").classList.remove("hide")}
 function renderCards(st,isMine){
   const card=document.getElementById("eventCard"), title=document.getElementById("eventTitle"), text=document.getElementById("eventText"), effect=document.getElementById("eventEffect"), choices=document.getElementById("eventChoices");
@@ -704,7 +719,7 @@ s.on("state",st=>{
   }
   if(role==="master"){
     document.getElementById("master").classList.remove("hide");
-    document.getElementById("masterInfo").textContent=st.started?(current?`${current.name} ist aktuell an der Reihe.`:"Kein Spieler an der Reihe."):"Spiel beendet / nicht gestartet.";
+    activeSaveSlot=Number(st.saveSlot)||activeSaveSlot; document.getElementById("masterInfo").textContent=st.started?(current?`${current.name} ist aktuell an der Reihe.`:"Kein Spieler an der Reihe."):"Spiel beendet / nicht gestartet.";
     const mc=document.getElementById("masterChoice"), mcs=document.getElementById("masterChoiceStatus");
     mc.classList.toggle("hide", st.started || st.masterChoiceMade);
     if(st.masterChoiceMade){
