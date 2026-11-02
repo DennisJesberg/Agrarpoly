@@ -44,3 +44,10 @@ Dann im Browser den lokalen Server öffnen.
 - Nordic-Heero und Jesberg Gaming bleiben links/rechts, AGRARPOLY mittig.
 - Ereigniskarten-Überschrift und Neon-Rahmen sind Bestandteil des neuen Kopfes.
 - Keine Änderung an Spielmechanik, Speichern/Laden oder Endlosspiel.
+
+
+## V2.23 – Master-Panel Testlayout
+- Das große rote Master-Rechteck wurde nach unten verlängert.
+- Die 20 Ereigniskarten (5×4) liegen vollständig innerhalb dieses Panels.
+- Die ausgewählte Karte bleibt rechts innerhalb desselben Panels.
+- Spiel- und Save-Funktionen aus V2.22 bleiben unverändert.
