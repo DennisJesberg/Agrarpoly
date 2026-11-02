@@ -46,8 +46,11 @@ Dann im Browser den lokalen Server öffnen.
 - Keine Änderung an Spielmechanik, Speichern/Laden oder Endlosspiel.
 
 
-## V2.23 – Master-Panel Testlayout
+## V2.24 – Master-Panel Testlayout
 - Das große rote Master-Rechteck wurde nach unten verlängert.
 - Die 20 Ereigniskarten (5×4) liegen vollständig innerhalb dieses Panels.
 - Die ausgewählte Karte bleibt rechts innerhalb desselben Panels.
 - Spiel- und Save-Funktionen aus V2.22 bleiben unverändert.
+
+
+V2.24: Masteransicht angepasst. Der zentrale Titel „WÄHLE EINE EREIGNISKARTE“ und der Hinweistext wurden aus dem Kartenbereich entfernt. Das große rote Panel bleibt bestehen; die 20 Ereigniskarten (5×4) und die ausgewählte Karte befinden sich direkt darin.

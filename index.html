@@ -428,6 +428,10 @@ button.gold{
 @media(max-width:1050px){.masterBoardBody{grid-template-columns:1fr}.masterSelectedCard{min-height:190px;transform:none}.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;grid-template-rows:none !important;}}
 @media(max-width:700px){.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}.masterPlayerStrip{grid-template-columns:1fr;gap:10px}.masterBoardBody{padding:10px}.masterBoardTitle{font-size:20px;padding:8px 15px;}}
 @media(max-width:500px){.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}
+/* V2.24 – Master-Panel wie die neue Referenz: Titel/Anweisung aus der Mitte entfernt. */
+.masterBoardHeader,.masterBoardTitle,.masterBoardHint{display:none !important;}
+.masterBoardBody{grid-template-columns:minmax(0,1fr) 280px;gap:18px;padding:18px;min-height:540px;}
+.masterCardsVisual .masterCardGrid{grid-template-columns:repeat(5,minmax(0,1fr)) !important;grid-template-rows:repeat(4,minmax(105px,1fr)) !important;gap:12px !important;}
 </style>
 <style id="master-card-grid-final">
 #masterCards{width:100%;padding:18px;margin-top:18px}
@@ -546,10 +550,6 @@ button.gold{
   <div id="master" class="panel master hide">
     <div id="masterVisual" class="masterVisual">
       <div class="masterBoard">
-        <div class="masterBoardHeader">
-          <div class="masterBoardTitle">WÄHLE EINE EREIGNISKARTE</div>
-          <div id="masterBoardHint" class="masterBoardHint">Klicke auf eine Karte, um sie aufzudecken!</div>
-        </div>
         <div class="masterBoardBody">
           <div id="masterCards" class="masterCards masterCardsVisual hide"></div>
           <div id="masterSelectedCard" class="masterSelectedCard">
