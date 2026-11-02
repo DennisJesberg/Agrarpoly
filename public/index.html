@@ -478,6 +478,10 @@ button.gold{
   <h2>SPIEL BEITRETEN</h2>
   <div class="row"><div><label>Spielcode</label><input id="joinCode" placeholder="z. B. ABC12"></div><div><label>Dein Name</label><input id="playerName" placeholder="Dein Spielername"></div></div>
   <button class="red" style="margin-top:12px" onclick="join()">BEITRETEN</button>
+  <div style="margin-top:22px;padding-top:18px;border-top:1px solid #292929">
+    <label>Gespeicherten Spielstand laden</label>
+    <div class="row"><input id="loadCode" placeholder="Spielcode des Spielstands"><div style="display:flex;align-items:end"><button class="gold" onclick="loadSavedRoom()">📂 SPIELSTAND LADEN</button></div></div>
+  </div>
   <div id="err" class="error"></div>
 </section>
 
@@ -514,6 +518,9 @@ button.gold{
       <button class="gold" id="continueEventBtn" onclick="continueEvent()" disabled>➡️ WEITER</button>
       <button class="blue" id="skipBtn" onclick="skip()">⏭ SPIELER ÜBERSPRINGEN</button>
       <button class="gray" onclick="newRound()">↻ NEUER DURCHLAUF</button>
+      <button class="gold" onclick="saveGame()">💾 SPIEL SPEICHERN</button>
+      <button class="gray" onclick="loadGame()">📂 SPIEL LADEN</button>
+      <button class="red" onclick="endGame()">🛑 SPIEL BEENDEN</button>
       <button class="gray" onclick="resetGame()">↩ ZURÜCKSETZEN</button>
     </div>
     <h2>👑 MASTER STEUERUNG</h2>
@@ -563,7 +570,7 @@ const s=io(); let role="", myId=null, lastShown=null; const faces=["","1","2","3
 function escapeHtml(value){
   return String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;", "'":"&#39;"}[ch]));
 }
-function create(){s.emit("create",{count:document.getElementById("count").value})}
+function create(){s.emit("create",{count:document.getElementById("count").value})} function loadSavedRoom(){s.emit("loadSavedRoom",{code:document.getElementById("loadCode").value.trim()})}
 function getGameCode(){return document.getElementById("gameCode").textContent.trim()}
 function getPlayerLink(){const code=getGameCode(); return (!code||code==="–")?"":`${window.location.origin}/player.html?code=${encodeURIComponent(code)}`}
 async function copyText(text,success){if(!text)return false; try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text); if(success)success(); return true}}catch(e){} window.prompt("Zum Kopieren markieren:",text); return false}
@@ -575,7 +582,7 @@ function copyOverlayLink(){const link=getOverlayLink(); if(!link)return; copyTex
 function openOverlayLink(){const link=getOverlayLink(); if(link)window.open(link,"_blank")}
 function masterPlay(participate){myId=participate?0:null;s.emit("masterPlay",{participate,name:document.getElementById("masterName").value.trim()||"Master"})}
 function join(){s.emit("join",{code:document.getElementById("joinCode").value.trim(),name:document.getElementById("playerName").value.trim()})}
-function start(){s.emit("start")} function release(){s.emit("release")} function releaseEvent(){s.emit("releaseEvent")} function skipEvent(){s.emit("skipEvent")} function claimEvent(slot){s.emit("claimEvent",{slot})} function continueEvent(){s.emit("continueEvent")} function skip(){s.emit("skip")} function newRound(){s.emit("newRound")} function resetGame(){s.emit("reset")} function roll(){s.emit("roll")}
+function start(){s.emit("start")} function release(){s.emit("release")} function releaseEvent(){s.emit("releaseEvent")} function skipEvent(){s.emit("skipEvent")} function claimEvent(slot){s.emit("claimEvent",{slot})} function continueEvent(){s.emit("continueEvent")} function skip(){s.emit("skip")} function newRound(){s.emit("newRound")} function saveGame(){s.emit("saveGame")} function loadGame(){s.emit("loadGame")} function endGame(){if(confirm("Spiel wirklich beenden?"))s.emit("endGame")} function resetGame(){s.emit("reset")} function roll(){s.emit("roll")}
 s.on("created",d=>{
   role="master"; myId=null;
   document.getElementById("gameCode").textContent=d.code||"–";
@@ -588,6 +595,8 @@ s.on("created",d=>{
 s.on("joined",d=>{role="player";myId=d.playerId;showGame()})
 function updatePlayerLink(code){const link=code?`${window.location.origin}/player.html?code=${encodeURIComponent(code)}`:getPlayerLink(); const el=document.getElementById("playerLink"); if(el&&link)el.value=link; const overlay=code?`${window.location.origin}/overlay.html?code=${encodeURIComponent(code)}`:getOverlayLink(); const oe=document.getElementById("overlayLink"); if(oe&&overlay)oe.value=overlay}
 s.on("errorMsg",m=>document.getElementById("err").textContent=m)
+s.on("saveResult",r=>document.getElementById("err").textContent=r.ok?`Spielstand gespeichert (${r.code}).`:("Speichern fehlgeschlagen."))
+s.on("loadResult",r=>document.getElementById("err").textContent=r.ok?"Spielstand geladen.":(r.message||"Laden fehlgeschlagen."))
 function showGame(){document.getElementById("home").classList.add("hide");document.getElementById("game").classList.remove("hide")}
 function renderCards(st,isMine){
   const card=document.getElementById("eventCard"), title=document.getElementById("eventTitle"), text=document.getElementById("eventText"), effect=document.getElementById("eventEffect"), choices=document.getElementById("eventChoices");
@@ -695,7 +704,7 @@ s.on("state",st=>{
   }
   if(role==="master"){
     document.getElementById("master").classList.remove("hide");
-    document.getElementById("masterInfo").textContent=st.started?(current?`${current.name} ist aktuell an der Reihe.`:"Kein Spieler an der Reihe."):"Spiel nicht gestartet.";
+    document.getElementById("masterInfo").textContent=st.started?(current?`${current.name} ist aktuell an der Reihe.`:"Kein Spieler an der Reihe."):"Spiel beendet / nicht gestartet.";
     const mc=document.getElementById("masterChoice"), mcs=document.getElementById("masterChoiceStatus");
     mc.classList.toggle("hide", st.started || st.masterChoiceMade);
     if(st.masterChoiceMade){

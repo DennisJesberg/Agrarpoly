@@ -2,12 +2,15 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const path = require("path");
+const fs = require("fs");
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 const PORT = process.env.PORT || 3000;
 const publicDir = path.join(__dirname, "public");
+const saveDir = path.join(__dirname, "saves");
+if (!fs.existsSync(saveDir)) fs.mkdirSync(saveDir, { recursive: true });
 app.use(express.static(publicDir));
 
 // Explicit routes for Render/browser access.
@@ -125,6 +128,51 @@ function publicState(room, socketId, role) {
   };
 }
 
+function savePath(code) {
+  return path.join(saveDir, `${String(code).toUpperCase()}.json`);
+}
+
+function serializeRoom(room) {
+  return {
+    version: 1,
+    code: room.code,
+    started: room.started,
+    currentPlayer: room.currentPlayer,
+    round: room.round,
+    released: room.released,
+    event: room.event,
+    lastEvent: room.lastEvent,
+    eventDeck: room.eventDeck,
+    masterParticipates: room.masterParticipates,
+    masterChoiceMade: room.masterChoiceMade,
+    masterPlayerId: room.masterPlayerId,
+    players: room.players.map(p => ({
+      id: p.id, name: p.name, total: p.total, last: p.last, rolled: p.rolled,
+      isMasterPlayer: !!p.isMasterPlayer, eventCard: p.eventCard || null
+    }))
+  };
+}
+
+function saveRoom(room) {
+  try {
+    fs.writeFileSync(savePath(room.code), JSON.stringify(serializeRoom(room), null, 2), "utf8");
+    return true;
+  } catch (err) {
+    console.error("[SAVE] Fehler:", err.message);
+    return false;
+  }
+}
+
+function loadRoomFromFile(code) {
+  try {
+    const data = JSON.parse(fs.readFileSync(savePath(code), "utf8"));
+    if (!Array.isArray(data.players) || !data.players.length) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
 function broadcast(room) {
   for (const id of room.members) {
     io.to(id).emit("state", publicState(room, id, io.sockets.sockets.get(id)?.data?.role));
@@ -136,8 +184,16 @@ function currentPlayer(room) {
 }
 
 function advance(room) {
-  if (room.currentPlayer < room.players.length - 1) room.currentPlayer++;
-  else room.started = false;
+  if (!room.players.length) return;
+  const firstPlayer = room.masterParticipates ? room.masterPlayerId : 1;
+  if (room.currentPlayer < room.players.length - 1) {
+    room.currentPlayer++;
+  } else {
+    room.currentPlayer = firstPlayer;
+    room.round++;
+    room.players.forEach(p => { p.rolled = false; p.last = null; });
+  }
+  room.started = true;
 }
 
 
@@ -179,6 +235,35 @@ io.on("connection", socket => {
     socket.data.room = room.code;
     socket.data.role = "master";
     socket.data.playerId = null;
+    socket.emit("created", { code: room.code });
+    broadcast(room);
+  });
+
+  socket.on("loadSavedRoom", ({ code }) => {
+    const roomCode = String(code || "").trim().toUpperCase();
+    const data = loadRoomFromFile(roomCode);
+    if (!data) return socket.emit("errorMsg", "Kein gespeicherter Spielstand für diesen Spielcode gefunden.");
+    if (rooms.has(roomCode)) return socket.emit("errorMsg", "Dieses Spiel läuft bereits auf dem Server.");
+
+    const room = {
+      code: roomCode, master: socket.id, members: new Set([socket.id]),
+      started: !!data.started, currentPlayer: Number.isInteger(data.currentPlayer) ? data.currentPlayer : 0,
+      round: Number.isInteger(data.round) ? data.round : 1, released: !!data.released,
+      event: data.event || null, lastEvent: data.lastEvent || null,
+      eventDeck: Array.isArray(data.eventDeck) && data.eventDeck.length ? data.eventDeck : makeCards(),
+      masterParticipates: !!data.masterParticipates, masterChoiceMade: !!data.masterChoiceMade,
+      masterPlayerId: Number.isInteger(data.masterPlayerId) ? data.masterPlayerId : 0,
+      players: Array.isArray(data.players) ? data.players.map((p, i) => ({
+        id: Number.isInteger(p.id) ? p.id : i, name: p.name || `Spieler ${i + 1}`,
+        total: Number(p.total) || 0, last: p.last ?? null, rolled: !!p.rolled,
+        socketId: null, isMasterPlayer: !!p.isMasterPlayer, eventCard: p.eventCard || null
+      })) : []
+    };
+    const masterPlayer = room.players.find(p => p.isMasterPlayer);
+    if (masterPlayer) masterPlayer.socketId = room.masterParticipates ? socket.id : null;
+    rooms.set(room.code, room);
+    socket.join(room.code); socket.data.room = room.code; socket.data.role = "master";
+    socket.data.playerId = room.masterParticipates ? room.masterPlayerId : null;
     socket.emit("created", { code: room.code });
     broadcast(room);
   });
@@ -344,6 +429,61 @@ io.on("connection", socket => {
     room.eventDeck = makeCards();
     room.released = false;
     advance(room);
+    broadcast(room);
+  });
+
+  socket.on("endGame", () => {
+    const room = rooms.get(socket.data.room);
+    if (!room || socket.data.role !== "master") return;
+    room.started = false;
+    room.released = false;
+    room.event = null;
+    room.lastEvent = null;
+    room.eventDeck = makeCards();
+    saveRoom(room);
+    broadcast(room);
+  });
+
+  socket.on("saveGame", () => {
+    const room = rooms.get(socket.data.room);
+    if (!room || socket.data.role !== "master") return;
+    const ok = saveRoom(room);
+    socket.emit("saveResult", { ok, code: room.code });
+  });
+
+  socket.on("loadGame", () => {
+    const room = rooms.get(socket.data.room);
+    if (!room || socket.data.role !== "master") return;
+    const data = loadRoomFromFile(room.code);
+    if (!data) return socket.emit("loadResult", { ok: false, message: "Kein gespeicherter Spielstand für diesen Spielcode gefunden." });
+
+    room.started = !!data.started;
+    room.currentPlayer = Number.isInteger(data.currentPlayer) ? data.currentPlayer : 0;
+    room.round = Number.isInteger(data.round) ? data.round : 1;
+    room.released = !!data.released;
+    room.event = data.event || null;
+    room.lastEvent = data.lastEvent || null;
+    room.eventDeck = Array.isArray(data.eventDeck) && data.eventDeck.length ? data.eventDeck : makeCards();
+    room.masterParticipates = !!data.masterParticipates;
+    room.masterChoiceMade = !!data.masterChoiceMade;
+    room.masterPlayerId = Number.isInteger(data.masterPlayerId) ? data.masterPlayerId : 0;
+    if (Array.isArray(data.players)) {
+      const existingSockets = new Map(room.players.map(p => [p.id, p.socketId]));
+      room.players = data.players.map((p, i) => ({
+        id: Number.isInteger(p.id) ? p.id : i,
+        name: p.name || `Spieler ${i + 1}`,
+        total: Number(p.total) || 0,
+        last: p.last ?? null,
+        rolled: !!p.rolled,
+        socketId: existingSockets.get(Number.isInteger(p.id) ? p.id : i) || null,
+        isMasterPlayer: !!p.isMasterPlayer,
+        eventCard: p.eventCard || null
+      }));
+    }
+    const masterPlayer = room.players.find(p => p.isMasterPlayer);
+    if (masterPlayer) masterPlayer.socketId = room.masterParticipates ? socket.id : null;
+    socket.data.playerId = room.masterParticipates ? room.masterPlayerId : null;
+    socket.emit("loadResult", { ok: true, code: room.code });
     broadcast(room);
   });
 

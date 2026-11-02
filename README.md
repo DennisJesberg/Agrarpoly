@@ -1,26 +1,30 @@
-# AGRARPOLY V2.12
+# AGRARPOLY V2.19
 
-## Änderung
-- Würfel-Popup wird nach jedem Wurf bei allen verbundenen Spielern angezeigt.
-- Schließt ein Spieler das Würfel-Popup, wird es für alle Spieler im Raum geschlossen.
-- Der nächste Wurf erzeugt ein neues Würfel-Popup.
-- Der bestehende Spielablauf und der Master-Button **WEITER** bleiben erhalten.
+## Basis
+Diese Version baut ausschließlich auf dem stabilen Stand **V2.16** auf.
+
+## Neue Funktionen
+- 💾 **SPIEL SPEICHERN**: Der aktuelle Spielstand wird serverseitig als JSON unter `saves/<SPIELCODE>.json` gespeichert.
+- 📂 **SPIEL LADEN**: Ein gespeicherter Spielstand kann innerhalb eines laufenden Spiels geladen werden.
+- 📂 **GESPEICHERTEN SPIELSTAND LADEN**: Auf der Startseite kann ein gespeicherter Spielstand über seinen Spielcode wieder als Master geöffnet werden.
+- ♾️ **ENDLOSSPIEL**: Nach dem letzten Spieler beginnt der nächste Durchlauf automatisch. Die Rundenzahl wird erhöht.
+- 🛑 **SPIEL BEENDEN**: Nur der Master kann das laufende Spiel beenden. Der Spielstand wird dabei automatisch gespeichert.
+
+## Wichtig
+Die bestehende Würfel-, Ereigniskarten-, Popup- und Spielerlogik von V2.16 wurde nicht neu gestaltet.
+
+Die Speicherung verwendet das Dateisystem des Node.js-Servers. Auf Hosting-Plattformen mit flüchtigem Dateisystem, z. B. bei einem neuen Render-Deployment, kann eine lokale Speicherdatei verloren gehen. Für dauerhaftes Speichern über Deployments hinweg wäre später eine externe Datenbank oder ein persistenter Speicher sinnvoll.
 
 ## Render
-1. ZIP entpacken bzw. Projektinhalt ins GitHub-Repository übernehmen.
-2. In Render den bestehenden Web Service verwenden.
+1. Dateien ins GitHub-Repository übernehmen.
+2. Render Web Service verwenden.
 3. Root Directory leer lassen, wenn `server.js` und `package.json` im Repository-Hauptverzeichnis liegen.
 4. Build Command: `npm install`
 5. Start Command: `npm start`
 
-## Hinweis
-Diese Version baut auf V2.11 auf. Es gibt nur diese eine `README.md`.
-
-
-## V2.16
-- Neues Würfel-Popup mit weißem/silbernem Würfel in Draufsicht.
-- Spielername bleibt dynamisch.
-- Gemeinsames Schließen des Würfel-Popups bleibt erhalten.
-
-
-Änderung V2.16: Bei den Ereigniskarten im Spielerbereich werden die Zeilen „PLATZ 1–20“ nicht mehr angezeigt. Das Kartenlayout und die Spielfunktion bleiben unverändert.
+## Start lokal
+```bash
+npm install
+npm start
+```
+Dann im Browser den lokalen Server öffnen.
