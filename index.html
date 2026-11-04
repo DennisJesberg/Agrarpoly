@@ -737,7 +737,7 @@ s.on("state",st=>{
   const masterDiceStatus=document.getElementById("masterDiceStatus");
   if(masterRollBtn){masterRollBtn.disabled=!canRoll;masterRollBtn.style.display=st.masterParticipates?"inline-flex":"none";masterRollBtn.textContent=canRoll?"🎲 WÜRFELN":(isMine?"⏳ BEREIT":"🎲 WÜRFELN");}
   if(masterDieFace)masterDieFace.textContent=current?.last?faces[current.last]:"🎲";
-  if(masterDiceStatus)masterDiceStatus.textContent=!st.started?"Starte zuerst das Spiel.":(st.event?`${current?.name||"Spieler"} hat ${st.event.rollValue} gewürfelt.`):(canRoll?"Du bist dran – würfle jetzt!":(st.released?`${current?.name||"Spieler"} darf jetzt würfeln.`:"Warte auf die Würfelfreigabe."));
+  if(masterDiceStatus)masterDiceStatus.textContent=!st.started?"Starte zuerst das Spiel.":(st.event?`${current?.name||"Spieler"} hat ${st.event.rollValue} gewürfelt.`:(canRoll?"Du bist dran – würfle jetzt!":(st.released?`${current?.name||"Spieler"} darf jetzt würfeln.`:"Warte auf die Würfelfreigabe.")));
   const rb=document.getElementById("rollBtn"); rb.disabled=!canRoll; rb.textContent=canRoll?"🎲 WÜRFELN":(isMine?"⏳ WARTE AUF FREIGABE":"🎲 WÜRFELN");
   const die=document.getElementById("die"), shown=(role==="player"?mine?.last:current?.last)||null;
   if(shown&&shown!==lastShown){die.classList.remove("rollAnim");void die.offsetWidth;die.classList.add("rollAnim");lastShown=shown} die.textContent=shown?faces[shown]:"–";

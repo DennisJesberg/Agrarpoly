@@ -1,4 +1,4 @@
-# AGRARPOLY V2.29 – Master-Würfel korrigiert
+# AGRARPOLY V2.30 – Master-Würfel korrigiert
 
 ## Änderungen
 - Würfelanzeige und Würfel-Button direkt in der Master-Ansicht ergänzt.
@@ -10,3 +10,6 @@
 
 ## Render
 ZIP entpacken und den vollständigen Inhalt in das GitHub-Repository übernehmen. Anschließend Render neu deployen. Das Projektverzeichnis enthält `server.js`, `package.json` und `public/`.
+
+
+V2.30 Fehlerkorrektur: JavaScript-Syntaxfehler in der Master-Würfelstatusanzeige behoben. Dadurch werden die Client-Skripte wieder vollständig ausgeführt; insbesondere funktioniert die Spiel-Erstellung wieder.
