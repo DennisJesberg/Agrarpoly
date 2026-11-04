@@ -418,6 +418,12 @@ button.gold{
 .masterSelectedText{font-size:15px;line-height:1.35;color:#ddd;margin-top:12px;}
 .masterSelectedValue{font-size:18px;font-weight:1000;color:#ffd45b;margin-top:14px;}
 .masterPlayerStrip{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:16px;}
+.masterDicePanel{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;margin:16px auto 0;padding:14px 20px;max-width:620px;border:2px solid #a70b27;border-radius:16px;background:linear-gradient(145deg,#151515,#050505);box-shadow:0 0 22px #e5092f33,inset 0 0 18px #000;}
+.masterDiceFace{width:76px;height:76px;display:flex;align-items:center;justify-content:center;border-radius:17px;background:linear-gradient(145deg,#fff,#c5c9ce);color:#111;font-size:52px;font-weight:1000;box-shadow:0 6px 0 #666,0 0 18px #e5092f55;transform:rotate(-6deg);text-shadow:1px 2px 0 #fff;}
+.masterDiceInfo{min-width:180px;text-align:center}.masterDiceLabel{font-size:12px;font-weight:1000;letter-spacing:2px;color:#ff405c}.masterDiceStatus{font-size:14px;font-weight:800;color:#ddd;margin-top:5px}
+.masterDiceRoll{min-width:170px;padding:13px 22px!important;font-size:17px!important}
+@media(max-width:600px){.masterDicePanel{gap:12px;padding:12px}.masterDiceFace{width:64px;height:64px;font-size:44px}.masterDiceInfo{min-width:130px}}
+
 .masterPlayerBar{position:relative;min-height:78px;padding:13px 24px;border:3px solid #e5092f;border-radius:16px;background:linear-gradient(180deg,#151515,#050505);box-shadow:0 0 20px #e5092f25,inset 0 0 18px #000;overflow:hidden;text-align:center;}
 .masterPlayerBar:before{content:"";position:absolute;inset:4px;border:1px solid #5f0b18;border-radius:11px;pointer-events:none;}
 .masterPlayerBar.current{border-color:#ff304f;}
@@ -570,6 +576,11 @@ button.gold{
           <div id="masterNextName" class="masterPlayerName">–</div>
         </div>
       </div>
+      <div class="masterDicePanel" id="masterDicePanel">
+        <div class="masterDiceFace" id="masterDieFace">🎲</div>
+        <div class="masterDiceInfo"><div class="masterDiceLabel">WÜRFELERGEBNIS</div><div class="masterDiceStatus" id="masterDiceStatus">Warte auf die Würfelfreigabe.</div></div>
+        <button class="red masterDiceRoll" id="masterRollBtn" type="button" onclick="roll()" disabled>🎲 WÜRFELN</button>
+      </div>
     </div>
     <div class="masterControlsPanel">
     <div class="mastergrid mastergrid-top">
@@ -721,6 +732,12 @@ s.on("state",st=>{
   document.getElementById("currentName").textContent=current?.name||"–"; document.getElementById("nextName").textContent=next?.name||"–"; document.getElementById("nextSmall").textContent=next?.name||"–"; document.getElementById("masterCurrentName")?.replaceChildren(document.createTextNode(current?.name||"–")); document.getElementById("masterNextName")?.replaceChildren(document.createTextNode(next?.name||"–"));
   document.getElementById("myName").textContent=mine?.name||"MASTER";
   const canRoll=!!(isMine&&st.started&&st.released&&!mine?.rolled);
+  const masterRollBtn=document.getElementById("masterRollBtn");
+  const masterDieFace=document.getElementById("masterDieFace");
+  const masterDiceStatus=document.getElementById("masterDiceStatus");
+  if(masterRollBtn){masterRollBtn.disabled=!canRoll;masterRollBtn.style.display=st.masterParticipates?"inline-flex":"none";masterRollBtn.textContent=canRoll?"🎲 WÜRFELN":(isMine?"⏳ BEREIT":"🎲 WÜRFELN");}
+  if(masterDieFace)masterDieFace.textContent=current?.last?faces[current.last]:"🎲";
+  if(masterDiceStatus)masterDiceStatus.textContent=!st.started?"Starte zuerst das Spiel.":(st.event?`${current?.name||"Spieler"} hat ${st.event.rollValue} gewürfelt.`):(canRoll?"Du bist dran – würfle jetzt!":(st.released?`${current?.name||"Spieler"} darf jetzt würfeln.`:"Warte auf die Würfelfreigabe."));
   const rb=document.getElementById("rollBtn"); rb.disabled=!canRoll; rb.textContent=canRoll?"🎲 WÜRFELN":(isMine?"⏳ WARTE AUF FREIGABE":"🎲 WÜRFELN");
   const die=document.getElementById("die"), shown=(role==="player"?mine?.last:current?.last)||null;
   if(shown&&shown!==lastShown){die.classList.remove("rollAnim");void die.offsetWidth;die.classList.add("rollAnim");lastShown=shown} die.textContent=shown?faces[shown]:"–";

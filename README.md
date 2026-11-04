@@ -1,12 +1,12 @@
-# AGRARPOLY V2.28
+# AGRARPOLY V2.29 – Master-Würfel korrigiert
 
 ## Änderungen
-- Neuer Kopf aus der zuletzt bestätigten Grafik eingebaut.
-- „WÄHLE EINE EREIGNISKARTE“ und der Hinweistext sind nicht enthalten.
-- Untere rote Linien/Balken sind entfernt.
-- Kopf wird in Master-Ansicht aus `assets/agrarpoly_header_v228.png` geladen.
-- Root- und `public`-Version sind synchronisiert (Render liefert `public/index.html`).
-- Bestehende Spielfunktionen aus V2.27 bleiben erhalten.
+- Würfelanzeige und Würfel-Button direkt in der Master-Ansicht ergänzt.
+- Master kann selbst würfeln, wenn er beim Spielstart „Ja, ich spiele mit“ gewählt hat und an der Reihe ist.
+- Würfelergebnis und Status werden in der Master-Ansicht angezeigt.
+- Bei „Master spielt nicht mit“ bleibt der eigene Würfel-Button ausgeblendet; der Master gibt weiterhin die Würfel für Spieler frei.
+- Neuer Header aus V2.28 bleibt erhalten.
+- Bestehende Spiellogik, Ereigniskarten, Speicherplätze und Overlay bleiben erhalten.
 
 ## Render
-ZIP entpacken und den Inhalt in das GitHub-Repository übernehmen. Anschließend den Render-Deploy starten. Startbefehl: `npm start`.
+ZIP entpacken und den vollständigen Inhalt in das GitHub-Repository übernehmen. Anschließend Render neu deployen. Das Projektverzeichnis enthält `server.js`, `package.json` und `public/`.
