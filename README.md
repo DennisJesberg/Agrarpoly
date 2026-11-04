@@ -1,15 +1,13 @@
-# AGRARPOLY V2.30 – Master-Würfel korrigiert
+# AGRARPOLY V2.31 – Spieler- und Overlay-Kopf
 
 ## Änderungen
-- Würfelanzeige und Würfel-Button direkt in der Master-Ansicht ergänzt.
-- Master kann selbst würfeln, wenn er beim Spielstart „Ja, ich spiele mit“ gewählt hat und an der Reihe ist.
-- Würfelergebnis und Status werden in der Master-Ansicht angezeigt.
-- Bei „Master spielt nicht mit“ bleibt der eigene Würfel-Button ausgeblendet; der Master gibt weiterhin die Würfel für Spieler frei.
-- Neuer Header aus V2.28 bleibt erhalten.
-- Bestehende Spiellogik, Ereigniskarten, Speicherplätze und Overlay bleiben erhalten.
+- Der neue Kopf aus V2.28 wird jetzt auch in der Spieleransicht verwendet.
+- Derselbe Kopf wird im OBS-Overlay verwendet.
+- Die bisherigen Spiel- und Overlay-Funktionen bleiben erhalten.
+- Root- und public-Dateien sind synchronisiert.
 
 ## Render
-ZIP entpacken und den vollständigen Inhalt in das GitHub-Repository übernehmen. Anschließend Render neu deployen. Das Projektverzeichnis enthält `server.js`, `package.json` und `public/`.
-
-
-V2.30 Fehlerkorrektur: JavaScript-Syntaxfehler in der Master-Würfelstatusanzeige behoben. Dadurch werden die Client-Skripte wieder vollständig ausgeführt; insbesondere funktioniert die Spiel-Erstellung wieder.
+1. ZIP entpacken.
+2. Den Inhalt des Ordners `agrarpoly_v229` in das GitHub-Repository übernehmen.
+3. Bei Render einen neuen Deploy starten.
+4. Spieleransicht über `/player.html?code=SPIELCODE` und OBS über `/overlay.html?code=SPIELCODE` öffnen.
