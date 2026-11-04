@@ -64,7 +64,7 @@ body:before{
 .wrap{width:min(1680px,98vw);padding:8px 0 34px}
 .heroBanner{
   position:relative;width:100%;margin:0 auto 12px;
-  height:auto;aspect-ratio:2172/400;max-height:none;overflow:hidden;
+  height:auto;aspect-ratio:1844/306;max-height:none;overflow:hidden;
 }
 .heroImage{
   display:block;width:100%;height:100%;object-fit:cover;object-position:top center;
@@ -181,14 +181,14 @@ button.gold{
 .masterCardGrid{grid-template-columns:repeat(5,1fr)}
 
 @media(max-width:1050px){
-  .heroBanner{height:auto;aspect-ratio:2172/400}
+  .heroBanner{height:auto;aspect-ratio:1844/306}
   .heroPlayer{top:66%;height:12%}
   .game{grid-template-columns:1fr}
   .side,.center{min-height:unset}
   .mastergrid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:620px){
-  .heroBanner{height:auto;aspect-ratio:2172/400;margin-bottom:8px}
+  .heroBanner{height:auto;aspect-ratio:1844/306;margin-bottom:8px}
   .heroPlayerName{font-size:14px}
   .home{padding:18px}
   .die{width:170px;height:170px;font-size:95px}
@@ -226,7 +226,7 @@ button.gold{
 
 .dicePopup{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(4px);padding:20px}.dicePopup.hidden{display:none}.dicePopupBox{width:min(430px,92vw);padding:28px 24px;border:3px solid #e5092f;border-radius:20px;background:linear-gradient(145deg,#1a080c,#050505);box-shadow:0 0 45px #e5092f66,0 0 0 1px #000;text-align:center}.dicePopupLabel{font-size:14px;letter-spacing:3px;color:#aaa;font-weight:1000}.dicePopupPlayer{font-size:26px;font-weight:1000;margin-top:7px}.dicePopupDie{font-size:110px;line-height:1;margin:18px 0;text-shadow:0 0 24px #e5092f}.dicePopupValue{font-size:20px;color:#ffd45b;font-weight:1000}.dicePopupClose{margin-top:20px;max-width:280px}.dicePopupBox{pointer-events:auto}.dicePopup{pointer-events:auto}
 </style></head><body><div class="wrap playerPage">
-<header class="heroBanner"><img src="/assets/agrarpoly_header_v228.png" class="heroImage" alt="AGRARPOLY"></header>
+<header class="heroBanner"><img src="/assets/parzelle24_header_v232.png" class="heroImage" alt="AGRARPOLY"></header>
 <section id="joinPanel" class="panel red home playerJoin">
 <h2>🎮 SPIEL BEITRETEN</h2><div class="sub">Du bist auf dem Spielerlink. Der Spielcode wurde automatisch übernommen.</div>
 <label>Spielcode</label><input id="joinCode" readonly placeholder="Spielcode"><label style="margin-top:14px">Dein Name</label><input id="playerName" placeholder="Dein Spielername" maxlength="30"><button class="red" style="margin-top:14px" onclick="joinGame()">🎮 BEITRETEN</button><div id="joinStatus" class="joinStatus"></div>
