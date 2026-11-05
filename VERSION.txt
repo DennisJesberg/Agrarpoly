@@ -1,2 +1,3 @@
-PARZELLE 24 – V2.35
-Masteransicht: verdeckte Ereigniskarten ohne Platznummern und ohne PARZELLE-24-Aufschrift.
+PARZELLE 24 V2.36
+Master: 20 verdeckte Karten mit PARZELLE 24, mittig wie in Spieleransicht.
+OBS: PARZELLE 24 im Würfelbereich; vorhandenes Headerbild mit beiden Untertiteln bleibt erhalten.

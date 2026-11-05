@@ -502,7 +502,11 @@ button.gold{
 </style>
 
 <style id="master-hidden-card-choice-v233">.masterCardItem:disabled{cursor:default;opacity:.92}.masterCardItem:not(:disabled):hover{border-color:#ff304f!important;box-shadow:0 0 18px #e5092f88!important;transform:translateY(-2px)}.masterCardBackLabel{color:#ffd45b!important;letter-spacing:1.5px}.masterCardBackSub{color:#aaa!important;font-size:9px!important;letter-spacing:1px}</style>
-</head>
+<style id="master-cards-v236">
+/* V2.36: identische Beschriftung wie auf den verdeckten Spielerkarten */
+.masterCardsVisual .masterCardItem{align-items:center!important;justify-content:center!important}
+.masterCardsVisual .masterCardItem .masterCardBackLabel{display:block!important;flex:none!important;margin:0!important;padding:0!important;color:#ffd45b!important;font-size:clamp(12px,1.15vw,18px)!important;font-weight:1000!important;letter-spacing:.5px!important;line-height:1.2!important;white-space:nowrap!important;text-shadow:0 0 8px #e5092f!important}
+</style></head>
 <body><div class="wrap">
 <header class="heroBanner">
   <img src="/assets/parzelle24_header_v232.png" class="heroImage" alt="AGRARPOLY Übersicht">
@@ -870,7 +874,7 @@ function renderMasterCards(st){
     item.setAttribute("aria-label",`Verdeckte Ereigniskarte ${slot+1}`);
     item.innerHTML=st.event.revealedSlot===slot && st.event.revealedCard
       ? `<div class="slot">AUFGEDECKT</div><strong>${escapeHtml(st.event.revealedCard.title||"Ereigniskarte")}</strong><span>${escapeHtml(st.event.revealedCard.text||"")}</span>`
-      : `<span class="masterCardBackBlank" aria-label="Verdeckte Karte"></span>`;
+      : `<span class="masterCardBackLabel" aria-label="Verdeckte Karte">PARZELLE 24</span>`;
     item.disabled=!st.event.accessGranted || st.event.revealedSlot!==null;
     if(!item.disabled) item.addEventListener("click",()=>{item.disabled=true;claimEvent(slot)});
     grid.appendChild(item);
