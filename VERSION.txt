@@ -1,0 +1,2 @@
+AGRARPOLY V2.33
+Master kann verdeckte Ereigniskarten auswählen.

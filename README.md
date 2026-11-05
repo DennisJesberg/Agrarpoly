@@ -16,3 +16,10 @@
 
 ## Hinweis
 Die neue Grafik wird nur als Kopfbereich verwendet. Die dynamischen Würfelwerte und Spielerinformationen im eigentlichen Spiel bleiben unverändert.
+
+
+## V2.33 – Master wählt verdeckte Ereigniskarte
+- Master sieht nur 20 verdeckte Kartenrückseiten, keine Titel oder Effekte.
+- Nach Freigabe kann der Master eine beliebige Karte stellvertretend für den aktuellen Spieler anklicken.
+- Erst nach dem Klick wird die ausgewählte Karte für alle sichtbar.
+- Karteneffekte werden weiterhin nicht automatisch ausgeführt.

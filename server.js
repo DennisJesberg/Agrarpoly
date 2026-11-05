@@ -86,10 +86,8 @@ function publicState(room, socketId, role) {
           return revealed ? { slot: i, revealed: true, ...cardPublic(revealed) } : { slot: i, revealed: false };
         })
       : undefined,
-    // The master always sees the exact card mapping, including the hidden card texts.
-    masterCards: (role === "master" && room.event)
-      ? room.eventDeck.map((card, i) => ({ slot: i, ...cardPublic(card) }))
-      : undefined
+    // Master receives only the number of hidden slots, never their titles or effects.
+    masterCardSlots: (role === "master" && room.event) ? CARD_COUNT : undefined
   } : null;
 
   const lastEvent = room.lastEvent && (
@@ -409,12 +407,16 @@ io.on("connection", socket => {
     broadcast(room);
   });
 
-  // The player only reveals a card. No card effect is ever executed.
+  // Current player OR Master may choose a hidden card. The Master can choose on behalf
+  // of the current player without receiving the hidden card mapping beforehand.
+  // No card effect is ever executed.
   socket.on("claimEvent", ({ slot }) => {
     const room = rooms.get(socket.data.room);
-    const isMasterPlayer = room && socket.data.role === "master" && room.masterParticipates;
-    const p = room && (isMasterPlayer ? room.players.find(x => x.isMasterPlayer) : room.players[socket.data.playerId]);
-    if (!room || (!isMasterPlayer && socket.data.role !== "player") || !room.started || !room.event?.accessGranted || !p) return;
+    const isMaster = socket.data.role === "master";
+    const isMasterPlayer = isMaster && room?.masterParticipates;
+    const p = room && (isMasterPlayer ? room.players.find(x => x.isMasterPlayer) :
+      (isMaster ? room.players[room.currentPlayer] : room.players[socket.data.playerId]));
+    if (!room || (!isMaster && socket.data.role !== "player") || !room.started || !room.event?.accessGranted || !p) return;
     if (p.id !== room.currentPlayer || room.event.playerId !== p.id || room.event.revealedSlot !== null) return;
 
     const index = Number(slot);
