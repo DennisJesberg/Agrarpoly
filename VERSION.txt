@@ -1,1 +1,2 @@
-AGRARPOLY V2.34 – PARZELLE 24 Kartenbeschriftung
+PARZELLE 24 – V2.35
+Masteransicht: verdeckte Ereigniskarten ohne Platznummern und ohne PARZELLE-24-Aufschrift.
