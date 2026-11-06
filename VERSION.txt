@@ -1,5 +1,5 @@
-PARZELLE 24 V2.43
-- Mittleren dauerhaften Rahmen entfernt
-- Würfel erscheint animiert bei neuem Würfelergebnis
-- Bescheid erscheint als separates animiertes Popup nach Aufdecken
-- Spieleranzeigen links und rechts bleiben erhalten
+PARZELLE 24 V2.44
+- Spieleranzeigen mittig unter Nordic und Jesberg ausgerichtet
+- Würfel-Popup etwas weiter nach unten verschoben
+- Kopfzeile und sämtliche Header-Grafiken unverändert übernommen
+- Grundlage: V2.43
