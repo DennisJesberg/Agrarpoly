@@ -9,3 +9,6 @@ OBS-Overlay-Testversion auf Basis V2.42.
 - Spieleranzeigen links und rechts bleiben bestehen.
 
 Bitte in einer Testumgebung deployen und Würfel-/Bescheid-Übergänge in OBS prüfen.
+
+
+Version 2.45: Spielerfelder schmaler und unter den Nordic-/Jesberg-Logos zentriert; Würfel-Popup etwas tiefer. Header-Dateien und Kopfbereich bleiben unverändert.

@@ -1,5 +1,6 @@
-PARZELLE 24 V2.44
-- Spieleranzeigen mittig unter Nordic und Jesberg ausgerichtet
+PARZELLE 24 V2.45
+- Spielerfelder schmaler und mittig unter den äußeren Logos ausgerichtet
+- Mobile Spielerfelder ebenfalls an den Außenpositionen zentriert
 - Würfel-Popup etwas weiter nach unten verschoben
 - Kopfzeile und sämtliche Header-Grafiken unverändert übernommen
-- Grundlage: V2.43
+- Grundlage: V2.44
