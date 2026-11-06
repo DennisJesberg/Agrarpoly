@@ -1,2 +1,5 @@
-PARZELLE 24 V2.41
-Header/Kopfbereich in Master-, Spieler- und OBS-Ansicht um 25 Prozent in der Höhe reduziert.
+PARZELLE 24 V2.43
+- Mittleren dauerhaften Rahmen entfernt
+- Würfel erscheint animiert bei neuem Würfelergebnis
+- Bescheid erscheint als separates animiertes Popup nach Aufdecken
+- Spieleranzeigen links und rechts bleiben erhalten

@@ -1,29 +1,11 @@
-# AGRARPOLY V2.32 – PARZELLE 24 Kopf
+# PARZELLE 24 V2.43
 
-## Änderungen
-- Neuer gemeinsamer Kopf in Master-, Spieler- und OBS-Ansicht.
-- Titel „PARZELLE 24“ mit den beiden Würfeln aus dem freigegebenen Bild.
-- „Idee und Konzept“ unter Nordic Heero.
-- „Technik und Umsetzung“ unter Jesberg Gaming.
-- Die Spielflächen, Würfelanzeige, Ereigniskarten und Spielabläufe bleiben separat und dynamisch.
+OBS-Overlay-Testversion auf Basis V2.42.
 
-## Installation auf Render
-1. ZIP entpacken.
-2. Den Inhalt des Ordners `agrarpoly_v229` vollständig in das GitHub-Repository übernehmen (Repository-Wurzel, nicht den übergeordneten ZIP-Ordner).
-3. Änderungen committen und zu GitHub pushen.
-4. Render neu deployen.
-5. Spieler- und OBS-Ansicht mit einem neuen Browser-Tab bzw. Strg+F5 prüfen.
+Änderungen:
+- Mittlerer fester Rahmen und dauerhafte Statusanzeige entfernt.
+- Würfel ploppt bei einem neuen Würfelergebnis in der Bildschirmmitte auf.
+- Bescheid ploppt separat nach dem Aufdecken auf.
+- Spieleranzeigen links und rechts bleiben bestehen.
 
-## Hinweis
-Die neue Grafik wird nur als Kopfbereich verwendet. Die dynamischen Würfelwerte und Spielerinformationen im eigentlichen Spiel bleiben unverändert.
-
-
-## V2.33 – Master wählt verdeckte Ereigniskarte
-- Master sieht nur 20 verdeckte Kartenrückseiten, keine Titel oder Effekte.
-- Nach Freigabe kann der Master eine beliebige Karte stellvertretend für den aktuellen Spieler anklicken.
-- Erst nach dem Klick wird die ausgewählte Karte für alle sichtbar.
-- Karteneffekte werden weiterhin nicht automatisch ausgeführt.
-
-
-## V2.41
-Der Header/Kopfbereich wurde in Master-, Spieler- und OBS-Ansicht um 25 % in der Höhe verkleinert.
+Bitte in einer Testumgebung deployen und Würfel-/Bescheid-Übergänge in OBS prüfen.
