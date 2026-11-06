@@ -1,3 +1,2 @@
-PARZELLE 24 V2.40
-Bezeichnung „Ereigniskarte(n)“ in den sichtbaren Master-, Spieler- und OBS-Oberflächen in „Bescheid(e)“ geändert.
-Technische IDs und interne Datenstruktur unverändert.
+PARZELLE 24 V2.41
+Header/Kopfbereich in Master-, Spieler- und OBS-Ansicht um 25 Prozent in der Höhe reduziert.

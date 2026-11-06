@@ -23,3 +23,7 @@ Die neue Grafik wird nur als Kopfbereich verwendet. Die dynamischen Würfelwerte
 - Nach Freigabe kann der Master eine beliebige Karte stellvertretend für den aktuellen Spieler anklicken.
 - Erst nach dem Klick wird die ausgewählte Karte für alle sichtbar.
 - Karteneffekte werden weiterhin nicht automatisch ausgeführt.
+
+
+## V2.41
+Der Header/Kopfbereich wurde in Master-, Spieler- und OBS-Ansicht um 25 % in der Höhe verkleinert.
