@@ -1,3 +1,3 @@
-PARZELLE 24 V2.36
-Master: 20 verdeckte Karten mit PARZELLE 24, mittig wie in Spieleransicht.
-OBS: PARZELLE 24 im Würfelbereich; vorhandenes Headerbild mit beiden Untertiteln bleibt erhalten.
+PARZELLE 24 V2.40
+Bezeichnung „Ereigniskarte(n)“ in den sichtbaren Master-, Spieler- und OBS-Oberflächen in „Bescheid(e)“ geändert.
+Technische IDs und interne Datenstruktur unverändert.

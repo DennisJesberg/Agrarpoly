@@ -210,7 +210,7 @@ button.gold{
 
 
 /* ===== MASTER SPIELERÜBERSICHT – gleiche Ansicht wie beim Spieler ===== */
-.playerOverviewPanel{margin-top:18px;padding:16px;background:#0b0b0b;border:2px solid #333;border-radius:14px;box-shadow:inset 0 0 20px #000}.overviewTitle{font-size:20px;font-weight:1000;letter-spacing:2px;text-align:center;color:#eee}.overviewSub{text-align:center;color:#aaa;margin:5px 0 12px;font-size:12px;line-height:1.35}.playerOverview{display:grid;gap:8px;max-height:280px;overflow:auto;padding-right:2px}.overviewPlayer{border:1px solid #333;border-radius:10px;padding:10px;background:#101010;display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:center}.overviewPlayer.current{border-color:#e5092f;box-shadow:0 0 12px #e5092f33}.overviewName{font-size:16px;font-weight:1000;word-break:break-word}.overviewStatus{font-size:11px;color:#aaa;font-weight:800}.overviewCard{grid-column:1 / -1;margin-top:5px;padding:7px 9px;border-radius:8px;border:1px solid #6d1727;background:linear-gradient(145deg,#1a080c,#0b0506);color:#ffd45b;font-size:10px;font-weight:900;line-height:1.25;box-shadow:inset 0 0 10px #000}.overviewCard:before{content:"🃏 GEHALTENE EREIGNISKARTE";display:block;color:#e51b3e;font-size:9px;letter-spacing:1px;margin-bottom:3px}.overviewCard span{display:block;color:#aaa;font-weight:700;margin-top:2px}.overviewPoints{grid-row:1 / span 2;grid-column:2;font-size:16px;font-weight:1000;color:#eee}.overviewDot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#666}.overviewPlayer.current .overviewDot{background:#e5092f;box-shadow:0 0 8px #e5092f}
+.playerOverviewPanel{margin-top:18px;padding:16px;background:#0b0b0b;border:2px solid #333;border-radius:14px;box-shadow:inset 0 0 20px #000}.overviewTitle{font-size:20px;font-weight:1000;letter-spacing:2px;text-align:center;color:#eee}.overviewSub{text-align:center;color:#aaa;margin:5px 0 12px;font-size:12px;line-height:1.35}.playerOverview{display:grid;gap:8px;max-height:280px;overflow:auto;padding-right:2px}.overviewPlayer{border:1px solid #333;border-radius:10px;padding:10px;background:#101010;display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:center}.overviewPlayer.current{border-color:#e5092f;box-shadow:0 0 12px #e5092f33}.overviewName{font-size:16px;font-weight:1000;word-break:break-word}.overviewStatus{font-size:11px;color:#aaa;font-weight:800}.overviewCard{grid-column:1 / -1;margin-top:5px;padding:7px 9px;border-radius:8px;border:1px solid #6d1727;background:linear-gradient(145deg,#1a080c,#0b0506);color:#ffd45b;font-size:10px;font-weight:900;line-height:1.25;box-shadow:inset 0 0 10px #000}.overviewCard:before{content:"🃏 GEHALTENE BESCHEID";display:block;color:#e51b3e;font-size:9px;letter-spacing:1px;margin-bottom:3px}.overviewCard span{display:block;color:#aaa;font-weight:700;margin-top:2px}.overviewPoints{grid-row:1 / span 2;grid-column:2;font-size:16px;font-weight:1000;color:#eee}.overviewDot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#666}.overviewPlayer.current .overviewDot{background:#e5092f;box-shadow:0 0 8px #e5092f}
 
 /* ===== V2 MASTER-LAYOUT: 3 SPALTEN + STEUERUNG DIREKT DARUNTER ===== */
 .game{
@@ -550,7 +550,7 @@ button.gold{
       <div id="status" class="status wait">Warte auf Spielstart…</div>
       <div id="you" class="you">Der Master steuert die Freigabe.</div>
       <div id="die" class="die">🎲</div>
-      <button id="rollBtn" class="roll red" onclick="roll()" disabled>WÜRFELN</button><div id="eventCard" class="eventCard"><div class="eventLabel">EREIGNISKARTEN</div><div id="eventTitle" class="eventTitle">–</div><div id="eventText" class="eventText">Der Master entscheidet, ob du die Karten sehen darfst.</div><div id="eventEffect" class="eventEffect"></div><div id="eventChoices" class="eventChoices"></div></div>
+      <button id="rollBtn" class="roll red" onclick="roll()" disabled>WÜRFELN</button><div id="eventCard" class="eventCard"><div class="eventLabel">BESCHEIDE</div><div id="eventTitle" class="eventTitle">–</div><div id="eventText" class="eventText">Der Master entscheidet, ob du die Karten sehen darfst.</div><div id="eventEffect" class="eventEffect"></div><div id="eventChoices" class="eventChoices"></div></div>
     </main>
 
     <aside class="panel side">
@@ -592,7 +592,7 @@ button.gold{
     <div class="mastergrid mastergrid-top">
       <button class="red" onclick="start()">▶ SPIEL STARTEN</button>
       <button class="red" id="releaseBtn" onclick="release()">🎲 WÜRFEL FREIGEBEN</button>
-      <button class="red" id="releaseEventBtn" onclick="releaseEvent()" disabled>🃏 EREIGNISKARTEN FREIGEBEN</button>       <button class="gray" id="skipEventBtn" onclick="skipEvent()" disabled>🃏 EREIGNISKARTEN ÜBERGEHEN</button>
+      <button class="red" id="releaseEventBtn" onclick="releaseEvent()" disabled>🃏 BESCHEIDE FREIGEBEN</button>       <button class="gray" id="skipEventBtn" onclick="skipEvent()" disabled>🃏 BESCHEIDE ÜBERGEHEN</button>
       <button class="gold" id="continueEventBtn" onclick="continueEvent()" disabled>➡️ WEITER</button>
       <button class="blue" id="skipBtn" onclick="skip()">⏭ SPIELER ÜBERSPRINGEN</button>
       <button class="gray" onclick="newRound()">↻ NEUER DURCHLAUF</button>
@@ -701,25 +701,25 @@ function renderCards(st,isMine){
     }
     card.classList.add("show");
     if(isMine && st.event.accessGranted && Array.isArray(st.event.cards)){
-      title.textContent=st.event.revealedSlot===null?"WÄHLE EINE VON 20 KARTEN":"EREIGNISKARTE AUFGEDECKT";
+      title.textContent=st.event.revealedSlot===null?"WÄHLE EINE VON 20 KARTEN":"BESCHEID AUFGEDECKT";
       text.textContent=st.event.revealedSlot===null?"Die Karten sind verdeckt. Klicke auf eine Karte, um sie aufzudecken.":(st.event.revealedCard?.title||"");
       effect.textContent=st.event.revealedSlot===null?"Nur die von dir gewählte Karte wird aufgedeckt.":(st.event.revealedCard?.text||"Warte auf den Master. Die Karte wird nur aufgedeckt. Es wird kein Karteneffekt automatisch ausgeführt.");
       const grid=document.createElement("div"); grid.className="eventGrid";
       st.event.cards.forEach(c=>{
         const b=document.createElement("button"); b.className="eventChoice"+(c.revealed?" revealed":""); b.type="button";
-        b.setAttribute("aria-label",`Ereigniskarte ${c.slot+1}`);
+        b.setAttribute("aria-label",`Bescheid ${c.slot+1}`);
         if(c.revealed){ b.innerHTML=`<strong>${c.title}</strong><span>${c.text}</span>`; b.disabled=true; }
         else { b.innerHTML='<span>PARZELLE 24</span>'; b.disabled=st.event.revealedSlot!==null; b.onclick=()=>{grid.querySelectorAll("button").forEach(x=>x.disabled=true); b.innerHTML='<span>AUFDECKEN…</span>'; claimEvent(c.slot)}; }
         grid.appendChild(b);
       }); choices.appendChild(grid);
     } else {
-      title.textContent=st.event.revealedCard?"EREIGNISKARTE AUFGEDECKT":(st.event.accessGranted?"EREIGNISKARTEN FREIGEGEBEN":"EREIGNISKARTEN GESPERRT");
-      text.textContent=st.event.revealedCard?st.event.revealedCard.title:(st.event.accessGranted?"Der aktuelle Spieler kann jetzt eine von 20 verdeckten Karten auswählen.":"Der Master muss die Ereigniskarten zuerst freigeben.");
+      title.textContent=st.event.revealedCard?"BESCHEID AUFGEDECKT":(st.event.accessGranted?"BESCHEIDE FREIGEGEBEN":"BESCHEIDE GESPERRT");
+      text.textContent=st.event.revealedCard?st.event.revealedCard.title:(st.event.accessGranted?"Der aktuelle Spieler kann jetzt eine von 20 verdeckten Karten auswählen.":"Der Master muss die Bescheide zuerst freigeben.");
       effect.textContent=st.event.revealedCard?st.event.revealedCard.text:(role==="master"?(st.event.accessGranted?"Spieler darf auswählen.":"Freigabe erforderlich."):"");
     }
   } else if(st.lastEvent){
     card.classList.add("show");
-    title.textContent="EREIGNISKARTE AUFGEDECKT";
+    title.textContent="BESCHEID AUFGEDECKT";
     text.textContent=st.lastEvent.title;
     effect.textContent=st.lastEvent.text;
   } else {
@@ -747,10 +747,10 @@ s.on("state",st=>{
   const rb=document.getElementById("rollBtn"); rb.disabled=!canRoll; rb.textContent=canRoll?"🎲 WÜRFELN":(isMine?"⏳ WARTE AUF FREIGABE":"🎲 WÜRFELN");
   const die=document.getElementById("die"), shown=(role==="player"?mine?.last:current?.last)||null;
   if(shown&&shown!==lastShown){die.classList.remove("rollAnim");void die.offsetWidth;die.classList.add("rollAnim");lastShown=shown} die.textContent=shown?faces[shown]:"–";
-  document.getElementById("status").textContent=!st.started?"Warte auf Spielstart…":(st.event?"EREIGNISKARTEN AUSWAHL":(st.released?"WÜRFEL FREIGEGEBEN":"Warte auf Freigabe…"));
+  document.getElementById("status").textContent=!st.started?"Warte auf Spielstart…":(st.event?"BESCHEIDE AUSWAHL":(st.released?"WÜRFEL FREIGEGEBEN":"Warte auf Freigabe…"));
   document.getElementById("status").className="status "+(st.released?"red":"wait");
-  document.getElementById("you").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"Du bist dran – zuerst Ereigniskarte abwarten.":(st.released?"Du bist dran – du darfst würfeln!":"Warte auf die Würfelfreigabe.")):"Du bist der Master – du steuerst die Freigabe."):(isMine?(st.event?(st.event.accessGranted?"Wähle eine verdeckte Ereigniskarte.":"Ereigniskarten sind noch nicht freigegeben."):(st.released?"Du bist dran – du darfst würfeln!":"Du bist dran – warte auf die Freigabe.")):"Der Master steuert die Freigabe.");
-  document.getElementById("myStatus").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"EREIGNISKARTE":(st.released?"WÜRFELN FREIGEGEBEN":"WARTE AUF FREIGABE")):"MASTER-STEUERUNG"):(isMine?(st.event?(st.event.accessGranted?"KARTE AUSWÄHLEN":"WARTE AUF KARTENFREIGABE"):(st.released?"WÜRFEL FREIGEGEBEN":"Warte auf Freigabe…")):"Warte auf deinen Zug…");
+  document.getElementById("you").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"Du bist dran – zuerst Bescheid abwarten.":(st.released?"Du bist dran – du darfst würfeln!":"Warte auf die Würfelfreigabe.")):"Du bist der Master – du steuerst die Freigabe."):(isMine?(st.event?(st.event.accessGranted?"Wähle eine verdeckte Bescheid.":"Bescheide sind noch nicht freigegeben."):(st.released?"Du bist dran – du darfst würfeln!":"Du bist dran – warte auf die Freigabe.")):"Der Master steuert die Freigabe.");
+  document.getElementById("myStatus").textContent=role==="master"?(st.masterParticipates&&isMine?(st.event?"BESCHEID":(st.released?"WÜRFELN FREIGEGEBEN":"WARTE AUF FREIGABE")):"MASTER-STEUERUNG"):(isMine?(st.event?(st.event.accessGranted?"KARTE AUSWÄHLEN":"WARTE AUF KARTENFREIGABE"):(st.released?"WÜRFEL FREIGEGEBEN":"Warte auf Freigabe…")):"Warte auf deinen Zug…");
   renderCards(st,isMine);
   renderPlayerOverview(st);
   window.__state=st;
@@ -813,7 +813,7 @@ s.on("state",st=>{
     document.getElementById("releaseBtn").disabled=!st.started||st.released||!!st.event||!current;
     document.getElementById("releaseBtn").textContent=st.released?"✅ WÜRFEL FREIGEGEBEN":"🎲 WÜRFEL FREIGEBEN";
     const pending=!!st.event; document.getElementById("releaseEventBtn").disabled=!st.started||!pending||!!st.event?.accessGranted||!!st.event?.revealedCard;
-    document.getElementById("releaseEventBtn").textContent=st.event?.accessGranted?"✅ KARTEN FREIGEGEBEN":"🃏 EREIGNISKARTEN FREIGEBEN";
+    document.getElementById("releaseEventBtn").textContent=st.event?.accessGranted?"✅ KARTEN FREIGEGEBEN":"🃏 BESCHEIDE FREIGEBEN";
     document.getElementById("skipEventBtn").disabled=!st.started||!pending;
     const continueBtn=document.getElementById("continueEventBtn"); continueBtn.disabled=!st.started||!st.event?.revealedCard;
     continueBtn.textContent=st.event?.revealedCard?"➡️ WEITER":"➡️ WEITER";
@@ -830,7 +830,7 @@ function renderPlayerOverview(st){
     row.className="overviewPlayer"+(p.active?" current":"");
     let status="Wartet auf seinen Zug";
     if(!p.connected) status="Nicht verbunden";
-    else if(p.active && st.event) status=st.event.accessGranted?"Wählt eine Ereigniskarte":"Wartet auf Kartenfreigabe";
+    else if(p.active && st.event) status=st.event.accessGranted?"Wählt eine Bescheid":"Wartet auf Kartenfreigabe";
     else if(p.active && st.released && !p.rolled) status="Ist zum Würfeln dran";
     else if(p.active) status="Wartet auf Freigabe";
     else if(p.rolled) status="Zug abgeschlossen";
@@ -861,7 +861,7 @@ function renderMasterCards(st){
     if(selectedTitle)selectedTitle.textContent="–";
     if(selectedText)selectedText.textContent="Noch keine Karte aufgedeckt.";
     if(selectedValue)selectedValue.textContent="";
-    if(boardHint)boardHint.textContent=st.started?"Warte auf den nächsten Würfelwurf.":"Starte das Spiel, um die Ereigniskarten zu sehen.";
+    if(boardHint)boardHint.textContent=st.started?"Warte auf den nächsten Würfelwurf.":"Starte das Spiel, um die Bescheide zu sehen.";
     return;
   }
   box.classList.remove("hide");
@@ -871,9 +871,9 @@ function renderMasterCards(st){
     const item=document.createElement("button");
     item.type="button";
     item.className="masterCardItem"+(st.event.revealedSlot===slot?" selected":"");
-    item.setAttribute("aria-label",`Verdeckte Ereigniskarte ${slot+1}`);
+    item.setAttribute("aria-label",`Verdeckte Bescheid ${slot+1}`);
     item.innerHTML=st.event.revealedSlot===slot && st.event.revealedCard
-      ? `<div class="slot">AUFGEDECKT</div><strong>${escapeHtml(st.event.revealedCard.title||"Ereigniskarte")}</strong><span>${escapeHtml(st.event.revealedCard.text||"")}</span>`
+      ? `<div class="slot">AUFGEDECKT</div><strong>${escapeHtml(st.event.revealedCard.title||"Bescheid")}</strong><span>${escapeHtml(st.event.revealedCard.text||"")}</span>`
       : `<span class="masterCardBackLabel" aria-label="Verdeckte Karte">PARZELLE 24</span>`;
     item.disabled=!st.event.accessGranted || st.event.revealedSlot!==null;
     if(!item.disabled) item.addEventListener("click",()=>{item.disabled=true;claimEvent(slot)});
@@ -881,7 +881,7 @@ function renderMasterCards(st){
   }
   const revealed=st.event.revealedCard;
   if(revealed){
-    if(selectedTitle)selectedTitle.textContent=revealed.title||"Ereigniskarte";
+    if(selectedTitle)selectedTitle.textContent=revealed.title||"Bescheid";
     if(selectedText)selectedText.textContent=revealed.text||"";
     if(selectedValue)selectedValue.textContent=revealed.type==="doubleRoll"?"Wurf ×2":(revealed.type==="all"?"Alle Spieler "+(revealed.value>=0?"+":"")+revealed.value:(revealed.value>=0?"+":"")+revealed.value+" Punkte");
     if(boardHint)boardHint.textContent=`${current?.name||"Der aktuelle Spieler"} hat eine Karte aufgedeckt.`;
@@ -892,9 +892,9 @@ function renderMasterCards(st){
     if(boardHint)boardHint.textContent="Wähle eine verdeckte Karte – der Inhalt bleibt bis zum Klick geheim.";
   }else{
     if(selectedTitle)selectedTitle.textContent="KARTEN GESPERRT";
-    if(selectedText)selectedText.textContent="Der Master muss die Ereigniskarten zuerst freigeben.";
+    if(selectedText)selectedText.textContent="Der Master muss die Bescheide zuerst freigeben.";
     if(selectedValue)selectedValue.textContent="";
-    if(boardHint)boardHint.textContent="Würfel freigeben und anschließend Ereigniskarten freigeben.";
+    if(boardHint)boardHint.textContent="Würfel freigeben und anschließend Bescheide freigeben.";
   }
 }
 </script></body></html>
