@@ -1,6 +1,6 @@
-PARZELLE 24 V2.47
-- Spielerrahmen im OBS-/Browser-Overlay weitere 60 px nach unten verschoben (Desktop)
-- Mobile Spielerrahmen ebenfalls weitere 60 px nach unten verschoben
-- Ausschliesslich CSS-Positionierung in public/overlay.html angepasst
+PARZELLE 24 V2.48
+- Spielerrahmen um 30 px nach oben korrigiert (Desktop)
+- Mobile Spielerrahmen ebenfalls um 30 px nach oben korrigiert
+- Ausschliesslich CSS-Positionierung der .playerTag-Elemente in public/overlay.html angepasst
 - Kopfzeile, Header-Grafiken, Würfel und Bescheid-Popup unverändert
-- Grundlage: V2.46
+- Grundlage: V2.47
