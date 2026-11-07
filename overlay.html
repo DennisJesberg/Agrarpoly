@@ -27,11 +27,25 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent
 <div id="others" class="others" aria-live="polite"></div>
 </div>
 <script>
-const p=new URLSearchParams(location.search);const server=p.get('server')||location.origin;const roomCode=p.get('code')||p.get('room')||'';const faces=['','1','2','3','4','5','6'];let socket,last=null;let showOthers=p.get('showOthers')!=='0';
-const sw=document.getElementById('otherSwitch');const others=document.getElementById('others');
-function setSwitch(on){showOthers=!!on;sw.classList.toggle('on',showOthers);sw.classList.toggle('off',!showOthers);sw.setAttribute('aria-pressed',String(showOthers));sw.querySelector('.switchTrack').firstElementChild.textContent=showOthers?'EIN':'AUS';renderOthers(window.__state);}
-sw.addEventListener('click',()=>setSwitch(!showOthers));
-function renderOthers(st){if(!st||!showOthers){others.classList.remove('show');others.innerHTML='';return}const currentId=st.currentPlayer;const nextId=st.currentPlayer+1;const list=st.players.filter(x=>x.id!==currentId&&x.id!==nextId);others.innerHTML='';list.forEach(x=>{const el=document.createElement('div');el.className='other'+(x.connected?'':' disconnected');el.innerHTML='<div class="role">'+(x.id===st.masterPlayerId?'MASTER-SPIELER':'SPIELER')+'</div><div class="oname">'+escapeHtml(x.name)+'</div>';others.appendChild(el)});others.classList.toggle('show',list.length>0)}
+const p=new URLSearchParams(location.search);const server=p.get('server')||location.origin;const roomCode=p.get('code')||p.get('room')||'';const faces=['','1','2','3','4','5','6'];let socket,lastRollKey=null,hideDieTimer=null;
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function connect(){const sc=document.createElement('script');sc.src=server.replace(/\/$/,'')+'/socket.io/socket.io.js';sc.onload=()=>{socket=io(server);socket.on('connect',()=>{if(roomCode)socket.emit('observe',{code:roomCode})});socket.on('state',st=>{window.__state=st;const c=st.players[st.currentPlayer],n=st.players[st.currentPlayer+1];document.getElementById('current').textContent=c?.name||'–';document.getElementById('next').textContent=n?.name||'–';renderOthers(st);const die=document.getElementById('die');const value=c?.last||null;if(value&&value!==last){die.classList.remove('show');void die.offsetWidth;die.classList.add('show');last=value}die.textContent=value?faces[value]:'–';const card=document.getElementById('eventCard');card.classList.remove('show');if(st.event?.revealedCard){document.getElementById('eventTitle').textContent=st.event.revealedCard.title;document.getElementById('eventText').textContent=st.event.revealedCard.text;document.getElementById('eventEffect').textContent='Nur aufgedeckt – kein automatischer Karteneffekt.';card.classList.add('show')}})};document.head.appendChild(sc)}connect();setSwitch(showOthers);
+function updateOverlayDie(st){
+ const die=document.getElementById('die');if(!die)return;
+ const ev=st?.event;
+ if(!ev?.rollValue||ev.dicePopupClosed){
+  if(hideDieTimer){clearTimeout(hideDieTimer);hideDieTimer=null;}
+  die.classList.remove('show');
+  if(!ev)lastRollKey=null;
+  return;
+ }
+ const key=[st.round??'',ev.playerId,ev.rollValue].join(':');
+ if(key===lastRollKey)return;
+ lastRollKey=key;
+ if(hideDieTimer)clearTimeout(hideDieTimer);
+ die.textContent=faces[Number(ev.rollValue)]||String(ev.rollValue);
+ die.classList.remove('show');void die.offsetWidth;die.classList.add('show');
+ // The OBS overlay die is a short visual confirmation, not a permanent status display.
+ hideDieTimer=setTimeout(()=>{die.classList.remove('show');hideDieTimer=null;},3500);
+}
+function connect(){const sc=document.createElement('script');sc.src=server.replace(/\/$/,'')+'/socket.io/socket.io.js';sc.onload=()=>{socket=io(server);socket.on('connect',()=>{if(roomCode)socket.emit('observe',{code:roomCode})});socket.on('state',st=>{window.__state=st;const c=st.players[st.currentPlayer],n=st.players[st.currentPlayer+1];document.getElementById('current').textContent=c?.name||'–';document.getElementById('next').textContent=n?.name||'–';updateOverlayDie(st);const card=document.getElementById('eventCard');card.classList.remove('show');if(st.event?.revealedCard){document.getElementById('eventTitle').textContent=st.event.revealedCard.title;document.getElementById('eventText').textContent=st.event.revealedCard.text;document.getElementById('eventEffect').textContent='Nur aufgedeckt – kein automatischer Karteneffekt.';card.classList.add('show')}})};document.head.appendChild(sc)}connect();
 </script></body></html>

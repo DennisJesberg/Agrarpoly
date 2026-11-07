@@ -1,6 +1,5 @@
-PARZELLE 24 V2.49
-- Beide Spielerrahmen direkt an die Unterkante des Kopfbereichs gesetzt (kein vertikaler Abstand).
-- Desktop und mobile Ansicht angepasst.
-- Ausschliesslich top-Position der .playerTag-Elemente in public/overlay.html geändert.
-- Kopfzeile, Header-Grafiken, Würfel und Bescheid-Popup unverändert.
-- Grundlage: V2.48
+PARZELLE 24 V2.50
+- OBS-Overlay-Würfel ist beim Laden standardmässig unsichtbar.
+- Würfel erscheint nur bei einem neuen tatsächlichen Würfelwurf mit dem Ergebnis.
+- Würfel verschwindet nach 3,5 Sekunden automatisch oder sofort bei geschlossenem Würfel-Popup.
+- Spielerrahmen, Kopfbereich, Header-Grafiken und Bescheid-Popup unverändert gegenüber V2.49.
