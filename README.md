@@ -1,12 +1,10 @@
-# PARZELLE 24 V2.50
+# PARZELLE 24 V2.51
 
-OBS-Overlay-Testversion auf Basis V2.49.
+Änderungen auf Basis V2.50:
+- Die Masterauswahl bleibt bis zum Spielstart sichtbar.
+- „Ja, ich spiele mit“ und „Nein, ich bin nur Master“ können vor dem Start jederzeit angeklickt bzw. geändert werden.
+- Die Buttons sind explizit als normale Buttons definiert und erhalten eine eigene Klick-Ebene.
+- Die Würfelanzeige im OBS-Overlay bleibt beim Laden unsichtbar, erscheint beim Würfelwurf und verschwindet automatisch nach 3,5 Sekunden.
+- Kopfzeile, Spielerrahmen und Bescheid-Popup bleiben erhalten.
 
-Änderungen:
-- Der Würfel im OBS-Overlay ist beim Laden und zwischen Würfen unsichtbar.
-- Bei einem neuen Würfelwurf wird der gewürfelte Wert eingeblendet und animiert.
-- Der Würfel verschwindet nach 3,5 Sekunden automatisch; wird das Würfel-Popup vorher geschlossen, verschwindet er sofort.
-- Die Anzeige reagiert auf die tatsächlichen Würfeldaten des Spielereignisses und nicht mehr auf einen dauerhaft gespeicherten letzten Spielerwert.
-- Kopfzeile, Header-Grafiken, Spielerrahmen und Bescheid-Popup bleiben unverändert.
-
-Bitte in einer Testumgebung deployen und das Verhalten im OBS-Overlay prüfen.
+Bitte in einer Testumgebung deployen und die Masterauswahl vor Spielstart testen.

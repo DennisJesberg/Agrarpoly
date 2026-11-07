@@ -1,5 +1,6 @@
-PARZELLE 24 V2.50
-- OBS-Overlay-Würfel ist beim Laden standardmässig unsichtbar.
-- Würfel erscheint nur bei einem neuen tatsächlichen Würfelwurf mit dem Ergebnis.
-- Würfel verschwindet nach 3,5 Sekunden automatisch oder sofort bei geschlossenem Würfel-Popup.
-- Spielerrahmen, Kopfbereich, Header-Grafiken und Bescheid-Popup unverändert gegenüber V2.49.
+PARZELLE 24 V2.51
+- Masterauswahl „spielt mit / ist nur Spielleiter“ bleibt bis zum Spielstart sichtbar.
+- Auswahl kann vor Spielstart jederzeit geändert werden.
+- Auswahlbuttons explizit type=button und mit eigener Klickebene versehen.
+- OBS-Würfel aus V2.50 bleibt nur während eines Würfelwurfs sichtbar.
+- Kopfzeile, Spielerrahmen und Bescheid-Popup unverändert.
