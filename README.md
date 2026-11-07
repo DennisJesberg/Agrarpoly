@@ -1,11 +1,11 @@
-# PARZELLE 24 V2.48
+# PARZELLE 24 V2.49
 
-OBS-Overlay-Testversion auf Basis V2.47.
+OBS-Overlay-Testversion auf Basis V2.48.
 
 Änderungen:
-- Beide Spielerrahmen 30 px nach oben verschoben (Desktop).
-- Mobile Spielerrahmen ebenfalls 30 px nach oben verschoben.
-- Ausschliesslich die CSS-Positionierung der Spielerrahmen (`.playerTag`) in `public/overlay.html` angepasst.
+- Beide Spielerrahmen sitzen direkt an der Unterkante des Kopfbereichs (kein vertikaler Abstand).
+- Desktop und mobile Ansicht verwenden dieselbe berechnete Kopf-Unterkante.
+- Ausschliesslich die CSS-top-Position der `.playerTag`-Elemente in `public/overlay.html` angepasst.
 - Kopfzeile und Header-Grafiken unverändert.
 - Würfel- und Bescheid-Popup-Verhalten unverändert.
 

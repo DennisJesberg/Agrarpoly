@@ -1,6 +1,6 @@
-PARZELLE 24 V2.48
-- Spielerrahmen um 30 px nach oben korrigiert (Desktop)
-- Mobile Spielerrahmen ebenfalls um 30 px nach oben korrigiert
-- Ausschliesslich CSS-Positionierung der .playerTag-Elemente in public/overlay.html angepasst
-- Kopfzeile, Header-Grafiken, Würfel und Bescheid-Popup unverändert
-- Grundlage: V2.47
+PARZELLE 24 V2.49
+- Beide Spielerrahmen direkt an die Unterkante des Kopfbereichs gesetzt (kein vertikaler Abstand).
+- Desktop und mobile Ansicht angepasst.
+- Ausschliesslich top-Position der .playerTag-Elemente in public/overlay.html geändert.
+- Kopfzeile, Header-Grafiken, Würfel und Bescheid-Popup unverändert.
+- Grundlage: V2.48
